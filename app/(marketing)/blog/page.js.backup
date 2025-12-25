@@ -1,0 +1,294 @@
+import Link from 'next/link'
+import Image from 'next/image'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
+import Container from '@/components/ui/Container'
+import Section from '@/components/ui/Section'
+import Card, { CardHeader, CardBody, CardFooter } from '@/components/ui/Card'
+import Badge from '@/components/ui/Badge'
+import Button from '@/components/ui/Button'
+import { generateMetadata as generateMeta, JsonLd, generateBreadcrumbSchema } from '@/lib/seo'
+import { formatDate } from '@/lib/utils'
+import { getAllPosts, getFeaturedPosts, getRecentPosts, getAllCategories } from '@/content/blog'
+
+/**
+ * Blog Page Metadata
+ */
+export const metadata = generateMeta({
+  title: 'Hotel Blog & Travel Tips',
+  description: 'Discover travel tips, local attractions, hotel updates, and insider guides from Hidden Monkey Hotel. Your resource for luxury travel and hospitality insights.',
+  path: '/blog',
+  keywords: ['hotel blog', 'travel tips', 'luxury travel', 'hotel news', 'travel guide', 'local attractions'],
+})
+
+/**
+ * Blog Page - Modern Bento Grid Layout
+ * Inspired by contemporary blog designs with colorful, dynamic cards
+ */
+export default function BlogPage() {
+  // Fetch blog posts from content files
+  const allPosts = getAllPosts()
+  const featuredPosts = getFeaturedPosts(3)
+  const recentPosts = getRecentPosts(6)
+  const categories = getAllCategories()
+  
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://hiddenmonkeyhotel.com' },
+    { name: 'Blog', url: 'https://hiddenmonkeyhotel.com/blog' },
+  ])
+
+  // Mock categories for the design
+  const categoryTags = [
+    { name: 'Travel Tips', color: 'bg-[#FEF3C7] text-[#92400E]', count: 12 },
+    { name: 'Destinations', color: 'bg-[#DBEAFE] text-[#1E40AF]', count: 8 },
+    { name: 'Adventure', color: 'bg-[#FCE7F3] text-[#9F1239]', count: 15 },
+    { name: 'Culture', color: 'bg-[#E0E7FF] text-[#3730A3]', count: 6 },
+    { name: 'Food & Dining', color: 'bg-[#FED7AA] text-[#9A3412]', count: 10 },
+    { name: 'Wellness', color: 'bg-[#D1FAE5] text-[#065F46]', count: 7 },
+  ]
+  
+  return (
+    <>
+      <JsonLd schema={breadcrumbSchema} />
+      <Header />
+      <main className="bg-gradient-to-b from-[#F9FAFB] to-white min-h-screen">
+        
+        {/* Hero Section with Title */}
+        <section className="pt-24 pb-12 md:pt-32 md:pb-16">
+          <Container className="max-w-[1400px]">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <h1 className="font-bold text-[#1A1A1A] text-[56px] md:text-[72px] lg:text-[84px] leading-none tracking-tight mb-4">
+                  BLOG
+                </h1>
+                <p className="text-[#6B7280] text-[16px] md:text-[18px] font-light max-w-2xl leading-relaxed">
+                  Discover stories, tips, and guides from fellow travelers and explorers
+                </p>
+              </div>
+              <Link 
+                href="/blog/all" 
+                className="hidden md:flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-gray-50 border border-gray-200 rounded-full transition-all text-[14px] font-medium text-[#1A1A1A] hover:shadow-md"
+              >
+                Read Our Blog
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          </Container>
+        </section>
+
+        {/* Bento Grid Layout */}
+        <section className="pb-20 md:pb-24">
+          <Container className="max-w-[1400px]">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5 auto-rows-[280px]">
+              
+              {/* Featured Large Card */}
+              {allPosts[0] && (
+                <article className="md:col-span-7 md:row-span-2 group">
+                  <Link href={`/blog/${allPosts[0].slug}`} className="block h-full">
+                    <div className="relative h-full overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500">
+                      <Image
+                        src={allPosts[0].image}
+                        alt={allPosts[0].title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                      
+                      <div className="absolute top-5 left-5">
+                        <span className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-[#1A1A1A] text-[11px] px-3 py-1.5 rounded-full font-semibold tracking-wide">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#2D7A5F]" />
+                          {allPosts[0].category}
+                        </span>
+                      </div>
+                      
+                      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                        <p className="text-white/80 text-[12px] font-medium mb-3 uppercase tracking-wider">
+                          Category · {allPosts[0].category} | {formatDate(allPosts[0].date, 'short')}
+                        </p>
+                        <h2 className="text-white font-bold text-[28px] md:text-[36px] leading-tight mb-4 tracking-tight">
+                          {allPosts[0].title}
+                        </h2>
+                        <p className="text-white/90 text-[14px] md:text-[15px] leading-relaxed font-light line-clamp-2">
+                          {allPosts[0].excerpt}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
+              )}
+
+              {/* Second Featured Card - Pastel Green */}
+              {allPosts[1] && (
+                <article className="md:col-span-5 md:row-span-1 group">
+                  <Link href={`/blog/${allPosts[1].slug}`} className="block h-full">
+                    <div className="relative h-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#D1FAE5] to-[#A7F3D0] p-6 hover:shadow-xl transition-all duration-300">
+                      <span className="inline-block text-[11px] font-medium text-[#065F46] mb-3 uppercase tracking-wider">
+                        Category · {allPosts[1].category}
+                      </span>
+                      <h3 className="font-bold text-[#1A1A1A] text-[22px] md:text-[26px] leading-tight mb-3 tracking-tight">
+                        {allPosts[1].title}
+                      </h3>
+                      <p className="text-[#374151] text-[13px] leading-relaxed font-light mb-4 line-clamp-2">
+                        {allPosts[1].excerpt}
+                      </p>
+                      <div className="flex items-center gap-2 mt-auto pt-4">
+                        <span className="text-[12px] text-[#6B7280]">{formatDate(allPosts[1].date, 'short')}</span>
+                      </div>
+                      <div className="absolute bottom-6 right-6">
+                        <div className="w-10 h-10 bg-white/50 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white transition-colors">
+                          <svg className="w-5 h-5 text-[#065F46] transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
+              )}
+
+              {/* Third Card - Pastel Blue */}
+              {allPosts[2] && (
+                <article className="md:col-span-5 md:row-span-1 group">
+                  <Link href={`/blog/${allPosts[2].slug}`} className="block h-full">
+                    <div className="relative h-full overflow-hidden rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300">
+                      <Image
+                        src={allPosts[2].image}
+                        alt={allPosts[2].title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#DBEAFE]/95 to-[#BFDBFE]/95 mix-blend-multiply" />
+                      
+                      <div className="relative h-full p-6 flex flex-col justify-between">
+                        <span className="inline-block text-[11px] font-medium text-[#1E40AF] uppercase tracking-wider">
+                          Category · {allPosts[2].category}
+                        </span>
+                        <div>
+                          <h3 className="font-bold text-[#1A1A1A] text-[22px] md:text-[26px] leading-tight mb-2 tracking-tight">
+                            {allPosts[2].title}
+                          </h3>
+                          <p className="text-[12px] text-[#6B7280]">{formatDate(allPosts[2].date, 'short')}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
+              )}
+
+              {/* Fourth Card - With Image */}
+              {allPosts[3] && (
+                <article className="md:col-span-7 md:row-span-1 group">
+                  <Link href={`/blog/${allPosts[3].slug}`} className="block h-full">
+                    <div className="relative h-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#FEF3C7] to-[#FDE68A] shadow-lg hover:shadow-xl transition-all duration-300">
+                      <div className="absolute inset-0 p-6 flex items-center justify-between">
+                        <div className="max-w-md">
+                          <span className="inline-block text-[11px] font-medium text-[#92400E] mb-3 uppercase tracking-wider">
+                            Category · {allPosts[3].category}
+                          </span>
+                          <h3 className="font-bold text-[#1A1A1A] text-[24px] md:text-[28px] leading-tight mb-4 tracking-tight">
+                            {allPosts[3].title}
+                          </h3>
+                          <div className="flex items-center gap-3">
+                            <span className="text-[12px] text-[#6B7280]">{formatDate(allPosts[3].date, 'short')}</span>
+                            <div className="w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white transition-colors">
+                              <svg className="w-4 h-4 text-[#92400E] transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
+              )}
+
+              {/* Categories Card - Purple Gradient */}
+              <article className="md:col-span-5 md:row-span-2 group">
+                <div className="relative h-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#E9D5FF] to-[#DDD6FE] p-6 shadow-lg">
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {categoryTags.map((cat, idx) => (
+                      <Link
+                        key={idx}
+                        href={`/blog/category/${cat.name.toLowerCase()}`}
+                        className={`inline-block px-4 py-2 rounded-full text-[12px] font-semibold ${cat.color} hover:scale-105 transition-transform`}
+                      >
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </div>
+                  
+                  <Link 
+                    href="/blog/categories"
+                    className="group/btn absolute bottom-6 left-6 right-6 flex items-center justify-between px-5 py-3 bg-white/90 backdrop-blur-sm hover:bg-white rounded-2xl transition-all shadow-sm hover:shadow-md"
+                  >
+                    <span className="font-semibold text-[#1A1A1A] text-[14px]">
+                      View All Categories
+                    </span>
+                    <div className="w-9 h-9 bg-[#9333EA]/10 rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-[#9333EA] transform group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </div>
+                  </Link>
+                </div>
+              </article>
+
+              {/* Additional Posts */}
+              {allPosts.slice(4, 7).map((post, idx) => {
+                const colors = [
+                  { bg: 'from-[#FCE7F3] to-[#FBCFE8]', text: '#9F1239', icon: '#EC4899' },
+                  { bg: 'from-[#E0E7FF] to-[#C7D2FE]', text: '#3730A3', icon: '#6366F1' },
+                  { bg: 'from-[#FED7AA] to-[#FDBA74]', text: '#9A3412', icon: '#EA580C' }
+                ]
+                const color = colors[idx % 3]
+                
+                return (
+                  <article key={post.slug} className="md:col-span-4 md:row-span-1 group">
+                    <Link href={`/blog/${post.slug}`} className="block h-full">
+                      <div className={`relative h-full overflow-hidden rounded-3xl bg-gradient-to-br ${color.bg} p-6 hover:shadow-xl transition-all duration-300`}>
+                        <span className="inline-block text-[11px] font-medium uppercase tracking-wider mb-3" style={{ color: color.text }}>
+                          {post.category}
+                        </span>
+                        <h3 className="font-bold text-[#1A1A1A] text-[18px] leading-tight mb-3 tracking-tight line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-[12px] text-[#6B7280]">{formatDate(post.date, 'short')}</p>
+                        
+                        <div className="absolute bottom-5 right-5">
+                          <div className="w-9 h-9 bg-white/70 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-white transition-colors">
+                            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" style={{ color: color.icon }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </article>
+                )
+              })}
+            </div>
+
+            {/* Load More */}
+            <div className="mt-12 text-center">
+              <Link
+                href="/blog/all"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-[#2D7A5F] hover:bg-[#246B51] text-white font-semibold text-[14px] rounded-full shadow-lg shadow-[#2D7A5F]/20 hover:shadow-xl hover:shadow-[#2D7A5F]/30 hover:scale-105 transition-all"
+              >
+                Explore All Stories
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          </Container>
+        </section>
+      </main>
+      <Footer />
+    </>
+  )
+}
