@@ -5,193 +5,341 @@ import Image from 'next/image'
 import Container from '@/components/ui/Container'
 
 /**
- * Featured Experience Section
- * Promotional banner with circular property images
+ * Inside the Monkey House - Compact Gallery Teaser
+ * Quick snapshots of hostel vibes - encourages "View all" click
  */
 
 export default function FeaturedRooms() {
   const [isClient, setIsClient] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
 
   useEffect(() => {
     setIsClient(true)
   }, [])
 
-  const experienceImages = [
-    'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=400&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1587061949409-02df41d5e562?w=400&auto=format&fit=crop&q=80'
+  // Compact gallery - 6 images with varied aspects
+  const galleryImages = [
+    { url: 'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=500&auto=format&fit=crop&q=80', aspect: 'tall' },
+    { url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&auto=format&fit=crop&q=80', aspect: 'wide' },
+    { url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&auto=format&fit=crop&q=80', aspect: 'square' },
+    { url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=500&auto=format&fit=crop&q=80', aspect: 'square' },
+    { url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&auto=format&fit=crop&q=80', aspect: 'wide' },
+    { url: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=500&auto=format&fit=crop&q=80', aspect: 'square' }
   ]
 
+  const rotations = [-3, 2, -1, 3, -2, 1]
+
+  const openLightbox = (index) => {
+    setLightboxIndex(index)
+    setSelectedImage(galleryImages[index])
+  }
+
+  const closeLightbox = () => {
+    setSelectedImage(null)
+  }
+
+  const nextImage = () => {
+    const newIndex = (lightboxIndex + 1) % galleryImages.length
+    setLightboxIndex(newIndex)
+    setSelectedImage(galleryImages[newIndex])
+  }
+
+  const prevImage = () => {
+    const newIndex = (lightboxIndex - 1 + galleryImages.length) % galleryImages.length
+    setLightboxIndex(newIndex)
+    setSelectedImage(galleryImages[newIndex])
+  }
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!selectedImage) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') nextImage()
+      if (e.key === 'ArrowLeft') prevImage()
+      if (e.key === 'Escape') closeLightbox()
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedImage, lightboxIndex])
+
   return (
-    <section className="relative py-12 md:py-16 bg-white" aria-label="Experience">
+    <section className="relative py-6 md:py-10 bg-white overflow-hidden" aria-label="Gallery">
       <Container className="max-w-[1400px]">
-        <div className="relative bg-[#1A1A1A] rounded-2xl overflow-hidden">
-          <div className="relative z-10 px-6 sm:px-8 md:px-10 py-10 md:py-14 lg:pr-[45%]">
-            <div className="max-w-lg">
-              {/* Heading */}
-              <h2 className="font-sans text-white text-[26px] sm:text-[32px] md:text-[36px] font-normal mb-3 md:mb-4">
-                More than just a bed
-              </h2>
+        {/* Compact Header */}
+        <div className="mb-4 md:mb-6">
+          <h2 className="text-[#1E1F1C] text-[24px] md:text-[32px] font-bold">
+            Inside the Monkey House
+          </h2>
+          <p className="text-[#5E625A] text-[13px] md:text-[14px] font-light">
+            Snapshots of life on the road
+          </p>
+        </div>
 
-              {/* Description */}
-              <p className="text-white/70 text-[13px] sm:text-[14px] leading-relaxed mb-6 md:mb-7">
-                Community spaces, local experiences, and travelers from around the world. Your next adventure starts here.
-              </p>
+        {/* Gallery Grid - Compact Collage */}
+        <div className="relative">
+          {/* Desktop Layout */}
+          <div className="hidden md:grid md:grid-cols-12 gap-3 h-[280px]">
+            {/* Large anchor image (tall, left) */}
+            <div
+              className="col-span-5 row-span-2 relative rounded-[16px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
+              style={{ transform: `rotate(${rotations[0]}deg)` }}
+              onClick={() => openLightbox(0)}
+            >
+              {isClient && (
+                <>
+                  <Image
+                    src={galleryImages[0].url}
+                    alt="Gallery"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="300px"
+                    quality={80}
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 group-hover:bg-black/5 transition-all duration-300" />
+                </>
+              )}
+            </div>
 
-              {/* CTA Button */}
-              <a 
-                href="/hostels"
-                className="inline-block bg-white text-[#1A1A1A] px-6 py-2.5 rounded-lg font-medium text-[13px] hover:bg-gray-100 transition-colors"
+            {/* Top right cluster */}
+            <div
+              className="col-span-3 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
+              style={{ transform: `rotate(${rotations[1]}deg)` }}
+              onClick={() => openLightbox(1)}
+            >
+              {isClient && (
+                <>
+                  <Image
+                    src={galleryImages[1].url}
+                    alt="Gallery"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="200px"
+                    quality={80}
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 group-hover:bg-black/5 transition-all duration-300" />
+                </>
+              )}
+            </div>
+
+            {/* Middle right */}
+            <div
+              className="col-span-4 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
+              style={{ transform: `rotate(${rotations[2]}deg)` }}
+              onClick={() => openLightbox(2)}
+            >
+              {isClient && (
+                <>
+                  <Image
+                    src={galleryImages[2].url}
+                    alt="Gallery"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="220px"
+                    quality={80}
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 group-hover:bg-black/5 transition-all duration-300" />
+                </>
+              )}
+            </div>
+
+            {/* Bottom right cluster */}
+            <div
+              className="col-span-3 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
+              style={{ transform: `rotate(${rotations[3]}deg)` }}
+              onClick={() => openLightbox(3)}
+            >
+              {isClient && (
+                <>
+                  <Image
+                    src={galleryImages[3].url}
+                    alt="Gallery"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="200px"
+                    quality={80}
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 group-hover:bg-black/5 transition-all duration-300" />
+                </>
+              )}
+            </div>
+
+            {/* Bottom middle */}
+            <div
+              className="col-span-4 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
+              style={{ transform: `rotate(${rotations[4]}deg)` }}
+              onClick={() => openLightbox(4)}
+            >
+              {isClient && (
+                <>
+                  <Image
+                    src={galleryImages[4].url}
+                    alt="Gallery"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="220px"
+                    quality={80}
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 group-hover:bg-black/5 transition-all duration-300" />
+                </>
+              )}
+            </div>
+
+            {/* Last image */}
+            <div
+              className="col-span-2 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
+              style={{ transform: `rotate(${rotations[5]}deg)` }}
+              onClick={() => openLightbox(5)}
+            >
+              {isClient && (
+                <>
+                  <Image
+                    src={galleryImages[5].url}
+                    alt="Gallery"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="140px"
+                    quality={80}
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 group-hover:bg-black/5 transition-all duration-300" />
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile - Horizontal scroll */}
+          <div className="md:hidden flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            {galleryImages.map((image, idx) => (
+              <div
+                key={idx}
+                className="flex-shrink-0 relative w-28 h-28 rounded-[12px] overflow-hidden cursor-pointer shadow-sm active:shadow-md transition-shadow"
+                onClick={() => openLightbox(idx)}
               >
-                Explore Hostels
-              </a>
-            </div>
+                {isClient && (
+                  <>
+                    <Image
+                      src={image.url}
+                      alt="Gallery"
+                      fill
+                      className="object-cover"
+                      sizes="112px"
+                      quality={75}
+                      unoptimized
+                    />
+                  </>
+                )}
+              </div>
+            ))}
           </div>
 
-          {/* Circular Images - Desktop Only */}
-          <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[42%] pointer-events-none">
-            <div className="absolute top-[12%] right-[18%] w-[110px] h-[110px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[0]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="110px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="absolute top-[20%] right-[6%] w-[85px] h-[85px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[1]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="85px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="absolute top-[48%] right-[24%] w-[105px] h-[105px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[2]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="105px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="absolute bottom-[22%] right-[8%] w-[120px] h-[120px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[3]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="120px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Tablet Pattern */}
-          <div className="hidden md:block lg:hidden absolute right-0 top-0 bottom-0 w-[38%] pointer-events-none">
-            <div className="absolute top-[15%] right-[8%] w-[90px] h-[90px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[0]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="90px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="absolute bottom-[20%] right-[12%] w-[100px] h-[100px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[2]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="100px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Mobile Pattern */}
-          <div className="md:hidden absolute right-0 top-0 bottom-0 w-[32%] pointer-events-none">
-            <div className="absolute top-[10%] right-[8%] w-[65px] h-[65px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[0]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="65px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="absolute bottom-[15%] right-[6%] w-[70px] h-[70px]">
-              {isClient && (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={experienceImages[2]}
-                    alt="Hostel"
-                    fill
-                    className="object-cover"
-                    sizes="70px"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </div>
+          {/* View All CTA Button - Desktop */}
+          <div className="hidden md:block absolute -bottom-8 -right-4">
+            <a
+              href="/gallery"
+              className="relative w-20 h-20 rounded-full bg-[#F05A28] hover:bg-[#E84D1B] text-white flex items-center justify-center font-semibold text-[11px] text-center transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 group"
+            >
+              <div className="flex flex-col items-center gap-0.5">
+                <span>View</span>
+                <span>all</span>
+                <span className="text-[8px] group-hover:translate-x-0.5 transition-transform">→</span>
+              </div>
+            </a>
           </div>
         </div>
+
+        {/* Mobile View All Button */}
+        <div className="md:hidden mt-4 text-center">
+          <a
+            href="/gallery"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#F05A28] hover:bg-[#E84D1B] text-white text-[12px] font-semibold rounded-full transition-all duration-200"
+          >
+            View all <span className="text-sm">→</span>
+          </a>
+        </div>
       </Container>
+
+      {/* LIGHTBOX */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
+            aria-label="Close"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Image container */}
+          <div
+            className="relative w-full max-w-2xl max-h-[80vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {isClient && (
+              <Image
+                src={selectedImage.url}
+                alt="Gallery"
+                width={800}
+                height={600}
+                className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                quality={90}
+                unoptimized
+              />
+            )}
+          </div>
+
+          {/* Navigation arrows */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              prevImage()
+            }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 p-2 rounded-full transition-all"
+            aria-label="Previous"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              nextImage()
+            }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/10 p-2 rounded-full transition-all"
+            aria-label="Next"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Image counter */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-[12px]">
+            {lightboxIndex + 1} / {galleryImages.length}
+          </div>
+        </div>
+      )}
+
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   )
 }

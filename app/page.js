@@ -10,7 +10,8 @@ import Testimonials from '@/components/sections/Testimonials'
 import CTA from '@/components/sections/CTA'
 import { JsonLd, generateHotelSchema } from '@/lib/seo'
 import Destinations from '@/components/sections/Destinations'
-
+import Blog from '@/components/sections/Blog'
+import DayLookLike from '@/components/sections/DayLookLike'
 /**
  * Homepage
  * Main landing page with all key sections
@@ -22,15 +23,18 @@ export default function Home() {
   return (
     <>
       <JsonLd schema={hotelSchema} />
+     
       <Header />
       <main>
         <Hero />
         <Community />
+        <DayLookLike/>
         <Destinations/>
         <FeaturedRooms />
         <RoomTypes />
         {/* <Amenities />
         <Gallery /> */}
+        <Blog/>
         <Testimonials />
         <CTA />
       </main>

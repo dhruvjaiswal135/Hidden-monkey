@@ -4,132 +4,174 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 /**
- * Header Component
- * Simple navigation for backpacker hostel
+ * FloatingHeader Component
+ * Modern, minimal floating pill-shaped header for Hidden Monkey
+ * Inspired by premium travel brand UI design
  */
+
+const Logo = () => (
+  <Link href="/" className="flex items-center gap-2 group">
+    {/* Minimal jungle mark - abstract eye/leaf */}
+    <div className="relative w-5 h-5">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        className="w-full h-full text-[#1E1F1C]"
+      >
+        {/* Stylized leaf mark */}
+        <path
+          d="M12 2C12 2 8 8 8 12C8 15.3 10 18 12 18C14 18 16 15.3 16 12C16 8 12 2 12 2Z"
+          fill="currentColor"
+        />
+        <circle cx="12" cy="10" r="2" fill="white" opacity="0.6" />
+      </svg>
+    </div>
+    <span
+      className="font-semibold text-[#1E1F1C] text-[17px] tracking-tight"
+      style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
+    >
+      Hidden Monkey
+    </span>
+  </Link>
+)
+
+const NavLink = ({ href, label, isActive = false }) => (
+  <Link
+    href={href}
+    className="relative text-[#1E1F1C] text-[14px] font-medium transition-all duration-150 ease-out hover:text-[#F05A28] group"
+  >
+    {label}
+    {/* Animated underline indicator */}
+    <span
+      className={`absolute bottom-0 left-0 h-0.5 bg-[#F05A28] transition-all duration-150 ease-out ${
+        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+      }`}
+    ></span>
+  </Link>
+)
+
+const PrimaryButton = ({ href, label }) => (
+  <Link
+    href={href}
+    className="px-5 py-2.5 bg-[#F05A28] hover:bg-[#E84D1B] text-white text-[14px] font-medium rounded-full transition-all duration-150 ease-out shadow-sm hover:shadow-md"
+  >
+    {label}
+  </Link>
+)
+
+const MobileMenuIcon = ({ isOpen, onClick }) => (
+  <button
+    onClick={onClick}
+    className="flex flex-col gap-1.5 p-2 -mr-2 lg:hidden"
+    aria-label="Toggle menu"
+    aria-expanded={isOpen}
+  >
+    <span
+      className={`h-0.5 w-5 bg-[#1E1F1C] transition-all duration-200 ${
+        isOpen ? 'rotate-45 translate-y-2' : ''
+      }`}
+    ></span>
+    <span
+      className={`h-0.5 w-5 bg-[#1E1F1C] transition-all duration-200 ${
+        isOpen ? 'opacity-0' : ''
+      }`}
+    ></span>
+    <span
+      className={`h-0.5 w-5 bg-[#1E1F1C] transition-all duration-200 ${
+        isOpen ? '-rotate-45 -translate-y-2' : ''
+      }`}
+    ></span>
+  </button>
+)
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  
+
+  const navItems = [
+    { href: '/stays', label: 'Stays' },
+    { href: '/destinations', label: 'Destinations' },
+    { href: '/community', label: 'Community' },
+    { href: '/experiences', label: 'Experiences' },
+    { href: '/stories', label: 'Stories' },
+  ]
+
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-200">
-      <nav className="max-w-7xl mx-auto px-6 lg:px-8" aria-label="Main navigation">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <svg className="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="16" r="12" fill="#8B4513"/>
-              <ellipse cx="16" cy="19" rx="8" ry="6" fill="#D2691E"/>
-              <circle cx="12" cy="14" r="2" fill="#1A1A1A"/>
-              <circle cx="20" cy="14" r="2" fill="#1A1A1A"/>
-              <circle cx="12.5" cy="13.5" r="0.5" fill="white"/>
-              <circle cx="20.5" cy="13.5" r="0.5" fill="white"/>
-              <path d="M 12 20 Q 16 22 20 20" stroke="#1A1A1A" strokeWidth="1.5" fill="none"/>
-              <path d="M 22 8 L 24 10 L 22 12 Z" fill="#2D7A5F"/>
-            </svg>
-            
-            <div>
-              <span className="font-semibold text-[#1A1A1A] text-base">Hidden Monkey</span>
-            </div>
-          </Link>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            <Link href="/rooms" className="text-[#1A1A1A] hover:text-[#2D7A5F] text-sm">
-              Rooms
-            </Link>
-            <Link href="/destinations" className="text-[#1A1A1A] hover:text-[#2D7A5F] text-sm">
-              Destinations
-            </Link>
-            <Link href="/about" className="text-[#1A1A1A] hover:text-[#2D7A5F] text-sm">
-              About
-            </Link>
-            <Link href="/blog" className="text-[#1A1A1A] hover:text-[#2D7A5F] text-sm">
-              Blog
-            </Link>
-            <Link href="/contact" className="text-[#1A1A1A] hover:text-[#2D7A5F] text-sm">
-              Contact
-            </Link>
-          </div>
-          
-          {/* Book Now Button */}
-          <div className="hidden md:block">
-            <Link
-              href="/contact"
-              className="inline-flex items-center px-5 py-2 bg-[#2D7A5F] hover:bg-[#246B51] text-white text-sm font-medium rounded-lg"
-            >
-              Book Now
-            </Link>
-          </div>
-          
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-[#1A1A1A]"
-            aria-label="Menu"
+    <>
+      {/* Header container wrapper */}
+      <header className="fixed top-0 left-0 right-0 z-50 pt-4 lg:pt-6 px-4 lg:px-6">
+        {/* Floating pill container */}
+        <div className="max-w-[1200px] mx-auto">
+          <nav
+            className="relative flex items-center justify-between h-16 px-6 lg:px-8 bg-white/30 border border-[#E6E4DF] rounded-full shadow-sm transition-shadow duration-300 hover:shadow-md"
+            style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)' }}
+            aria-label="Main navigation"
           >
-            {isMobileMenuOpen ? (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
-        </div>
-        
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-3 border-t border-gray-200">
-            <div className="flex flex-col gap-1">
+            {/* Logo */}
+            <Logo />
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                />
+              ))}
+            </div>
+
+            {/* Desktop CTA */}
+            <div className="hidden lg:block">
+              <PrimaryButton href="/book" label="Book Your Stay" />
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden ml-auto">
+              <MobileMenuIcon
+                isOpen={isMobileMenuOpen}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              />
+            </div>
+          </nav>
+
+          {/* Mobile Menu Panel */}
+          {isMobileMenuOpen && (
+            <div
+              className="absolute top-20 left-4 right-4 bg-white border border-[#E6E4DF] rounded-3xl shadow-lg p-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-200"
+              style={{ boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)' }}
+            >
+              {/* Mobile Nav Links */}
+              <div className="flex flex-col gap-4">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-[#1E1F1C] text-[15px] font-medium hover:text-[#F05A28] transition-colors duration-150"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-[#E6E4DF]"></div>
+
+              {/* Mobile CTA */}
               <Link
-                href="/rooms"
-                className="text-[#1A1A1A] hover:text-[#2D7A5F] px-2 py-2 text-sm"
+                href="/book"
+                className="block w-full px-5 py-3 bg-[#F05A28] hover:bg-[#E84D1B] text-white text-[14px] font-medium rounded-full text-center transition-all duration-150"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Rooms
-              </Link>
-              <Link
-                href="/destinations"
-                className="text-[#1A1A1A] hover:text-[#2D7A5F] px-2 py-2 text-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Destinations
-              </Link>
-              <Link
-                href="/about"
-                className="text-[#1A1A1A] hover:text-[#2D7A5F] px-2 py-2 text-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
-                href="/blog"
-                className="text-[#1A1A1A] hover:text-[#2D7A5F] px-2 py-2 text-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Blog
-              </Link>
-              <Link
-                href="/contact"
-                className="text-[#1A1A1A] hover:text-[#2D7A5F] px-2 py-2 text-sm"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Contact
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center px-5 py-2 bg-[#2D7A5F] text-white text-sm font-medium rounded-lg mt-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Book Now
+                Book Your Stay
               </Link>
             </div>
-          </div>
-        )}
-      </nav>
-    </header>
+          )}
+        </div>
+      </header>
+
+      {/* Hero offset - creates space below floating header */}
+      <div className="h-24 lg:h-32"></div>
+    </>
   )
 }
