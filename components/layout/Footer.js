@@ -24,7 +24,7 @@ export default function Footer() {
             <div className="md:col-span-4">
               <Link href="/" className="inline-block mb-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-[#F05A28] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-[#EEA727] flex items-center justify-center">
                     <span className="text-white text-[12px] font-bold">🐵</span>
                   </div>
                   <h3 className="text-[#1E1F1C] text-[16px] font-semibold">Hidden Monkey</h3>
@@ -37,10 +37,10 @@ export default function Footer() {
 
               {/* Links */}
               <ul className="space-y-1.5">
-                <li><Link href="/stays" className="text-[#5E625A] text-[12px] hover:text-[#F05A28] transition-colors">Stays</Link></li>
-                <li><Link href="/destinations" className="text-[#5E625A] text-[12px] hover:text-[#F05A28] transition-colors">Destinations</Link></li>
-                <li><Link href="/stories" className="text-[#5E625A] text-[12px] hover:text-[#F05A28] transition-colors">Stories</Link></li>
-                <li><Link href="/contact" className="text-[#5E625A] text-[12px] hover:text-[#F05A28] transition-colors">Contact</Link></li>
+                <li><Link href="/stays" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">Stays</Link></li>
+                <li><Link href="/destinations" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">Destinations</Link></li>
+                <li><Link href="/stories" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">Stories</Link></li>
+                <li><Link href="/contact" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">Contact</Link></li>
               </ul>
             </div>
 
@@ -139,9 +139,9 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] md:text-[12px]">
             <p className="text-[#5E625A]">© {currentYear} Hidden Monkey</p>
             <div className="flex items-center gap-3 md:gap-4">
-              <Link href="/privacy" className="text-[#5E625A] hover:text-[#F05A28] transition-colors">Privacy</Link>
+              <Link href="/privacy" className="text-[#5E625A] hover:text-[#EEA727] transition-colors">Privacy</Link>
               <span className="text-[#E6E4DF]">·</span>
-              <Link href="/terms" className="text-[#5E625A] hover:text-[#F05A28] transition-colors">Terms</Link>
+              <Link href="/terms" className="text-[#5E625A] hover:text-[#EEA727] transition-colors">Terms</Link>
             </div>
           </div>
         </Container>

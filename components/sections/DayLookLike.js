@@ -80,7 +80,7 @@ export default function DayLookLike() {
               <div
                 key={moment.id}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  hoveredId === moment.id ? 'bg-[#F05A28] scale-125' : 'bg-[#E6E4DF]'
+                  hoveredId === moment.id ? 'bg-[#EEA727] scale-125' : 'bg-[#E6E4DF]'
                 }`}
               />
             ))}
@@ -111,7 +111,7 @@ export default function DayLookLike() {
               <div>
                 {/* Period Label */}
                 <h3 className={`text-base font-semibold transition-colors duration-300 ${
-                  hoveredId === moment.id ? 'text-[#F05A28]' : 'text-[#1E1F1C]'
+                  hoveredId === moment.id ? 'text-[#EEA727]' : 'text-[#1E1F1C]'
                 }`}>
                   {moment.period}
                 </h3>
@@ -151,7 +151,7 @@ export default function DayLookLike() {
                 {/* Content */}
                 <div>
                   <h3 className={`text-base font-semibold transition-colors duration-300 ${
-                    hoveredId === moment.id ? 'text-[#F05A28]' : 'text-[#1E1F1C]'
+                    hoveredId === moment.id ? 'text-[#EEA727]' : 'text-[#1E1F1C]'
                   }`}>
                     {moment.period}
                   </h3>

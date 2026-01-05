@@ -11,10 +11,10 @@ import Link from 'next/link'
 export default function Hero() {
   return (
     <>
-      <section className="relative w-full lg:-mt-16 pb-32 lg:pb-0 lg:pt-0 lg:min-h-[90vh] lg:flex lg:items-center">
+      <section className="relative w-full lg:-mt-16  lg:pb-0 lg:pt-0 lg:min-h-[90vh] lg:flex lg:items-center">
         {/* Hero Container */}
         <div className="max-w-[1600px] mx-auto w-full px-4 lg:px-8">
-        <div className="relative rounded-[32px] lg:rounded-[40px] overflow-hidden h-[600px] lg:h-[80vh] min-h-[600px]">
+        <div className="relative rounded-[32px] lg:rounded-[40px] overflow-hidden h-[500px] lg:h-[80vh] min-h-[500px]">
           
           {/* Background Image */}
           <div className="absolute inset-0 w-full h-full">
@@ -25,7 +25,7 @@ export default function Hero() {
               loading="lazy"
             />
             {/* Subtle overlay for text readability */}
-            <div className="absolute inset-0 bg-black/20" />
+            <div className="absolute inset-0 bg-black/25" />
           </div>
 
           {/* Content Grid: Left Text + Right Card */}
@@ -36,7 +36,7 @@ export default function Hero() {
               
               {/* Micro-label */}
               <div>
-                <p className="text-white/80 text-sm font-light tracking-wide">
+                <p className="text-white/90 text-sm font-normal tracking-wide">
                   — it's time to travel differently
                 </p>
               </div>
@@ -48,12 +48,12 @@ export default function Hero() {
                   style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)' }}
                 >
                   Don't just stay.<br />
-                  <span className="text-[#F05A28]">Live with the tribe.</span>
+                  <span className="text-[#EEA727]">Live with the tribe.</span>
                 </h1>
               </div>
               
               {/* Subtext */}
-              <p className="text-white/85 text-base lg:text-lg leading-relaxed max-w-md font-light">
+              <p className="text-white/85 text-base lg:text-lg leading-relaxed max-w-md font-normal">
                 Join thousands of backpackers and adventurers who've found their community. Share stories, make friends, explore together.
               </p>
               
@@ -61,7 +61,7 @@ export default function Hero() {
               <div className="flex items-center gap-4 pt-4">
                 <Link
                   href="/stays"
-                  className="px-6 lg:px-8 py-3 lg:py-3.5 bg-[#F05A28] hover:bg-[#E84D1B] text-white font-semibold rounded-full transition-all duration-150 text-sm lg:text-base shadow-lg hover:shadow-xl"
+                  className="px-6 lg:px-8 py-3 lg:py-3.5 bg-[#EEA727] hover:bg-[#E84D1B] text-white font-semibold rounded-full transition-all duration-150 text-sm lg:text-base shadow-lg hover:shadow-xl"
                 >
                   Explore Stays
                 </Link>
@@ -76,8 +76,8 @@ export default function Hero() {
               </div>
               
               {/* Social Proof */}
-              <div className="flex items-center gap-3 pt-4">
-                <div className="flex -space-x-2">
+              <div className="flex items-center  gap-3 ">
+                <div className="flex -space-x-2 items-center">
                   {[...Array(4)].map((_, i) => (
                     <div
                       key={i}
@@ -87,7 +87,7 @@ export default function Hero() {
                     </div>
                   ))}
                 </div>
-                <p className="text-white/80 text-sm font-light">
+                <p className="text-white text-xs lg:text-sm font-normal items-center pt-4 ">
                   28+ travellers checked in this week
                 </p>
               </div>
@@ -154,7 +154,7 @@ export default function Hero() {
                 {/* CTA Button */}
                 <Link
                   href="/search"
-                  className="w-full inline-block py-3.5 bg-[#F05A28] hover:bg-[#E84D1B] text-white font-semibold rounded-full transition-all duration-150 text-center text-sm shadow-lg hover:shadow-xl"
+                  className="w-full inline-block py-3.5 bg-[#EEA727] hover:bg-[#E84D1B] text-white font-semibold rounded-full transition-all duration-150 text-center text-sm shadow-lg hover:shadow-xl"
                 >
                   Check Availability
                 </Link>
@@ -217,7 +217,7 @@ export default function Hero() {
             {/* CTA Button */}
             <Link
               href="/search"
-              className="w-full inline-block py-2.5 bg-[#F05A28] hover:bg-[#E84D1B] text-white font-semibold rounded-full transition-all duration-150 text-center text-xs shadow-lg hover:shadow-xl"
+              className="w-full inline-block py-2.5 bg-[#EEA727] hover:bg-[#E84D1B] text-white font-semibold rounded-full transition-all duration-150 text-center text-xs shadow-lg hover:shadow-xl"
             >
               Search
             </Link>

@@ -80,71 +80,71 @@ export default function Community() {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-12 md:py-20 bg-white overflow-hidden" 
+      className="relative py-12 md:py- bg-white overflow-hidden" 
       aria-label="Why Choose Hidden Monkey"
     >
       {/* DECORATIVE BACKGROUND ELEMENTS */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Floating circles - top left */}
-        <svg className="absolute top-20 left-12 w-24 h-24 opacity-8 animate-pulse" viewBox="0 0 100 100" fill="none">
-          <circle cx="50" cy="50" r="25" fill="none" stroke="#F05A28" strokeWidth="2" opacity="0.4"/>
-          <circle cx="50" cy="50" r="18" fill="none" stroke="#F05A28" strokeWidth="1.5" opacity="0.3"/>
-        </svg>
+        {/* <svg className="absolute top-20 left-12 w-24 h-24 opacity-8 animate-pulse" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="25" fill="none" stroke="#EEA727" strokeWidth="2" opacity="0.4"/>
+          <circle cx="50" cy="50" r="18" fill="none" stroke="#EEA727" strokeWidth="1.5" opacity="0.3"/>
+        </svg> */}
 
         {/* Passport stamp - top center right */}
         <svg className="absolute top-16 right-32 w-20 h-20 opacity-7 animate-bounce" viewBox="0 0 100 100" fill="none" style={{ animationDuration: '3s' }}>
-          <rect x="10" y="10" width="80" height="80" fill="none" stroke="#F05A28" strokeWidth="2" opacity="0.5" rx="4" transform="rotate(15 50 50)"/>
-          <text x="50" y="55" textAnchor="middle" fontSize="24" fill="#F05A28" opacity="0.4" fontWeight="bold">✓</text>
+          <rect x="10" y="10" width="80" height="80" fill="none" stroke="#EEA727" strokeWidth="2" opacity="0.5" rx="4" transform="rotate(15 50 50)"/>
+          <text x="50" y="55" textAnchor="middle" fontSize="24" fill="#EEA727" opacity="0.4" fontWeight="bold">✓</text>
         </svg>
 
         {/* Umbrella shape - middle right */}
-        <svg className="absolute top-1/2 right-10 w-32 h-32 opacity-6 animate-[spin]" viewBox="0 0 100 100" fill="none" style={{ animationDuration: '8s' }}>
-          <path d="M 50 20 Q 30 40 20 60 L 80 60 Q 70 40 50 20" fill="none" stroke="#F05A28" strokeWidth="2" opacity="0.4"/>
-          <line x1="50" y1="60" x2="50" y2="80" stroke="#F05A28" strokeWidth="1.5" opacity="0.3"/>
-          <circle cx="50" cy="80" r="3" fill="#F05A28" opacity="0.4"/>
-        </svg>
+        {/* <svg className="absolute top-1/2 right-10 w-32 h-32 opacity-6 animate-[spin]" viewBox="0 0 100 100" fill="none" style={{ animationDuration: '8s' }}>
+          <path d="M 50 20 Q 30 40 20 60 L 80 60 Q 70 40 50 20" fill="none" stroke="#EEA727" strokeWidth="2" opacity="0.4"/>
+          <line x1="50" y1="60" x2="50" y2="80" stroke="#EEA727" strokeWidth="1.5" opacity="0.3"/>
+          <circle cx="50" cy="80" r="3" fill="#EEA727" opacity="0.4"/>
+        </svg> */}
 
         {/* Arrow path - bottom left */}
-        <svg className="absolute bottom-32 left-8 w-40 h-20 opacity-6 animate-[slideRight]" viewBox="0 0 160 80" fill="none" style={{ animationDuration: '4s' }}>
-          <path d="M 10 40 Q 40 20 70 40 T 130 40" stroke="#F05A28" strokeWidth="2" opacity="0.4" strokeDasharray="4,4"/>
-          <polygon points="145,40 135,36 135,44" fill="#F05A28" opacity="0.5"/>
-        </svg>
+        {/* <svg className="absolute bottom-32 left-8 w-40 h-20 opacity-6 animate-[slideRight]" viewBox="0 0 160 80" fill="none" style={{ animationDuration: '4s' }}>
+          <path d="M 10 40 Q 40 20 70 40 T 130 40" stroke="#EEA727" strokeWidth="2" opacity="0.4" strokeDasharray="4,4"/>
+          <polygon points="145,40 135,36 135,44" fill="#EEA727" opacity="0.5"/>
+        </svg> */}
 
         {/* Tape strip - center left */}
-        <svg className="absolute top-2/3 left-20 w-28 h-14 opacity-7 animate-[tapeFloat]" viewBox="0 0 112 56" fill="none" style={{ animationDuration: '5s' }}>
-          <rect x="6" y="12" width="100" height="32" fill="#F05A28" opacity="0.3" rx="3"/>
+        {/* <svg className="absolute top-2/3 left-20 w-28 h-14 opacity-7 animate-[tapeFloat]" viewBox="0 0 112 56" fill="none" style={{ animationDuration: '5s' }}>
+          <rect x="6" y="12" width="100" height="32" fill="#EEA727" opacity="0.3" rx="3"/>
           <line x1="12" y1="16" x2="12" y2="48" stroke="#1E1F1C" strokeWidth="0.8" opacity="0.2"/>
           <line x1="28" y1="16" x2="28" y2="48" stroke="#1E1F1C" strokeWidth="0.8" opacity="0.2"/>
           <line x1="44" y1="16" x2="44" y2="48" stroke="#1E1F1C" strokeWidth="0.8" opacity="0.2"/>
           <line x1="60" y1="16" x2="60" y2="48" stroke="#1E1F1C" strokeWidth="0.8" opacity="0.2"/>
           <line x1="76" y1="16" x2="76" y2="48" stroke="#1E1F1C" strokeWidth="0.8" opacity="0.2"/>
           <line x1="92" y1="16" x2="92" y2="48" stroke="#1E1F1C" strokeWidth="0.8" opacity="0.2"/>
-        </svg>
+        </svg> */}
 
         {/* Blob shape - top right background */}
-        <svg className="absolute -top-10 right-40 w-52 h-52 opacity-5 animate-[blobFloat]" viewBox="0 0 200 200" fill="none" style={{ animationDuration: '8s' }}>
+        {/* <svg className="absolute -top-10 right-40 w-52 h-52 opacity-5 animate-[blobFloat]" viewBox="0 0 200 200" fill="none" style={{ animationDuration: '8s' }}>
           <path d="M100,20 C140,20 170,50 170,100 C170,150 140,180 100,180 C60,180 30,150 30,100 C30,50 60,20 100,20" fill="#5C6F5A" opacity="0.4"/>
-        </svg>
+        </svg> */}
 
         {/* Star/spark - middle */}
-        <svg className="absolute top-1/3 right-1/4 w-12 h-12 opacity-7 animate-pulse" viewBox="0 0 48 48" fill="none" style={{ animationDuration: '2.5s' }}>
-          <circle cx="24" cy="24" r="6" fill="#F05A28" opacity="0.5"/>
-          <line x1="24" y1="12" x2="24" y2="36" stroke="#F05A28" strokeWidth="1" opacity="0.3"/>
-          <line x1="12" y1="24" x2="36" y2="24" stroke="#F05A28" strokeWidth="1" opacity="0.3"/>
-        </svg>
+        {/* <svg className="absolute top-1/3 right-1/4 w-12 h-12 opacity-7 animate-pulse" viewBox="0 0 48 48" fill="none" style={{ animationDuration: '2.5s' }}>
+          <circle cx="24" cy="24" r="6" fill="#EEA727" opacity="0.5"/>
+          <line x1="24" y1="12" x2="24" y2="36" stroke="#EEA727" strokeWidth="1" opacity="0.3"/>
+          <line x1="12" y1="24" x2="36" y2="24" stroke="#EEA727" strokeWidth="1" opacity="0.3"/>
+        </svg> */}
 
         {/* Wavy line - bottom center */}
-        <svg className="absolute bottom-40 left-1/3 w-48 h-16 opacity-6 animate-[waveFloat]" viewBox="0 0 192 64" fill="none" style={{ animationDuration: '6s' }}>
-          <path d="M 0 32 Q 24 16 48 32 T 96 32 T 144 32 T 192 32" stroke="#F05A28" strokeWidth="2" opacity="0.4"/>
-        </svg>
+        {/* <svg className="absolute bottom-40 left-1/3 w-48 h-16 opacity-6 animate-[waveFloat]" viewBox="0 0 192 64" fill="none" style={{ animationDuration: '6s' }}>
+          <path d="M 0 32 Q 24 16 48 32 T 96 32 T 144 32 T 192 32" stroke="#EEA727" strokeWidth="2" opacity="0.4"/>
+        </svg> */}
 
         {/* Dots cluster - bottom right */}
-        <svg className="absolute bottom-20 right-20 w-16 h-16 opacity-7 animate-[dotBounce]" viewBox="0 0 64 64" fill="none" style={{ animationDuration: '3s' }}>
-          <circle cx="16" cy="16" r="3" fill="#F05A28" opacity="0.5"/>
-          <circle cx="32" cy="20" r="2.5" fill="#F05A28" opacity="0.4"/>
-          <circle cx="48" cy="18" r="2" fill="#F05A28" opacity="0.3"/>
-          <circle cx="20" cy="40" r="2" fill="#F05A28" opacity="0.3"/>
-          <circle cx="40" cy="44" r="3" fill="#F05A28" opacity="0.5"/>
+        <svg className="absolute bottom-10 right-20 w-16 h-16 opacity-7 animate-[dotBounce]" viewBox="0 0 64 64" fill="none" style={{ animationDuration: '3s' }}>
+          <circle cx="16" cy="16" r="3" fill="#EEA727" opacity="0.5"/>
+          <circle cx="32" cy="20" r="2.5" fill="#EEA727" opacity="0.4"/>
+          <circle cx="48" cy="18" r="2" fill="#EEA727" opacity="0.3"/>
+          <circle cx="20" cy="40" r="2" fill="#EEA727" opacity="0.3"/>
+          <circle cx="40" cy="44" r="3" fill="#EEA727" opacity="0.5"/>
         </svg>
       </div>
 
@@ -153,10 +153,10 @@ export default function Community() {
         <div className={`mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <div className="space-y-2">
             <h2 className="font-sans text-[#1E1F1C] text-[32px] md:text-[48px] font-bold leading-tight">
-              Why Hidden Monkey
+              Why Hidden Monkey ?
             </h2>
             <p className="text-[#5E625A] text-[16px] font-light">
-              Because the best journeys are <span className="text-[#F05A28] font-medium">shared</span>
+              Because the best journeys are <span className="text-[#EEA727] font-medium">shared</span>
             </p>
           </div>
         </div>
@@ -188,9 +188,9 @@ export default function Community() {
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
-                <div className={`relative overflow-hidden rounded-[24px] bg-white h-[380px] transition-all duration-300 cursor-grab active:cursor-grabbing ${
+                <div className={`relative overflow-hidden rounded-[24px] bg-white h-[380px] my-4 transition-all duration-300 cursor-grab active:cursor-grabbing ${
                   hoveredCard === index 
-                    ? 'shadow-2xl' 
+                    ? 'shadow-xl' 
                     : 'shadow-sm hover:shadow-lg'
                 }`}>
                   {/* Image Section with interactive effects */}
@@ -224,7 +224,7 @@ export default function Community() {
                     hoveredCard === index ? 'translate-y-0' : 'translate-y-0'
                   }`}>
                     <h3 className={`text-[#1E1F1C] font-semibold text-[18px] mb-3 transition-colors duration-300 ${
-                      hoveredCard === index ? 'text-[#F05A28]' : ''
+                      hoveredCard === index ? 'text-[#EEA727]' : ''
                     }`}>
                       {feature.title}
                     </h3>
@@ -234,7 +234,7 @@ export default function Community() {
                   </div>
 
                   {/* Hover accent line */}
-                  <div className={`absolute bottom-0 left-0 h-1 bg-[#F05A28] transition-all duration-300 ${
+                  <div className={`absolute bottom-0 left-0 h-1 bg-[#EEA727] transition-all duration-300 ${
                     hoveredCard === index ? 'w-full' : 'w-0'
                   }`}></div>
                 </div>
@@ -246,17 +246,17 @@ export default function Community() {
           <div className="hidden md:block">
             <button
               onClick={scrollLeft}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 w-12 h-12 bg-white border border-[#E6E4DF] rounded-full shadow-md hover:shadow-lg hover:border-[#F05A28] transition-all duration-200 flex items-center justify-center group"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 w-12 h-12 bg-white border border-[#E6E4DF] rounded-full shadow-md hover:shadow-lg hover:border-[#EEA727] transition-all duration-200 flex items-center justify-center group"
               aria-label="Scroll left"
               type="button"
             >
-              <svg className="w-5 h-5 text-[#1E1F1C] group-hover:text-[#F05A28] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="w-5 h-5 text-[#1E1F1C] group-hover:text-[#EEA727] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <button
               onClick={scrollRight}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 w-12 h-12 bg-[#F05A28] hover:bg-[#E84D1B] text-white rounded-full shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center group"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 w-12 h-12 bg-[#EEA727] hover:bg-[#E84D1B] text-white rounded-full shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center group"
               aria-label="Scroll right"
               type="button"
             >
@@ -268,23 +268,24 @@ export default function Community() {
         </div>
 
         {/* Social Proof Element */}
-        <div className={`mt-12 flex items-center gap-3 justify-center transition-all duration-700 ${
+        {/* <div className={`mt-12 flex items-center gap-3 justify-center transition-all duration-700 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}>
           <div className="flex -space-x-2">
             {['A', 'B', 'C', 'D'].map((letter, i) => (
               <div
                 key={i}
-                className="w-8 h-8 rounded-full bg-gradient-to-br from-[#F05A28] to-[#E84D1B] text-white text-xs font-semibold flex items-center justify-center border-2 border-white shadow-sm"
+                className="w-8 h-8 rounded-full bg-gradient-to-br from-[#EEA727] to-[#E84D1B] text-white text-xs font-semibold flex items-center justify-center border-2 border-white shadow-sm"
               >
                 {letter}
               </div>
             ))}
           </div>
-          <p className="text-[#5E625A] text-sm font-light">
-            <span className="font-medium text-[#1E1F1C]">47</span> travellers hanging out here right now
-          </p>
-        </div>
+          <div> 
+          <p className="text-[#5E625A] text-sm font-light flex items-center gap-1">
+            <span className="font-medium text-[#1E1F1C]">50+</span> travellers hanging out here right now
+          </p></div>
+        </div> */}
       </Container>
 
       <style jsx>{`

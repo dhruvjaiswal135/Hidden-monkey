@@ -85,7 +85,7 @@ export default function FeaturedRooms() {
             {/* Large anchor image (tall, left) */}
             <div
               className="col-span-5 row-span-2 relative rounded-[16px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ transform: `rotate(${rotations[0]}deg)` }}
+              // style={{ transform: `rotate(${rotations[0]}deg)` }}
               onClick={() => openLightbox(0)}
             >
               {isClient && (
@@ -107,7 +107,7 @@ export default function FeaturedRooms() {
             {/* Top right cluster */}
             <div
               className="col-span-3 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ transform: `rotate(${rotations[1]}deg)` }}
+              //style={{ transform: `rotate(${rotations[1]}deg)` }}
               onClick={() => openLightbox(1)}
             >
               {isClient && (
@@ -129,7 +129,7 @@ export default function FeaturedRooms() {
             {/* Middle right */}
             <div
               className="col-span-4 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ transform: `rotate(${rotations[2]}deg)` }}
+              // style={{ transform: `rotate(${rotations[2]}deg)` }}
               onClick={() => openLightbox(2)}
             >
               {isClient && (
@@ -151,7 +151,7 @@ export default function FeaturedRooms() {
             {/* Bottom right cluster */}
             <div
               className="col-span-3 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ transform: `rotate(${rotations[3]}deg)` }}
+              // style={{ transform: `rotate(${rotations[3]}deg)` }}
               onClick={() => openLightbox(3)}
             >
               {isClient && (
@@ -173,7 +173,7 @@ export default function FeaturedRooms() {
             {/* Bottom middle */}
             <div
               className="col-span-4 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ transform: `rotate(${rotations[4]}deg)` }}
+              //style={{ transform: `rotate(${rotations[4]}deg)` }}
               onClick={() => openLightbox(4)}
             >
               {isClient && (
@@ -195,7 +195,7 @@ export default function FeaturedRooms() {
             {/* Last image */}
             <div
               className="col-span-2 row-span-1 relative rounded-[14px] overflow-hidden cursor-pointer group shadow-md hover:shadow-lg transition-all duration-300"
-              style={{ transform: `rotate(${rotations[5]}deg)` }}
+              //style={{ transform: `rotate(${rotations[5]}deg)` }}
               onClick={() => openLightbox(5)}
             >
               {isClient && (
@@ -241,16 +241,14 @@ export default function FeaturedRooms() {
           </div>
 
           {/* View All CTA Button - Desktop */}
-          <div className="hidden md:block absolute -bottom-8 -right-4">
+          <div className="hidden md:block absolute bottom-6 right-4">
             <a
               href="/gallery"
-              className="relative w-20 h-20 rounded-full bg-[#F05A28] hover:bg-[#E84D1B] text-white flex items-center justify-center font-semibold text-[11px] text-center transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-110 group"
+              className="relative w-32 h-12 rounded-full border border-[#EEA727] hover:bg-[#E84D1B] text-white flex items-center justify-center font-semibold text-[12px] text-center transition-all duration-200 shadow-sm hover:shadow-xl hover:scale-110 group"
             >
-              <div className="flex flex-col items-center gap-0.5">
-                <span>View</span>
-                <span>all</span>
-                <span className="text-[8px] group-hover:translate-x-0.5 transition-transform">→</span>
-              </div>
+              <div className="flex flex-col items-center text-[#EEA727] gap-0.5">
+                <span className = "">View all  →</span>
+                 </div>
             </a>
           </div>
         </div>
@@ -259,7 +257,7 @@ export default function FeaturedRooms() {
         <div className="md:hidden mt-4 text-center">
           <a
             href="/gallery"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#F05A28] hover:bg-[#E84D1B] text-white text-[12px] font-semibold rounded-full transition-all duration-200"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#EEA727] hover:bg-[#E84D1B] text-white text-[12px] font-semibold rounded-full transition-all duration-200"
           >
             View all <span className="text-sm">→</span>
           </a>

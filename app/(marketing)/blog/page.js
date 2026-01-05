@@ -162,7 +162,7 @@ export default function BlogPage() {
                 onClick={() => setActiveFilter(filter.id)}
                 className={`px-4 py-2 rounded-full text-[13px] font-medium whitespace-nowrap transition-all duration-300 ${
                   activeFilter === filter.id
-                    ? 'bg-[#F05A28] text-white'
+                    ? 'bg-[#EEA727] text-white'
                     : 'bg-[#FAFAF9] text-[#5E625A] hover:bg-[#F0F0F0]'
                 }`}
               >
@@ -211,12 +211,12 @@ export default function BlogPage() {
                     </p>
 
                     {/* Title */}
-                    <h3 className="text-[#1E1F1C] text-[15px] md:text-[16px] font-semibold leading-snug mb-3 group-hover:text-[#F05A28] transition-colors duration-300 flex-grow">
+                    <h3 className="text-[#1E1F1C] text-[15px] md:text-[16px] font-semibold leading-snug mb-3 group-hover:text-[#EEA727] transition-colors duration-300 flex-grow">
                       {post.title}
                     </h3>
 
                     {/* Hover Indicator */}
-                    <div className="text-[#F05A28] text-[12px] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+                    <div className="text-[#EEA727] text-[12px] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
                       Read story
                       <span className="text-[11px] group-hover:translate-x-0.5 transition-transform duration-300">
                         →

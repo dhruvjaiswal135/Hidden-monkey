@@ -25,7 +25,7 @@ export default function CTA() {
 
           {/* Right: CTAs */}
           <div className="flex flex-col sm:flex-row gap-3 md:gap-3 shrink-0">
-            <button className="px-6 md:px-7 py-2.5 md:py-3 bg-[#F05A28] hover:bg-[#E84D1B] text-white text-[13px] md:text-[14px] font-medium rounded-[12px] transition-colors duration-300">
+            <button className="px-6 md:px-7 py-2.5 md:py-3 bg-[#EEA727] hover:bg-[#E84D1B] text-white text-[13px] md:text-[14px] font-medium rounded-[12px] transition-colors duration-300">
               Check availability
             </button>
             <button className="px-6 md:px-7 py-2.5 md:py-3 bg-white hover:bg-[#FAFAF9] text-[#1E1F1C] text-[13px] md:text-[14px] font-medium border border-[#E6E4DF] rounded-[12px] transition-colors duration-300">

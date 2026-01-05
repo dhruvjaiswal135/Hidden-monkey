@@ -52,7 +52,7 @@ export default function Blog() {
           </div>
           <a
             href="/blog"
-            className="text-[#F05A28] text-[12px] md:text-[13px] font-medium whitespace-nowrap hover:gap-2 transition-all duration-300 flex items-center gap-1"
+            className="text-[#EEA727] text-[12px] md:text-[13px] font-medium whitespace-nowrap hover:gap-2 transition-all duration-300 flex items-center gap-1"
           >
             Read all →
           </a>
@@ -93,12 +93,12 @@ export default function Blog() {
                   </p>
 
                   {/* Title */}
-                  <h3 className="text-[#1E1F1C] text-[16px] md:text-[17px] font-semibold leading-snug mb-3 group-hover:text-[#F05A28] transition-colors duration-300">
+                  <h3 className="text-[#1E1F1C] text-[16px] md:text-[17px] font-semibold leading-snug mb-3 group-hover:text-[#EEA727] transition-colors duration-300">
                     {post.title}
                   </h3>
 
                   {/* Hover Indicator */}
-                  <div className="text-[#F05A28] text-[13px] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1 mt-auto">
+                  <div className="text-[#EEA727] text-[13px] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1 mt-auto">
                     Read story
                     <span className="text-[12px] group-hover:translate-x-0.5 transition-transform duration-300">
                       →

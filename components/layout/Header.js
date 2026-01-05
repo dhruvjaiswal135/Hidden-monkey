@@ -38,12 +38,12 @@ const Logo = () => (
 const NavLink = ({ href, label, isActive = false }) => (
   <Link
     href={href}
-    className="relative text-[#1E1F1C] text-[14px] font-medium transition-all duration-150 ease-out hover:text-[#F05A28] group"
+    className="relative text-[#1E1F1C] text-[14px] font-medium transition-all duration-150 ease-out hover:text-[#EEA727] group"
   >
     {label}
     {/* Animated underline indicator */}
     <span
-      className={`absolute bottom-0 left-0 h-0.5 bg-[#F05A28] transition-all duration-150 ease-out ${
+      className={`absolute bottom-0 left-0 h-0.5 bg-[#EEA727] transition-all duration-150 ease-out ${
         isActive ? 'w-full' : 'w-0 group-hover:w-full'
       }`}
     ></span>
@@ -53,7 +53,7 @@ const NavLink = ({ href, label, isActive = false }) => (
 const PrimaryButton = ({ href, label }) => (
   <Link
     href={href}
-    className="px-5 py-2.5 bg-[#F05A28] hover:bg-[#E84D1B] text-white text-[14px] font-medium rounded-full transition-all duration-150 ease-out shadow-sm hover:shadow-md"
+    className="px-5 py-2.5 bg-[#EEA727] hover:bg-[#E84D1B] text-white text-[14px] font-medium rounded-full transition-all duration-150 ease-out shadow-sm hover:shadow-md"
   >
     {label}
   </Link>
@@ -146,7 +146,7 @@ export default function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="text-[#1E1F1C] text-[15px] font-medium hover:text-[#F05A28] transition-colors duration-150"
+                    className="text-[#1E1F1C] text-[15px] font-medium hover:text-[#EEA727] transition-colors duration-150"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.label}
@@ -160,7 +160,7 @@ export default function Header() {
               {/* Mobile CTA */}
               <Link
                 href="/book"
-                className="block w-full px-5 py-3 bg-[#F05A28] hover:bg-[#E84D1B] text-white text-[14px] font-medium rounded-full text-center transition-all duration-150"
+                className="block w-full px-5 py-3 bg-[#EEA727] hover:bg-[#E84D1B] text-white text-[14px] font-medium rounded-full text-center transition-all duration-150"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Book Your Stay

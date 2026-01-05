@@ -62,7 +62,7 @@ export default function BlogDetailPage({ params }) {
         <Container className="max-w-4xl py-4">
           <Link 
             href="/blog"
-            className="inline-flex items-center gap-2 text-[#5E625A] hover:text-[#F05A28] text-sm transition-colors duration-300"
+            className="inline-flex items-center gap-2 text-[#5E625A] hover:text-[#EEA727] text-sm transition-colors duration-300"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -77,7 +77,7 @@ export default function BlogDetailPage({ params }) {
         <Container className="max-w-4xl">
           {/* Destination Tag */}
           <div className="mb-4">
-            <span className="inline-block px-3 py-1 rounded-full text-sm bg-[#F05A28]/10 text-[#F05A28] font-medium">
+            <span className="inline-block px-3 py-1 rounded-full text-sm bg-[#EEA727]/10 text-[#EEA727] font-medium">
               {post.destination}
             </span>
           </div>
@@ -137,7 +137,7 @@ export default function BlogDetailPage({ params }) {
             </p>
             <a
               href="mailto:stories@hiddenmonkey.com"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F05A28] hover:bg-[#E84D1B] text-white font-medium transition-all duration-300 hover:shadow-lg hover:scale-105"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#EEA727] hover:bg-[#E84D1B] text-white font-medium transition-all duration-300 hover:shadow-lg hover:scale-105"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -180,17 +180,17 @@ export default function BlogDetailPage({ params }) {
 
                 {/* Content */}
                 <div>
-                  <span className="text-sm text-[#F05A28] font-medium uppercase tracking-wider">
+                  <span className="text-sm text-[#EEA727] font-medium uppercase tracking-wider">
                     {story.destination}
                   </span>
-                  <h3 className={`text-lg font-semibold text-[#1E1F1C] mt-2 leading-tight group-hover:text-[#F05A28] transition-colors duration-300 ${hoveredId === story.id ? 'text-[#F05A28]' : ''}`}>
+                  <h3 className={`text-lg font-semibold text-[#1E1F1C] mt-2 leading-tight group-hover:text-[#EEA727] transition-colors duration-300 ${hoveredId === story.id ? 'text-[#EEA727]' : ''}`}>
                     {story.title}
                   </h3>
                 </div>
 
                 {/* Read Hint */}
                 {hoveredId === story.id && (
-                  <div className="mt-3 flex items-center gap-1 text-[#F05A28] text-sm font-medium">
+                  <div className="mt-3 flex items-center gap-1 text-[#EEA727] text-sm font-medium">
                     Read story <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                   </div>
                 )}

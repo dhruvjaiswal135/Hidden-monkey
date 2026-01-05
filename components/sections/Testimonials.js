@@ -83,7 +83,7 @@ export default function Reviews() {
               >
                 {/* Quotation Mark Icon */}
                 <div className="mb-3 opacity-30">
-                  <svg className="w-5 h-5 text-[#F05A28]" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-[#EEA727]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M3 21c3 0 7-1 7-8V5c0-1.25-4.063-2-6-2h-.5c-1.5 0-3 .5-3 2.5V10c0 2 .75 4 3 4.5c-1 .5-2 1.5-2 3s.5 3 3 3c4.5 0 5.5-2.75 5.5-5.5V5c0-1.25-4.063-2-6-2" />
                   </svg>
                 </div>
@@ -115,7 +115,7 @@ export default function Reviews() {
         <div className="text-center mt-8 md:mt-10 pt-6 md:pt-8 border-t border-[#E6E4DF]">
           <a
             href="/reviews"
-            className="inline-flex items-center gap-2 text-[#F05A28] text-[13px] md:text-[14px] font-medium hover:gap-3 transition-all duration-300"
+            className="inline-flex items-center gap-2 text-[#EEA727] text-[13px] md:text-[14px] font-medium hover:gap-3 transition-all duration-300"
           >
             Read all stories
             <span className="text-[12px]">→</span>

@@ -92,7 +92,7 @@ export default function StayOptions() {
                     <h3 className="text-[#1E1F1C] text-[18px] md:text-[20px] font-semibold mb-2">
                       {option.name}
                     </h3>
-                    <div className="h-0.5 w-8 bg-[#F05A28] rounded-full transition-all duration-300" />
+                    <div className="h-0.5 w-8 bg-[#EEA727] rounded-full transition-all duration-300" />
                   </div>
 
                   {/* Vibe Description */}
@@ -107,14 +107,14 @@ export default function StayOptions() {
                         key={idx}
                         className="flex items-start gap-2.5 text-[13px] text-[#5E625A]"
                       >
-                        <div className="w-1.5 h-1.5 bg-[#F05A28] rounded-full mt-1.5 flex-shrink-0" />
+                        <div className="w-1.5 h-1.5 bg-[#EEA727] rounded-full mt-1.5 flex-shrink-0" />
                         <span>{highlight}</span>
                       </div>
                     ))}
                   </div>
 
                   {/* CTA - Subtle */}
-                  <button className="text-[13px] font-medium text-[#F05A28] hover:text-[#E84D1B] transition-colors inline-flex items-center gap-1.5">
+                  <button className="text-[13px] font-medium text-[#EEA727] hover:text-[#E84D1B] transition-colors inline-flex items-center gap-1.5">
                     Learn more
                     <span className="text-[12px] opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5">
                       →
