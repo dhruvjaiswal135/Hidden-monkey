@@ -10,7 +10,7 @@ import Container from '@/components/ui/Container'
  * Feels social, playful, and hostel-like with micro-interactions
  */
 
-export default function Community() {
+export default function WhyHiddenMonkey() {
   const scrollContainerRef = useRef(null)
   const [hoveredCard, setHoveredCard] = useState(null)
   const [isVisible, setIsVisible] = useState(false)

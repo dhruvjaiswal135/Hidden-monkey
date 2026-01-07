@@ -67,7 +67,7 @@ export default function Reviews() {
         {/* Horizontal Scroll Reviews */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 md:gap-6 overflow-x-auto pb-4 -mx-6 px-6 md:-mx-8 md:px-8"
+          className="flex gap-4 md:gap-6 overflow-x-auto py-4 -mx-6 px-6 md:-mx-8 md:px-8"
           style={{ scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch' }}
         >
           {reviews.map((review, idx) => (
@@ -82,7 +82,10 @@ export default function Reviews() {
                 }}
               >
                 {/* Quotation Mark Icon */}
-                <div className="mb-3 opacity-30">
+                <div className="mb-3 opacity-30 flex items-center gap-0">
+                  <svg className="w-5 h-5 text-[#EEA727]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 21c3 0 7-1 7-8V5c0-1.25-4.063-2-6-2h-.5c-1.5 0-3 .5-3 2.5V10c0 2 .75 4 3 4.5c-1 .5-2 1.5-2 3s.5 3 3 3c4.5 0 5.5-2.75 5.5-5.5V5c0-1.25-4.063-2-6-2" />
+                  </svg>
                   <svg className="w-5 h-5 text-[#EEA727]" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M3 21c3 0 7-1 7-8V5c0-1.25-4.063-2-6-2h-.5c-1.5 0-3 .5-3 2.5V10c0 2 .75 4 3 4.5c-1 .5-2 1.5-2 3s.5 3 3 3c4.5 0 5.5-2.75 5.5-5.5V5c0-1.25-4.063-2-6-2" />
                   </svg>
