@@ -3,10 +3,13 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
+import { getGalleryImages, GALLERY_ROTATIONS } from '@/content/images'
 
 /**
  * Inside the Monkey House - Compact Gallery Teaser
  * Quick snapshots of hostel vibes - encourages "View all" click
+ * 
+ * Data is now centralized in content/images/gallery.js
  */
 
 export default function Gallery() {
@@ -18,17 +21,9 @@ export default function Gallery() {
     setIsClient(true)
   }, [])
 
-  // Compact gallery - 6 images with varied aspects
-  const galleryImages = [
-    { url: 'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=500&auto=format&fit=crop&q=80', aspect: 'tall' },
-    { url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&auto=format&fit=crop&q=80', aspect: 'wide' },
-    { url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&auto=format&fit=crop&q=80', aspect: 'square' },
-    { url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=500&auto=format&fit=crop&q=80', aspect: 'square' },
-    { url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&auto=format&fit=crop&q=80', aspect: 'wide' },
-    { url: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=500&auto=format&fit=crop&q=80', aspect: 'square' }
-  ]
-
-  const rotations = [-3, 2, -1, 3, -2, 1]
+  // Get gallery images from centralized data
+  const galleryImages = getGalleryImages()
+  const rotations = GALLERY_ROTATIONS
 
   const openLightbox = (index) => {
     setLightboxIndex(index)

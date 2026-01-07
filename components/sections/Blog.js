@@ -2,40 +2,23 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Container from '@/components/ui/Container'
+import { getPostsForHomepage } from '@/components/features/blog'
 
 /**
  * Blog Section
  * Features curated stories and travel insights
  * Minimal, story-first layout
+ * 
+ * Data is now centralized in content/blog/posts.js
  */
 
 export default function Blog() {
   const [hoveredId, setHoveredId] = useState(null)
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: 'The Secret Trails Around Rishikesh Nobody Talks About',
-      category: 'Rishikesh',
-      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop&q=80',
-      slug: 'secret-trails-rishikesh'
-    },
-    {
-      id: 2,
-      title: 'How to Eat Like a Local Without Getting Lost in Translation',
-      category: 'Food Guide',
-      image: 'https://images.unsplash.com/photo-1504674900769-7a6f7e1b912e?w=600&auto=format&fit=crop&q=80',
-      slug: 'eating-like-local'
-    },
-    {
-      id: 3,
-      title: 'Why Solo Travel Changed Everything I Thought I Knew',
-      category: 'Travel Lessons',
-      image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&auto=format&fit=crop&q=80',
-      slug: 'solo-travel-lessons'
-    }
-  ]
+  // Get posts from centralized data
+  const blogPosts = getPostsForHomepage(3)
 
   return (
     <section className="relative py-6 md:py-10 bg-white" aria-label="Blog Stories">
@@ -61,7 +44,7 @@ export default function Blog() {
         {/* Blog Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6">
           {blogPosts.map((post) => (
-            <a
+            <Link
               key={post.id}
               href={`/blog/${post.slug}`}
               className="group cursor-pointer"
@@ -108,7 +91,7 @@ export default function Blog() {
                 </div>
 
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 

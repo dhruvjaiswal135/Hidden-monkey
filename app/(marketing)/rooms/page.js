@@ -5,7 +5,8 @@ import Container from '@/components/ui/Container'
 import { generateMetadata as generateMeta, JsonLd, generateBreadcrumbSchema } from '@/lib/seo'
 import { ROOM_TYPES } from '@/lib/constants'
 import { formatCurrency } from '@/lib/utils'
-import RoomCard from '@/components/sections/RoomCard'
+import { RoomCard } from '@/components/features/room'
+import { getAllRooms } from '@/content/rooms'
 
 /**
  * Rooms Page Metadata
