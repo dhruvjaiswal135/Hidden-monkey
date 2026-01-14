@@ -1,100 +1,92 @@
 'use client'
 
-import { useState } from 'react'
-import Image from 'next/image'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import Container from '@/components/ui/Container'
-import { getPostsForHomepage } from '@/components/features/blog'
+import { BlogGrid } from '@/components/features/blog'
+import { getRecentPosts } from '@/content/blog'
 
 /**
- * Blog Section
- * Features curated stories and travel insights
- * Minimal, story-first layout
+ * Blog Section (Homepage Preview)
  * 
- * Data is now centralized in content/blog/posts.js
+ * Design intent:
+ * - Spark curiosity, invite exploration
+ * - Do not overwhelm
+ * - Feels like someone casually recommending a story
+ * 
+ * Shows only 2-3 blogs with horizontal/asymmetric layout
+ * Small text link CTA, no button
  */
 
-export default function Blog() {
-  const [hoveredId, setHoveredId] = useState(null)
-
-  // Get posts from centralized data
-  const blogPosts = getPostsForHomepage(3)
+async function BlogContent() {
+  const posts = await getRecentPosts(3)
 
   return (
-    <section className="relative py-6 md:py-10 bg-white" aria-label="Blog Stories">
-      <Container className="max-w-[1400px]">
-        {/* Header with CTA */}
-        <div className="flex items-end justify-between gap-4 mb-8 md:mb-10">
-          <div>
-            <h2 className="text-[#1E1F1C] text-[28px] md:text-[36px] font-semibold mb-2">
-              Stories from the road
-            </h2>
-            <p className="text-[#5E625A] text-[14px] md:text-[15px]">
-              Thoughts, tips, and moments from our community.
-            </p>
-          </div>
-          <a
-            href="/blog"
-            className="text-[#EEA727] text-[12px] md:text-[13px] font-medium whitespace-nowrap hover:gap-2 transition-all duration-300 flex items-center gap-1"
-          >
-            Read all →
-          </a>
-        </div>
+    <div>
+      {/* Section Header - Calm, minimal */}
+      <div className="mb-12 md:mb-14">
+        <h2 className="text-3xl md:text-4xl font-semibold text-charcoal mb-3">
+          Stories from the Road
+        </h2>
+        <p className="text-charcoal/60 text-lg max-w-xl">
+          Real tales from travelers who passed through.
+        </p>
+      </div>
 
-        {/* Blog Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6">
-          {blogPosts.map((post) => (
-            <Link
-              key={post.id}
-              href={`/blog/${post.slug}`}
-              className="group cursor-pointer"
-              onMouseEnter={() => setHoveredId(post.id)}
-              onMouseLeave={() => setHoveredId(null)}
-            >
-              {/* Card Container */}
-              <div className="h-full flex flex-col">
-                
-                {/* Image */}
-                <div className="relative h-[220px] md:h-[240px] rounded-[18px] overflow-hidden mb-4 border border-[#E6E4DF]">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    quality={80}
-                    unoptimized
-                  />
-                </div>
+      {/* Blog Grid - Horizontal layout for homepage */}
+      <BlogGrid posts={posts} layout="horizontal" />
 
-                {/* Content */}
-                <div className="flex flex-col flex-grow">
-                  
-                  {/* Category */}
-                  <p className="text-[#5E625A] text-[12px] font-medium uppercase tracking-wide mb-2">
-                    {post.category}
-                  </p>
+      {/* Small text link CTA - not a button */}
+      <div className="mt-10 md:mt-12">
+        <Link
+          href="/blog"
+          className="
+            inline-flex items-center gap-2 
+            text-charcoal/70 hover:text-charcoal
+            text-base font-medium
+            transition-colors duration-200
+            group
+          "
+        >
+          <span className="
+            bg-[linear-gradient(#EEA727,#EEA727)] bg-no-repeat
+            bg-[length:0%_1.5px] bg-[position:0_100%]
+            transition-[background-size] duration-300 ease-out
+            group-hover:bg-[length:100%_1.5px]
+          ">
+            Read all stories
+          </span>
+          <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </Link>
+      </div>
+    </div>
+  )
+}
 
-                  {/* Title */}
-                  <h3 className="text-[#1E1F1C] text-[16px] md:text-[17px] font-semibold leading-snug mb-3 group-hover:text-[#EEA727] transition-colors duration-300">
-                    {post.title}
-                  </h3>
-
-                  {/* Hover Indicator */}
-                  <div className="text-[#EEA727] text-[13px] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1 mt-auto">
-                    Read story
-                    <span className="text-[12px] group-hover:translate-x-0.5 transition-transform duration-300">
-                      →
-                    </span>
-                  </div>
-
-                </div>
-
+export default function Blog() {
+  return (
+    <section className="py-16 md:py-24 bg-sand-light">
+      <Container>
+        <Suspense
+          fallback={
+            <div className="space-y-8">
+              <div className="space-y-3">
+                <div className="h-10 bg-charcoal/5 rounded w-64" />
+                <div className="h-6 bg-charcoal/5 rounded w-80" />
               </div>
-            </Link>
-          ))}
-        </div>
-
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-sand-cream rounded-xl h-72 animate-pulse"
+                  />
+                ))}
+              </div>
+            </div>
+          }
+        >
+          <BlogContent />
+        </Suspense>
       </Container>
     </section>
   )

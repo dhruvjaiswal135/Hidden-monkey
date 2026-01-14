@@ -13,13 +13,6 @@ export {
   getGalleryPreview 
 } from './gallery'
 
-// Blog images
-export { 
-  BLOG_IMAGES, 
-  getBlogImage, 
-  getAllBlogImages 
-} from './blog'
-
 // Room images
 export { 
   ROOM_IMAGES, 

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import Container from '@/components/ui/Container'
 
 export default function Footer() {
@@ -30,12 +31,15 @@ export default function Footer() {
               <div>
                 <Link href="/" className="inline-block mb-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 rounded-full bg-[#EEA727] flex items-center justify-center">
-                      <span className="text-white text-[12px] font-bold">🐵</span>
+                    <div className="relative w-32 h-20 flex-shrink-0">
+                      <Image
+                        src="/images/logo.png"
+                        alt="Hidden Monkey Logo"
+                        fill
+                        className="object-contain"
+                      />
                     </div>
-                    <h3 className="text-[#1E1F1C] text-[16px] font-semibold">
-                      Hidden Monkey
-                    </h3>
+                    
                   </div>
                 </Link>
 

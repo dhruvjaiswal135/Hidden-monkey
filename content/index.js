@@ -2,21 +2,8 @@
  * Content - Central Export
  * 
  * Import all content from here.
- * Example: import { getAllPosts, getAllRooms, getGalleryImages } from '@/content'
+ * Example: import { getAllRooms, getGalleryImages } from '@/content'
  */
-
-// Blog content
-export { 
-  posts,
-  getAllPosts, 
-  getPostBySlug, 
-  getFeaturedPosts, 
-  getPostsByCategory,
-  getRelatedPosts,
-  getAllCategories,
-  getRecentPosts,
-  searchPosts 
-} from './blog'
 
 // Room content
 export { 
@@ -25,16 +12,26 @@ export {
   getRoomById, 
   getRoomsPreview 
 } from './rooms'
-
+// Blog content
+export {
+  getAllPosts,
+  getPostBySlug,
+  getFeaturedPosts,
+  getPostsByCategory,
+  getAllCategories,
+  getRecentPosts,
+  searchPosts,
+  getRelatedPosts,
+  formatDate,
+  estimateReadingTime,
+  generateSlug,
+} from './blog'
 // Image content
 export { 
   GALLERY_IMAGES, 
   GALLERY_ROTATIONS,
   getGalleryImages, 
   getGalleryPreview,
-  BLOG_IMAGES, 
-  getBlogImage, 
-  getAllBlogImages,
   ROOM_IMAGES, 
   getRoomImages, 
   getRoomHeroImage, 

@@ -1,61 +1,78 @@
+'use client'
+
 /**
  * BlogHeader Component
- * Header section for blog detail pages
  * 
- * Props:
- * - title: string
- * - intro: string (optional)
- * - category: string
- * - author: string (optional)
- * - date: string (optional)
- * - readTime: number (optional)
+ * Design: Reading a travel diary
+ * - Title (large but soft)
+ * - One-line intro text
+ * - Optional destination tag
+ * 
+ * NO: Author block, date, read time, social share clutter
+ * 
+ * Feature image: medium height, rounded corners, centered
  */
+import Image from 'next/image'
 
-export default function BlogHeader({ 
-  title, 
-  intro, 
-  category, 
-  author, 
-  date, 
-  readTime 
-}) {
+export default function BlogHeader({ post }) {
   return (
-    <header className="mb-8">
-      {/* Category Tag */}
-      {category && (
-        <div className="mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-sm bg-[#EEA727]/10 text-[#EEA727] font-medium">
-            {category}
+    <header className="mb-12 md:mb-16">
+      {/* Optional category tag - pill style with accent color */}
+      {post.category && (
+        <div className="mb-5">
+          <span className="
+            inline-block 
+            px-3.5 py-1.5
+            text-xs font-medium tracking-wide uppercase
+            text-white bg-[#EEA727]
+            rounded-full
+            opacity-85
+          ">
+            {post.category.replace('-', ' ')}
           </span>
         </div>
       )}
 
-      {/* Title */}
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#1E1F1C] mb-5 leading-tight">
-        {title}
+      {/* Title - Large but soft, friendly typography */}
+      <h1 className="
+        text-3xl md:text-4xl lg:text-5xl 
+        font-semibold text-charcoal 
+        leading-tight mb-6
+        max-w-3xl
+        tracking-tight
+      ">
+        {post.title}
       </h1>
 
-      {/* Intro/Excerpt */}
-      {intro && (
-        <p className="text-lg md:text-xl text-[#5E625A] font-light leading-relaxed max-w-2xl">
-          {intro}
+      {/* One-line intro text - breathing space before image */}
+      {post.excerpt && (
+        <p className="
+          text-lg md:text-xl 
+          text-charcoal/60 
+          leading-relaxed max-w-2xl mb-10
+          font-medium
+        ">
+          {post.excerpt}
         </p>
       )}
 
-      {/* Meta Info */}
-      {(author || date || readTime) && (
-        <div className="flex flex-wrap items-center gap-4 mt-6 text-[14px] text-[#5E625A]">
-          {author && <span>by {author}</span>}
-          {date && (
-            <span>
-              {new Date(date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
-            </span>
-          )}
-          {readTime && <span>{readTime} min read</span>}
+      {/* Featured Image - Medium height, rounded, centered with subtle shadow */}
+      {post.image && (
+        <div className="
+          relative w-full 
+          h-64 md:h-80 lg:h-96 
+          rounded-2xl overflow-hidden
+          bg-sand-cream
+          shadow-soft
+          border border-charcoal/5
+        ">
+          <Image
+            src={`/images/blog/${post.slug}/${post.image}`}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
       )}
     </header>

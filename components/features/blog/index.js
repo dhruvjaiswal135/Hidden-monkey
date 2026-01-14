@@ -1,26 +1,11 @@
 /**
- * Blog Feature - Public API
+ * Blog Features - Public API
  * 
- * All blog-related components and data helpers.
- * Import from here for clean access to blog functionality.
+ * Central export point for all blog UI components.
+ * Import from here to access blog components throughout the app.
  */
 
-// UI Components
 export { default as BlogCard } from './BlogCard'
 export { default as BlogGrid } from './BlogGrid'
 export { default as BlogHeader } from './BlogHeader'
 export { default as BlogContent } from './BlogContent'
-
-// Data helpers
-export { 
-  getAllPosts, 
-  getPostBySlug, 
-  getFeaturedPosts, 
-  getPostsByCategory,
-  getRelatedPosts,
-  getAllCategories,
-  getRecentPosts,
-  searchPosts,
-  getPostsForCards,
-  getPostsForHomepage
-} from './blog.data'

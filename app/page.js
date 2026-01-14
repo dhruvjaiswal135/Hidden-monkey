@@ -6,9 +6,9 @@ import Gallery from '@/components/sections/Gallery'
 import RoomTypes from '@/components/sections/RoomTypes'
 import Testimonials from '@/components/sections/Testimonials'
 import CTA from '@/components/sections/CTA'
+import Blog from '@/components/sections/Blog'
 import { JsonLd, generateHotelSchema } from '@/lib/seo'
 import Destinations from '@/components/sections/Destinations'
-import Blog from '@/components/sections/Blog'
 import DayLookLike from '@/components/sections/DayLookLike'
 /**
  * Homepage
@@ -26,13 +26,26 @@ export default function Home() {
       <main>
         <Hero />
         <WhyHiddenMonkey/>
-        <DayLookLike/>
-        <Destinations/>
-        <Gallery />
-        <RoomTypes />
-        
-        <Blog/>
-        <Testimonials />
+        <section id="experience">
+          <DayLookLike/>
+        </section>
+        <section id="destinations">
+          <Destinations/>
+        </section>
+        <section id="gallery">
+          <Gallery />
+
+          
+        </section>
+        <section id="stays">
+          <RoomTypes />
+        </section>
+        {/* <section id="stories">
+          <Blog />
+        </section> */}
+        <section id="community">
+          <Testimonials />
+        </section>
         <CTA />
       </main>
       <Footer />

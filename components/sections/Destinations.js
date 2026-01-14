@@ -4,18 +4,21 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Container from '@/components/ui/Container'
+import BuildingModal from '@/components/features/modals/BuildingModal'
 
 /**
  * Destinations Section - Compact & Playful
  * Quick escape into hostel vibes across destinations
  * Now with individual hostel location cards
+ * 
+ * Opens BuildingModal when destination is clicked
  */
 
 export default function Destinations() {
   const [isClient, setIsClient] = useState(false)
   const [hoveredCard, setHoveredCard] = useState(null)
-  const [selectedHostel, setSelectedHostel] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedDestination, setSelectedDestination] = useState(null)
+  const [isBuildingModalOpen, setIsBuildingModalOpen] = useState(false)
   const scrollContainerRef = useRef(null)
 
   useEffect(() => {
@@ -24,16 +27,21 @@ export default function Destinations() {
 
   const destinations = [
     {
+      id: 'varanasi',
       name: 'Varanasi',
       vibe: 'Slow mornings. Old souls.',
       tags: ['Spiritual', 'Cultural', 'Riverside'],
       image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&auto=format&fit=crop&q=85',
       link: '/hostels/varanasi',
-      hostels: [
+      buildings: [
         {
-          id: 'varanasi-1',
-          name: 'Assi Ghat',
+          id: 'varanasi-assi-ghat',
+          name: 'Assi Ghat House',
+          vibe: 'Riverside house for slow mornings and sunrise rituals.',
+          address: '123 Assi Ghat Road, Varanasi, Uttar Pradesh 221001, India',
           image: 'https://images.unsplash.com/photo-1537457984863-1fc67de99f5e?w=400&auto=format&fit=crop&q=85',
+          mapLink: 'https://maps.google.com/?q=Assi+Ghat+Varanasi',
+          exploreLink: '/hostels/varanasi/assi-ghat',
           gallery: [
             'https://images.unsplash.com/photo-1537457984863-1fc67de99f5e?w=800&auto=format&fit=crop&q=85',
             'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=800&auto=format&fit=crop&q=85',
@@ -41,9 +49,13 @@ export default function Destinations() {
           ]
         },
         {
-          id: 'varanasi-2',
+          id: 'varanasi-manikarnika',
           name: 'Manikarnika Steps',
+          vibe: 'Cultural heart. Conversations with travellers from everywhere.',
+          address: '456 Manikarnika Ghat Road, Varanasi, Uttar Pradesh 221001, India',
           image: 'https://images.unsplash.com/photo-1549887534-f2c03c1b5eec?w=400&auto=format&fit=crop&q=85',
+          mapLink: 'https://maps.google.com/?q=Manikarnika+Varanasi',
+          exploreLink: '/hostels/varanasi/manikarnika',
           gallery: [
             'https://images.unsplash.com/photo-1549887534-f2c03c1b5eec?w=800&auto=format&fit=crop&q=85',
             'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&auto=format&fit=crop&q=85',
@@ -53,16 +65,21 @@ export default function Destinations() {
       ]
     },
     {
+      id: 'darjeeling',
       name: 'Darjeeling',
       vibe: 'Mist, mountains, quiet conversations.',
       tags: ['Mountains', 'Calm', 'Nature'],
       image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&auto=format&fit=crop&q=85',
       link: '/hostels/darjeeling',
-      hostels: [
+      buildings: [
         {
-          id: 'darjeeling-1',
-          name: 'Batasia Loop',
+          id: 'darjeeling-batasia-loop',
+          name: 'Batasia Loop Lodge',
+          vibe: 'Mountain views. Tea, books, and endless conversations.',
+          address: '789 Batasia Loop Road, Darjeeling, West Bengal 734101, India',
           image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&auto=format&fit=crop&q=85',
+          mapLink: 'https://maps.google.com/?q=Batasia+Loop+Darjeeling',
+          exploreLink: '/hostels/darjeeling/batasia-loop',
           gallery: [
             'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&auto=format&fit=crop&q=85',
             'https://images.unsplash.com/photo-1469022563149-aa64dbd37dc0?w=800&auto=format&fit=crop&q=85',
@@ -70,9 +87,13 @@ export default function Destinations() {
           ]
         },
         {
-          id: 'darjeeling-2',
-          name: 'Ching Monastery',
+          id: 'darjeeling-ching-monastery',
+          name: 'Ching Monastery House',
+          vibe: 'Peaceful retreat. Morning meditation and mountain silence.',
+          address: '321 Ching Monastery Road, Darjeeling, West Bengal 734101, India',
           image: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=400&auto=format&fit=crop&q=85',
+          mapLink: 'https://maps.google.com/?q=Ching+Monastery+Darjeeling',
+          exploreLink: '/hostels/darjeeling/ching-monastery',
           gallery: [
             'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&auto=format&fit=crop&q=85',
             'https://images.unsplash.com/photo-1464207687429-7505649dae38?w=800&auto=format&fit=crop&q=85',
@@ -129,11 +150,13 @@ export default function Destinations() {
             }}
           >
             {destinations.map((destination, index) => (
-              <Link 
-                key={index}
-                href={destination.link}
-                className="block group flex-shrink-0 md:flex-shrink relative"
-                style={{ width: 'auto' }}
+              <button
+                key={destination.id}
+                onClick={() => {
+                  setSelectedDestination(destination)
+                  setIsBuildingModalOpen(true)
+                }}
+                className="block group flex-shrink-0 md:flex-shrink relative w-full text-left"
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
@@ -225,54 +248,9 @@ export default function Destinations() {
                     transform: 'translate(0, 50%)',
                     zIndex: 20
                   }}>
-                  {destination.hostels && destination.hostels.map((hostel, hostelIndex) => (
-                    <button
-                      key={hostel.id}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        setSelectedHostel(hostel)
-                        setIsModalOpen(true)
-                      }}
-                      className="group/hostel relative w-24 h-24 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer"
-                      title={hostel.name}
-                      type="button"
-                    >
-                      {/* Hostel Image */}
-                      {isClient && (
-                        <Image
-                          src={hostel.image}
-                          alt={hostel.name}
-                          fill
-                          sizes="96px"
-                          className="object-cover"
-                          quality={75}
-                          unoptimized
-                        />
-                      )}
-                      
-                      {/* Dark Overlay */}
-                      <div className="absolute inset-0 bg-black/40 group-hover/hostel:bg-black/50 transition-all duration-300" />
-                      
-                      {/* Location Name - Positioned below the square */}
-                      <div className="absolute top-full left-0 right-0 mt-2 text-center">
-                        <p className="text-[#1E1F1C] text-[10px] font-semibold leading-tight line-clamp-2 w-full px-1">
-                          {hostel.name}
-                        </p>
-                      </div>
-
-                      {/* Hover Indicator */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/hostel:opacity-100 transition-all duration-300">
-                        <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                  {/* Building location cards removed - opening BuildingModal instead */}
                 </div>
-              </Link>
+              </button>
             ))}
           </div>
         </div>
@@ -291,57 +269,13 @@ export default function Destinations() {
         </div>
       </Container>
 
-      {/* Image Gallery Modal */}
-      {isModalOpen && selectedHostel && (
-        <div 
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
-          onClick={() => setIsModalOpen(false)}
-        >
-          <div 
-            className="bg-white rounded-xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-              <h3 className="text-[#1E1F1C] font-bold text-xl">
-                {selectedHostel.name}
-              </h3>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="text-gray-500 hover:text-gray-700 transition-colors p-1"
-                type="button"
-                aria-label="Close modal"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Gallery Grid */}
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              {selectedHostel.gallery && selectedHostel.gallery.map((imageUrl, imgIndex) => (
-                <div 
-                  key={imgIndex}
-                  className="relative aspect-square overflow-hidden rounded-lg bg-gray-100"
-                >
-                  {isClient && (
-                    <Image
-                      src={imageUrl}
-                      alt={`${selectedHostel.name} - Image ${imgIndex + 1}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                      quality={85}
-                      unoptimized
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Building Selection Modal */}
+      <BuildingModal
+        isOpen={isBuildingModalOpen}
+        onClose={() => setIsBuildingModalOpen(false)}
+        destination={selectedDestination}
+        buildings={selectedDestination?.buildings}
+      />
 
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {

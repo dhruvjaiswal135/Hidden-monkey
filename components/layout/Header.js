@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 /**
  * FloatingHeader Component
@@ -11,27 +12,17 @@ import Link from 'next/link'
 
 const Logo = () => (
   <Link href="/" className="flex items-center gap-2 group">
-    {/* Minimal jungle mark - abstract eye/leaf */}
-    <div className="relative w-5 h-5">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        className="w-full h-full text-[#1E1F1C]"
-      >
-        {/* Stylized leaf mark */}
-        <path
-          d="M12 2C12 2 8 8 8 12C8 15.3 10 18 12 18C14 18 16 15.3 16 12C16 8 12 2 12 2Z"
-          fill="currentColor"
-        />
-        <circle cx="12" cy="10" r="2" fill="white" opacity="0.6" />
-      </svg>
+    {/* Logo Image */}
+    <div className="relative w-20 h-12 flex-shrink-0">
+      <Image
+        src="/images/logo.png"
+        alt="Hidden Monkey Logo"
+        fill
+        className="object-contain"
+        priority
+      />
     </div>
-    <span
-      className="font-semibold text-[#1E1F1C] text-[17px] tracking-tight"
-      style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
-    >
-      Hidden Monkey
-    </span>
+    
   </Link>
 )
 
@@ -88,11 +79,12 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navItems = [
-    { href: '/stays', label: 'Stays' },
-    { href: '/destinations', label: 'Destinations' },
-    { href: '/community', label: 'Community' },
-    { href: '/experiences', label: 'Experiences' },
-    { href: '/stories', label: 'Stories' },
+    { href: '/#experience', label: 'Experience' },
+    { href: '/#destinations', label: 'Destinations' },
+    { href: '/#gallery', label: 'Gallery' },
+    { href: '/#stays', label: 'Stays' },
+    { href: '/#stories', label: 'Stories' },
+    { href: '/#community', label: 'Community' },
   ]
 
   return (
@@ -102,7 +94,7 @@ export default function Header() {
         {/* Floating pill container */}
         <div className="max-w-[1200px] mx-auto">
           <nav
-            className="relative flex items-center justify-between h-16 px-6 lg:px-8 bg-white/30 border border-[#E6E4DF] rounded-full shadow-sm transition-shadow duration-300 hover:shadow-md"
+            className="relative flex items-center justify-between h-16 px-6 lg:px-8 bg-white border border-[#E6E4DF] rounded-full shadow-sm transition-shadow duration-300 hover:shadow-md"
             style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)' }}
             aria-label="Main navigation"
           >

@@ -5,7 +5,7 @@
  * Import from here for clean access to any feature.
  * 
  * Example:
- * import { RoomCard, BlogGrid, ImageModal } from '@/components/features'
+ * import { RoomCard, ImageModal } from '@/components/features'
  */
 
 // Room Feature
@@ -21,24 +21,6 @@ export {
   ROOMS 
 } from './room'
 
-// Blog Feature  
-export { 
-  BlogCard, 
-  BlogGrid, 
-  BlogHeader, 
-  BlogContent,
-  getAllPosts, 
-  getPostBySlug, 
-  getFeaturedPosts, 
-  getPostsByCategory,
-  getRelatedPosts,
-  getAllCategories,
-  getRecentPosts,
-  searchPosts,
-  getPostsForCards,
-  getPostsForHomepage
-} from './blog'
-
 // Gallery Feature
 export { 
   ImageGrid, 
@@ -50,3 +32,11 @@ export {
   getImagesForGrid,
   getImagesWithRotations
 } from './gallery'
+
+// Blog Feature
+export {
+  BlogCard,
+  BlogGrid,
+  BlogHeader,
+  BlogContent,
+} from './blog'
