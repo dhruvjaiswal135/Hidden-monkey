@@ -1,317 +1,575 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
-import { HeroStickers } from '@/components/decorations/FloatingStickers'
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion'
 
 /**
- * Hero Section - Enhanced
- * Immersive full-screen hero with floating stickers, 
- * animated elements, and community-first messaging
- * "Not a Hostel. A Hidden Tribe."
+ * Hero Section - Ultimate Creative Edition
+ * 
+ * Design Philosophy:
+ * "An immersive gateway to adventure that makes you feel 
+ * you're already part of the tribe"
+ * 
+ * Features:
+ * - Parallax video/image background with depth layers
+ * - Animated text reveal with character-by-character animation
+ * - Interactive cursor follower
+ * - Live activity feed
+ * - Floating adventure cards
+ * - Morphing shape decorations
  */
 
-// Hero background images for slider
-const heroImages = [
+// Hero media for immersive background
+const heroMedia = [
   {
+    type: 'image',
     url: 'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=1920&q=85',
     alt: 'Travelers sharing stories around bonfire',
   },
   {
+    type: 'image',
     url: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=1920&q=85',
     alt: 'Friends hiking through mountains',
   },
   {
+    type: 'image',
     url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=85',
     alt: 'Mountain sunrise view',
   },
 ]
 
-// Live traveler count (simulated)
-const TRAVELER_DATA = {
-  checkedInThisWeek: 28,
-  countries: 12,
-  avatars: ['🇦🇺', '🇩🇪', '🇮🇳', '🇺🇸', '🇫🇷', '🇧🇷'],
+// Live activity feed data
+const liveActivities = [
+  { id: 1, text: 'Sarah from Australia just checked in at Varanasi', time: '2m ago', emoji: '🇦🇺' },
+  { id: 2, text: 'Bonfire night starting in 3 hours!', time: '15m ago', emoji: '🔥' },
+  { id: 3, text: 'Marco & friends completed the sunrise trek', time: '1h ago', emoji: '🏔️' },
+  { id: 4, text: '12 new travelers joined this week', time: '2h ago', emoji: '🎉' },
+]
+
+// Floating destination cards
+const floatingCards = [
+  { id: 1, name: 'Varanasi', emoji: '🛕', travelers: 28, x: '75%', y: '25%' },
+  { id: 2, name: 'Rishikesh', emoji: '🧘', travelers: 34, x: '85%', y: '55%' },
+  { id: 3, name: 'Darjeeling', emoji: '🍵', travelers: 19, x: '70%', y: '75%' },
+]
+
+// Character animation component
+const AnimatedText = ({ text, className, delay = 0 }) => {
+  const words = text.split(' ')
+  
+  return (
+    <span className={className}>
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="inline-block mr-[0.25em]">
+          {word.split('').map((char, charIndex) => (
+            <motion.span
+              key={charIndex}
+              className="inline-block"
+              initial={{ opacity: 0, y: 50, rotateX: -90 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: delay + (wordIndex * 0.1) + (charIndex * 0.03),
+                ease: [0.215, 0.61, 0.355, 1],
+              }}
+            >
+              {char}
+            </motion.span>
+          ))}
+        </span>
+      ))}
+    </span>
+  )
 }
 
-export default function Hero() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
+// Interactive cursor blob
+const CursorBlob = ({ mouseX, mouseY }) => {
+  const size = 400
+  const x = useSpring(mouseX, { damping: 25, stiffness: 150 })
+  const y = useSpring(mouseY, { damping: 25, stiffness: 150 })
+  
+  return (
+    <motion.div
+      className="pointer-events-none fixed z-0 hidden lg:block"
+      style={{
+        x,
+        y,
+        width: size,
+        height: size,
+        marginLeft: -size / 2,
+        marginTop: -size / 2,
+      }}
+    >
+      <div className="w-full h-full rounded-full bg-gradient-to-r from-sunset-gold/20 to-sunset-orange/20 blur-[100px]" />
+    </motion.div>
+  )
+}
 
-  // Image slider effect
+// Live activity ticker
+const ActivityTicker = ({ activities }) => {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % activities.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [activities.length])
+  
+  return (
+    <div className="relative h-10 overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="flex items-center gap-3"
+        >
+          <span className="text-xl">{activities[currentIndex].emoji}</span>
+          <span className="text-white/90 text-sm">{activities[currentIndex].text}</span>
+          <span className="text-white/50 text-xs">{activities[currentIndex].time}</span>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  )
+}
+
+// Floating destination card
+const FloatingCard = ({ card, index }) => {
+  return (
+    <motion.div
+      className="absolute hidden lg:block"
+      style={{ left: card.x, top: card.y }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 1.5 + index * 0.2, duration: 0.5 }}
+    >
+      <motion.div
+        className="relative bg-white/10 backdrop-blur-md rounded-2xl px-4 py-3 border border-white/20 cursor-pointer group"
+        whileHover={{ scale: 1.05, y: -5 }}
+        animate={{ y: [0, -8, 0] }}
+        transition={{ 
+          y: { duration: 3 + index, repeat: Infinity, ease: 'easeInOut' },
+          scale: { duration: 0.2 }
+        }}
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">{card.emoji}</span>
+          <div>
+            <p className="text-white font-semibold text-sm">{card.name}</p>
+            <p className="text-white/60 text-xs">{card.travelers} travelers</p>
+          </div>
+        </div>
+        {/* Glow effect on hover */}
+        <div className="absolute inset-0 rounded-2xl bg-sunset-gold/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity -z-10" />
+      </motion.div>
+    </motion.div>
+  )
+}
+
+// Morphing blob decoration
+const MorphingBlob = ({ className }) => (
+  <motion.div
+    className={`absolute pointer-events-none ${className}`}
+    animate={{
+      borderRadius: [
+        '60% 40% 30% 70% / 60% 30% 70% 40%',
+        '30% 60% 70% 40% / 50% 60% 30% 60%',
+        '60% 40% 30% 70% / 60% 30% 70% 40%',
+      ],
+    }}
+    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+  >
+    <div className="w-full h-full bg-gradient-to-r from-sunset-gold/30 to-sunset-orange/30 blur-3xl" />
+  </motion.div>
+)
+
+export default function Hero() {
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const containerRef = useRef(null)
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  
+  // Parallax scroll effect
+  const { scrollY } = useScroll()
+  const backgroundY = useTransform(scrollY, [0, 500], [0, 150])
+  const contentY = useTransform(scrollY, [0, 500], [0, -50])
+  const opacity = useTransform(scrollY, [0, 400], [1, 0])
+
+  // Track mouse for cursor blob
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseX.set(e.clientX)
+      mouseY.set(e.clientY)
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [mouseX, mouseY])
+
+  // Image slider
   useEffect(() => {
     setIsLoaded(true)
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
-    }, 6000)
+      setCurrentMediaIndex((prev) => (prev + 1) % heroMedia.length)
+    }, 7000)
     return () => clearInterval(interval)
   }, [])
 
   return (
     <>
-      <section className="relative w-full lg:-mt-16 lg:pb-0 lg:pt-0 lg:min-h-[92vh] lg:flex lg:items-center overflow-hidden">
-        {/* Hero Container */}
-        <div className="max-w-[1600px] mx-auto w-full px-4 lg:px-8">
-          <div className="relative rounded-[32px] lg:rounded-[48px] overflow-hidden h-[600px] lg:h-[85vh] min-h-[550px]">
-            
-            {/* Background Image Slider with Parallax */}
-            <div className="absolute inset-0 w-full h-full">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentImageIndex}
-                  initial={{ scale: 1.1, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 1.05, opacity: 0 }}
-                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0 w-full h-full"
-                >
-                  <img
-                    src={heroImages[currentImageIndex].url}
-                    alt={heroImages[currentImageIndex].alt}
-                    className="w-full h-full object-cover"
-                  />
-                </motion.div>
-              </AnimatePresence>
-              
-              {/* Gradient overlays for better text readability */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-            </div>
+      {/* Cursor follower blob */}
+      <CursorBlob mouseX={mouseX} mouseY={mouseY} />
+      
+      <section 
+        ref={containerRef}
+        className="relative w-full min-h-screen lg:-mt-20 overflow-hidden"
+      >
+        {/* Background Layer with Parallax */}
+        <motion.div 
+          className="absolute inset-0 w-full h-full"
+          style={{ y: backgroundY }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentMediaIndex}
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 1.05, opacity: 0 }}
+              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 w-full h-full"
+            >
+              <img
+                src={heroMedia[currentMediaIndex].url}
+                alt={heroMedia[currentMediaIndex].alt}
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </AnimatePresence>
+          
+          {/* Multi-layer gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal/80 via-charcoal/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-charcoal/20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-charcoal/30 via-transparent to-transparent" />
+          
+          {/* Noise texture overlay */}
+          <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" 
+            style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")' }} 
+          />
+        </motion.div>
 
-            {/* Floating Travel Stickers */}
-            <HeroStickers />
+        {/* Morphing blob decorations */}
+        <MorphingBlob className="w-[600px] h-[600px] -left-48 top-1/4 opacity-40" />
+        <MorphingBlob className="w-[400px] h-[400px] right-1/4 bottom-1/4 opacity-30" />
 
-            {/* Content Grid: Left Text + Right Card */}
-            <div className="relative h-full grid grid-cols-1 lg:grid-cols-[1fr_0.9fr] gap-8 lg:gap-16 items-center px-6 lg:px-16 py-10 lg:py-0">
+        {/* Floating destination cards */}
+        {floatingCards.map((card, index) => (
+          <FloatingCard key={card.id} card={card} index={index} />
+        ))}
+
+        {/* Main Content */}
+        <motion.div 
+          className="relative z-10 min-h-screen flex items-center"
+          style={{ y: contentY, opacity }}
+        >
+          <div className="max-w-[1600px] mx-auto w-full px-6 lg:px-12 py-20 lg:py-0">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               
-              {/* LEFT COLUMN - TEXT CONTENT */}
-              <motion.div 
-                className="flex flex-col justify-center space-y-6 lg:space-y-8 z-10"
-                initial={{ opacity: 0, x: -30 }}
-                animate={isLoaded ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              >
+              {/* Left Column - Main Content */}
+              <div className="space-y-8">
                 
-                {/* Micro-label with typing effect */}
+                {/* Live Activity Ticker */}
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.4 }}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={isLoaded ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20"
                 >
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <p className="text-white/90 text-sm font-medium tracking-wide">
-                      {TRAVELER_DATA.checkedInThisWeek}+ travelers checked in this week
-                    </p>
-                  </div>
+                  <span className="flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  <ActivityTicker activities={liveActivities} />
                 </motion.div>
                 
-                {/* Main Headline - Emotional, Tribe-focused */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                >
-                  <h1 className="text-white font-bold leading-[1.1] text-hero">
-                    Not a Hostel.<br />
-                    <span className="bg-gradient-to-r from-[#EEA727] to-[#FF8770] bg-clip-text text-transparent">
-                      A Hidden Tribe.
-                    </span>
+                {/* Main Headline with Character Animation */}
+                <div className="space-y-2">
+                  <h1 className="text-white font-bold leading-[0.95] tracking-tight">
+                    <AnimatedText 
+                      text="Not a Hostel." 
+                      className="block text-[clamp(2.5rem,8vw,5rem)]"
+                      delay={0.5}
+                    />
+                    <motion.span 
+                      className="block text-[clamp(2.5rem,8vw,5rem)] bg-gradient-to-r from-sunset-gold via-sunset-orange to-sunset-gold bg-clip-text text-transparent bg-[length:200%_auto]"
+                      animate={{ backgroundPosition: ['0% center', '200% center'] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                    >
+                      <AnimatedText text="A Hidden Tribe." delay={0.8} />
+                    </motion.span>
                   </h1>
-                </motion.div>
+                </div>
                 
-                {/* Subtext - Storytelling */}
+                {/* Subtext with reveal */}
                 <motion.p 
-                  className="text-white/85 text-base lg:text-lg leading-relaxed max-w-lg"
-                  initial={{ opacity: 0, y: 20 }}
+                  className="text-white/80 text-lg lg:text-xl leading-relaxed max-w-xl"
+                  initial={{ opacity: 0, y: 30 }}
                   animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.6 }}
+                  transition={{ delay: 1.2, duration: 0.6 }}
                 >
                   Where backpackers become friends, strangers share stories by the bonfire, 
                   and every morning feels like the start of a new adventure.
                 </motion.p>
                 
-                {/* CTA Group - Community Focused */}
+                {/* CTA Buttons */}
                 <motion.div 
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-2"
-                  initial={{ opacity: 0, y: 20 }}
+                  className="flex flex-wrap items-center gap-4 pt-4"
+                  initial={{ opacity: 0, y: 30 }}
                   animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.7 }}
+                  transition={{ delay: 1.4, duration: 0.6 }}
                 >
-                  <Link
-                    href="#stays"
-                    className="group px-8 py-4 bg-gradient-to-r from-[#EEA727] to-[#E84D1B] hover:from-[#E84D1B] hover:to-[#EEA727] text-white font-semibold rounded-full transition-all duration-300 text-base shadow-button hover:shadow-button-hover hover:-translate-y-0.5 flex items-center gap-2"
-                  >
-                    Book a Bed
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
+                  <Link href="/stays" className="group relative">
+                    <motion.div
+                      className="relative px-8 py-4 bg-gradient-to-r from-sunset-gold to-sunset-orange rounded-full font-semibold text-white overflow-hidden"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      {/* Shimmer effect */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
+                        initial={{ x: '-100%' }}
+                        whileHover={{ x: '100%' }}
+                        transition={{ duration: 0.6 }}
+                      />
+                      <span className="relative flex items-center gap-2">
+                        Book Your Adventure
+                        <motion.svg 
+                          className="w-5 h-5" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                          whileHover={{ x: 5 }}
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </motion.svg>
+                      </span>
+                    </motion.div>
                   </Link>
-                  <Link
-                    href="#community"
-                    className="group px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium rounded-full transition-all duration-300 text-base border border-white/30 hover:border-white/50 flex items-center gap-2"
-                  >
-                    <span className="text-lg">👋</span>
-                    Join the Tribe
+                  
+                  <Link href="/experiences" className="group">
+                    <motion.div
+                      className="px-6 py-4 bg-white/10 backdrop-blur-sm border border-white/30 rounded-full font-medium text-white hover:bg-white/20 transition-colors flex items-center gap-2"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="text-xl group-hover:animate-bounce">🎪</span>
+                      Explore Experiences
+                    </motion.div>
                   </Link>
                 </motion.div>
                 
-                {/* Social Proof - Country Flags */}
+                {/* Social Proof */}
                 <motion.div 
-                  className="flex items-center gap-4 pt-2"
+                  className="flex items-center gap-5 pt-6"
                   initial={{ opacity: 0 }}
                   animate={isLoaded ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.6, delay: 0.9 }}
+                  transition={{ delay: 1.6, duration: 0.6 }}
                 >
-                  {/* Traveler Avatars */}
-                  <div className="flex -space-x-2">
-                    {TRAVELER_DATA.avatars.slice(0, 5).map((flag, i) => (
+                  {/* Traveler avatars */}
+                  <div className="flex -space-x-3">
+                    {['🇦🇺', '🇩🇪', '🇮🇳', '🇺🇸', '🇫🇷'].map((flag, i) => (
                       <motion.div
                         key={i}
-                        className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center text-base shadow-sm"
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={isLoaded ? { scale: 1, opacity: 1 } : {}}
-                        transition={{ delay: 1 + (i * 0.1), duration: 0.3, type: 'spring' }}
+                        className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center text-lg shadow-lg"
+                        initial={{ scale: 0, x: -20 }}
+                        animate={{ scale: 1, x: 0 }}
+                        transition={{ delay: 1.8 + (i * 0.1), type: 'spring' }}
+                        whileHover={{ y: -5, scale: 1.1 }}
                       >
                         {flag}
                       </motion.div>
                     ))}
                     <motion.div
-                      className="w-9 h-9 rounded-full bg-[#EEA727] border-2 border-white/50 flex items-center justify-center text-white text-xs font-bold shadow-sm"
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={isLoaded ? { scale: 1, opacity: 1 } : {}}
-                      transition={{ delay: 1.5, duration: 0.3, type: 'spring' }}
+                      className="w-10 h-10 rounded-full bg-sunset-gold border-2 border-white/50 flex items-center justify-center text-white text-xs font-bold shadow-lg"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 2.3, type: 'spring' }}
                     >
-                      +{TRAVELER_DATA.countries}
+                      +47
                     </motion.div>
                   </div>
                   <div className="text-white/80 text-sm">
-                    <span className="font-semibold text-white">{TRAVELER_DATA.countries} countries</span> represented this month
+                    <span className="font-semibold text-white">12 countries</span> represented this month
                   </div>
                 </motion.div>
-              </motion.div>
+              </div>
               
-              {/* RIGHT COLUMN - FLOATING BOOKING CARD (Desktop Only) */}
+              {/* Right Column - Quick Search Card (Desktop) */}
               <motion.div 
-                className="hidden lg:flex lg:items-center lg:justify-center lg:z-20"
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="hidden lg:block"
+                initial={{ opacity: 0, x: 50, rotateY: -10 }}
+                animate={isLoaded ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+                transition={{ delay: 0.8, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="w-full max-w-sm bg-white/95 backdrop-blur-md rounded-[28px] p-8 shadow-glass border border-white/50">
+                <div className="relative">
+                  {/* Glow effect behind card */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-sunset-gold/30 to-sunset-orange/30 rounded-[40px] blur-2xl opacity-50" />
                   
-                  {/* Card Header */}
-                  <div className="mb-6">
-                    <h2 className="text-charcoal font-bold text-2xl mb-1">
-                      Find your vibe
-                    </h2>
-                    <p className="text-charcoal-muted text-sm font-light">
-                      Search across all our locations
-                    </p>
-                  </div>
-                  
-                  {/* Card Input Fields */}
-                  <div className="space-y-3 mb-6">
-                    
-                    {/* Location Input */}
-                    <div className="group flex items-center gap-3 px-4 py-3.5 bg-sand-cream border border-border rounded-2xl hover:border-sunset-gold/50 transition-all duration-200 cursor-pointer">
-                      <svg className="w-5 h-5 text-charcoal-muted group-hover:text-sunset-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span className="flex-1 text-charcoal-muted text-sm font-medium">
-                        Where are you heading?
-                      </span>
+                  <div className="relative bg-white/95 backdrop-blur-xl rounded-[32px] p-8 shadow-2xl border border-white/50">
+                    {/* Card header with illustration */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div>
+                        <h2 className="text-charcoal font-bold text-2xl mb-1">
+                          Find your tribe
+                        </h2>
+                        <p className="text-charcoal-muted text-sm">
+                          Search across 4 epic destinations
+                        </p>
+                      </div>
+                      <motion.div 
+                        className="text-4xl"
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                      >
+                        🐒
+                      </motion.div>
                     </div>
                     
-                    {/* Dates Input */}
-                    <div className="group flex items-center gap-3 px-4 py-3.5 bg-sand-cream border border-border rounded-2xl hover:border-sunset-gold/50 transition-all duration-200 cursor-pointer">
-                      <svg className="w-5 h-5 text-charcoal-muted group-hover:text-sunset-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <span className="flex-1 text-charcoal-muted text-sm font-medium">
-                        When? (dates)
-                      </span>
+                    {/* Quick destination pills */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {['Varanasi', 'Rishikesh', 'Goa', 'Darjeeling'].map((dest, i) => (
+                        <motion.button
+                          key={dest}
+                          className="px-4 py-2 bg-sand-cream hover:bg-sunset-gold/10 border border-border hover:border-sunset-gold/30 rounded-full text-sm text-charcoal font-medium transition-all"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.2 + i * 0.1 }}
+                        >
+                          {dest}
+                        </motion.button>
+                      ))}
                     </div>
                     
-                    {/* Travelers Input */}
-                    <div className="group flex items-center gap-3 px-4 py-3.5 bg-sand-cream border border-border rounded-2xl hover:border-sunset-gold/50 transition-all duration-200 cursor-pointer">
-                      <svg className="w-5 h-5 text-charcoal-muted group-hover:text-sunset-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span className="flex-1 text-charcoal-muted text-sm font-medium">
-                        How many travelers?
+                    {/* Date inputs */}
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      <div className="group px-4 py-3 bg-sand-cream border border-border rounded-xl hover:border-sunset-gold/50 transition-all cursor-pointer">
+                        <p className="text-xs text-charcoal-muted mb-1">Check in</p>
+                        <p className="text-charcoal font-medium text-sm">Select date</p>
+                      </div>
+                      <div className="group px-4 py-3 bg-sand-cream border border-border rounded-xl hover:border-sunset-gold/50 transition-all cursor-pointer">
+                        <p className="text-xs text-charcoal-muted mb-1">Check out</p>
+                        <p className="text-charcoal font-medium text-sm">Select date</p>
+                      </div>
+                    </div>
+                    
+                    {/* Travelers */}
+                    <div className="group px-4 py-3 bg-sand-cream border border-border rounded-xl hover:border-sunset-gold/50 transition-all cursor-pointer mb-6">
+                      <p className="text-xs text-charcoal-muted mb-1">Travelers</p>
+                      <p className="text-charcoal font-medium text-sm">1 solo adventurer</p>
+                    </div>
+                    
+                    {/* CTA */}
+                    <Link href="/stays" className="block">
+                      <motion.button
+                        className="w-full py-4 bg-charcoal hover:bg-charcoal/90 text-white font-semibold rounded-2xl transition-colors flex items-center justify-center gap-2"
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                      >
+                        Search Availability
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </motion.button>
+                    </Link>
+                    
+                    {/* Trust badges */}
+                    <div className="mt-5 pt-5 border-t border-border flex items-center justify-center gap-6 text-xs text-charcoal-muted">
+                      <span className="flex items-center gap-1.5">
+                        <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Free cancellation
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        Best price
                       </span>
                     </div>
-                  </div>
-                  
-                  {/* CTA Button */}
-                  <Link
-                    href="#stays"
-                    className="w-full inline-flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-[#EEA727] to-[#E84D1B] hover:from-[#E84D1B] hover:to-[#EEA727] text-white font-semibold rounded-full transition-all duration-300 text-sm shadow-button hover:shadow-button-hover"
-                  >
-                    Check Availability
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </Link>
-                  
-                  {/* Trust indicators */}
-                  <div className="mt-5 pt-5 border-t border-border flex items-center justify-center gap-4 text-xs text-charcoal-muted">
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      Free cancellation
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      Best price guarantee
-                    </span>
                   </div>
                 </div>
               </motion.div>
             </div>
-            
-            {/* Image Slider Indicators */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10">
-              {heroImages.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex 
-                      ? 'w-8 bg-white' 
-                      : 'w-1.5 bg-white/50 hover:bg-white/70'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
           </div>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div 
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.5 }}
+        >
+          <motion.div
+            className="flex flex-col items-center gap-2 text-white/60 cursor-pointer"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+          >
+            <span className="text-xs font-medium tracking-widest uppercase">Scroll to explore</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </motion.div>
+        </motion.div>
+
+        {/* Image indicators */}
+        <div className="absolute bottom-8 right-8 flex items-center gap-2 z-20">
+          {heroMedia.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentMediaIndex(index)}
+              className={`transition-all duration-300 rounded-full ${
+                index === currentMediaIndex 
+                  ? 'w-8 h-2 bg-white' 
+                  : 'w-2 h-2 bg-white/40 hover:bg-white/60'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </section>
 
-      {/* MOBILE STICKY BOOKING BAR */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border shadow-glass z-50 rounded-t-[24px]">
-        <div className="px-5 py-4 max-w-[1600px] mx-auto w-full">
+      {/* Mobile Sticky CTA */}
+      <motion.div 
+        className="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border z-50"
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ delay: 1, duration: 0.5 }}
+      >
+        <div className="px-5 py-4">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-charcoal font-semibold text-sm">Find your tribe</p>
-              <p className="text-charcoal-muted text-xs">Book your adventure today</p>
+              <p className="text-charcoal font-semibold text-sm">Join the tribe</p>
+              <p className="text-charcoal-muted text-xs">47 travelers online now</p>
             </div>
             <Link
-              href="#stays"
-              className="px-6 py-3 bg-gradient-to-r from-[#EEA727] to-[#E84D1B] text-white font-semibold rounded-full text-sm shadow-button"
+              href="/stays"
+              className="px-6 py-3 bg-gradient-to-r from-sunset-gold to-sunset-orange text-white font-semibold rounded-full text-sm"
             >
-              Search
+              Book Now
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }

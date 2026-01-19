@@ -63,7 +63,7 @@ export default function Home() {
         
         {/* Gallery - Visual tour */}
         <section id="gallery">
-          <Gallery />
+          {/* <Gallery /> */}
         </section>
         
         {/* Stay Options - Room types */}
