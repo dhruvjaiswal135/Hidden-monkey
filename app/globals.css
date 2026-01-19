@@ -5,11 +5,25 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Enhanced smooth scrolling for modern browsers */
+    scroll-padding-top: 100px; /* Account for fixed header */
+  }
+
+  /* Smooth scrolling with reduced motion preference */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
     @apply text-base leading-relaxed text-charcoal;
     background-color: #F4EFEA; /* Sand light */
+    /* Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -187,4 +201,187 @@
 
 .animate-slide-in-right {
   animation: slideInRight 0.6s ease-out forwards;
+}
+
+/* ─────────────────────────────────────────────────────────
+   SMOOTH SCROLL ENHANCEMENTS
+   ───────────────────────────────────────────────────────── */
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F4EFEA;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C4BDB4;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9A948C;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #C4BDB4 #F4EFEA;
+}
+
+/* Smooth modal backdrop scroll lock */
+body.modal-open {
+  overflow: hidden;
+  padding-right: 8px; /* Prevent layout shift when scrollbar hides */
+}
+
+/* Overscroll behavior */
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+
+/* ─────────────────────────────────────────────────────────
+   MODAL & OVERLAY ANIMATIONS
+   ───────────────────────────────────────────────────────── */
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-modal-in {
+  animation: modalFadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-modal-out {
+  animation: modalFadeOut 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-backdrop-in {
+  animation: backdropFadeIn 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ─────────────────────────────────────────────────────────
+   BUTTON HOVER EFFECTS
+   ───────────────────────────────────────────────────────── */
+
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, transparent, rgba(238, 167, 39, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-glow:hover::after {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────────────────────
+   IMAGE GALLERY TRANSITIONS
+   ───────────────────────────────────────────────────────── */
+
+.gallery-image-enter {
+  opacity: 0;
+  transform: scale(1.02);
+}
+
+.gallery-image-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-image-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gallery-image-exit-active {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ─────────────────────────────────────────────────────────
+   FOCUS STATES FOR ACCESSIBILITY
+   ───────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid #EEA727;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #EEA727;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   LOADING STATES
+   ───────────────────────────────────────────────────────── */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #F4EFEA 25%, #E8E3DC 50%, #F4EFEA 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }

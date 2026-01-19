@@ -258,7 +258,7 @@ export default function Destinations() {
         {/* Quick CTA */}
         <div className="mt-6 md:mt-8 text-center">
           <Link 
-            href="/hostels" 
+            href="/destinations" 
             className="inline-flex items-center gap-1.5 text-[#1E1F1C] text-[12px] md:text-[13px] font-medium hover:text-[#EEA727] transition-all duration-200 group"
           >
             <span>Explore all destinations</span>

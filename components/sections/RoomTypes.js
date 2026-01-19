@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import Container from '@/components/ui/Container'
 import RoomCard from './RoomCard'
 import { getAllRooms } from '@/content/rooms'
@@ -26,13 +27,25 @@ export default function StayOptions() {
       <section className="relative py-8 md:py-12 bg-white" aria-label="Stay Options">
         <Container className="max-w-[1400px]">
           {/* Section Header */}
-          <div className="mb-10">
-            <h2 className="text-[#1E1F1C] text-[28px] md:text-[36px] font-semibold mb-2">
-              How you can stay
-            </h2>
-            <p className="text-[#5E625A] text-[14px] md:text-[15px]">
-              Different spaces, same shared vibe.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+            <div>
+              <h2 className="text-[#1E1F1C] text-[28px] md:text-[36px] font-semibold mb-2">
+                How you can stay
+              </h2>
+              <p className="text-[#5E625A] text-[14px] md:text-[15px]">
+                Different spaces, same shared vibe.
+              </p>
+            </div>
+            
+            <Link 
+              href="/stays"
+              className="inline-flex items-center gap-2 text-charcoal-muted hover:text-sunset-gold transition-colors group"
+            >
+              <span className="text-sm font-medium group-hover:underline">View all rooms</span>
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
 
           {/* Stay Options Cards Grid */}
