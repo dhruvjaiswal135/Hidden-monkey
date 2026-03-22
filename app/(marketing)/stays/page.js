@@ -16,7 +16,7 @@ export default function StaysRoute() {
   return (
     <>
       <Header />
-      <main className="pt-16">
+      <main>
         <StaysPage />
       </main>
       <Footer />

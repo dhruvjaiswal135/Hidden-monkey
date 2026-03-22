@@ -1,10 +1,25 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
-import { motion, useInView } from 'framer-motion'
 import Container from '@/components/ui/Container'
 import ExperienceModal from '@/components/modals/ExperienceModal'
+
+function useReveal(threshold = 0.15) {
+  const [visible, setVisible] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
+      { threshold }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [threshold])
+  return [ref, visible]
+}
 
 /**
  * Community Events Section
@@ -117,14 +132,16 @@ const upcomingEvents = [
 
 // Single event card
 function EventCard({ event, index, onEventClick }) {
+  const [ref, visible] = useReveal(0.1)
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+    <div
+      ref={ref}
       onClick={() => onEventClick(event)}
-      className="group bg-white rounded-[24px] overflow-hidden border border-border hover:border-sunset-gold/30 transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 cursor-pointer"
+      className={`group bg-white rounded-[24px] overflow-hidden border border-neutral-100 hover:border-sunset-gold/30 transition-all duration-400 hover:shadow-xl cursor-pointer ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+      }`}
+      style={{ transitionDelay: `${index * 100}ms` }}
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
@@ -135,23 +152,23 @@ function EventCard({ event, index, onEventClick }) {
           className="object-cover group-hover:scale-105 transition-transform duration-500"
           unoptimized
         />
-        
+
         {/* Category Badge */}
         <div className="absolute top-4 left-4">
           <span className={`px-3 py-1 ${event.categoryColor} text-white text-xs font-bold rounded-full uppercase tracking-wide`}>
             {event.category}
           </span>
         </div>
-        
+
         {/* Date Badge */}
         <div className="absolute top-4 right-4">
-          <div className="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-lg text-center shadow-sm">
+          <div className="px-3 py-1.5 bg-white/95 rounded-lg text-center">
             <p className="text-charcoal text-xs font-bold">{event.date}</p>
             <p className="text-charcoal-muted text-[10px]">{event.time}</p>
           </div>
         </div>
       </div>
-      
+
       {/* Content */}
       <div className="p-5">
         <h3 className="text-charcoal text-lg font-bold mb-2 group-hover:text-sunset-gold transition-colors">
@@ -160,7 +177,7 @@ function EventCard({ event, index, onEventClick }) {
         <p className="text-charcoal-muted text-sm leading-relaxed mb-4">
           {event.description}
         </p>
-        
+
         {/* Footer */}
         <div className="flex items-center justify-between">
           <span className="text-xs text-charcoal-muted flex items-center gap-1.5">
@@ -169,21 +186,20 @@ function EventCard({ event, index, onEventClick }) {
             </svg>
             {typeof event.spotsLeft === 'number' ? `${event.spotsLeft} spots left` : 'Open to all'}
           </span>
-          <span className="text-sunset-gold text-sm font-semibold group-hover:text-sunset-orange transition-colors flex items-center gap-1">
+          <span className="text-sunset-gold text-sm font-semibold flex items-center gap-1">
             View details
-            <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
 export default function CommunityEvents() {
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
+  const [headerRef, headerVisible] = useReveal(0.2)
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -196,48 +212,37 @@ export default function CommunityEvents() {
     setIsModalOpen(false)
     setSelectedEvent(null)
   }
-  
+
   return (
-    <section 
-      ref={sectionRef}
-      className="relative py-16 md:py-24 bg-sand-light overflow-hidden"
+    <section
+      className="py-20 md:py-28 bg-[#F4EFEA]"
       aria-label="Community Events"
     >
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white to-transparent" />
-      </div>
-      
-      <Container className="max-w-[1400px] relative z-10">
+      <Container className="max-w-[1440px]">
         {/* Section Header */}
-        <motion.div 
-          className="mb-10 md:mb-14"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={headerRef}
+          className={`mb-10 md:mb-14 transition-all duration-700 ${
+            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
         >
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
-              <motion.span 
-                className="inline-block px-3 py-1 bg-sunset-gold/10 text-sunset-gold text-sm font-medium rounded-full mb-4"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.2, duration: 0.4 }}
-              >
-                🎪 What's happening
-              </motion.span>
-              <h2 className="text-charcoal text-[28px] md:text-[40px] font-bold leading-tight">
+              <span className="inline-block px-3 py-1 bg-neutral-200 text-neutral-500 text-[11px] tracking-[0.2em] uppercase rounded-full mb-5">
+                What's happening
+              </span>
+              <h2 className="text-charcoal font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight">
                 More than just a stay
               </h2>
               <p className="text-charcoal-muted text-base md:text-lg mt-2 max-w-xl">
                 Join treks, bonfires, yoga sessions, and spontaneous adventures. The community makes the magic.
               </p>
             </div>
-            
+
             {/* View All Link */}
-            <a 
+            <a
               href="/experiences"
-              className="inline-flex items-center gap-2 text-charcoal-muted hover:text-sunset-gold transition-colors group"
+              className="inline-flex items-center gap-2 text-charcoal-muted hover:text-charcoal transition-colors group"
             >
               <span className="text-sm font-medium group-hover:underline">See all experiences</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,33 +250,27 @@ export default function CommunityEvents() {
               </svg>
             </a>
           </div>
-        </motion.div>
-        
+        </div>
+
         {/* Events Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {upcomingEvents.map((event, index) => (
             <EventCard key={event.id} event={event} index={index} onEventClick={handleEventClick} />
           ))}
         </div>
-        
+
         {/* Bottom CTA */}
-        <motion.div 
-          className="mt-12 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 p-6 bg-white rounded-2xl border border-border shadow-soft">
+        <div className="mt-12 text-center">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-4 p-6 bg-white rounded-2xl border border-neutral-100">
             <div className="text-left">
               <p className="text-charcoal font-semibold">Want to host something?</p>
               <p className="text-charcoal-muted text-sm">Travelers often lead their own sessions — yoga, cooking, jam nights, you name it.</p>
             </div>
-            <button className="shrink-0 px-5 py-2.5 bg-jungle-dark hover:bg-jungle-moss text-white text-sm font-medium rounded-full transition-colors">
+            <button className="shrink-0 px-5 py-2.5 bg-charcoal hover:bg-neutral-800 text-white text-sm font-medium rounded-full transition-colors">
               Propose an event
             </button>
           </div>
-        </motion.div>
+        </div>
       </Container>
 
       {/* Experience Modal */}

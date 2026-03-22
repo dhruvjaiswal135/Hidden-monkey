@@ -77,7 +77,7 @@ export default function Home() {
         </section>
         
         {/* Final CTA */}
-        <CTA />
+        {/* <CTA /> */}
       </main>
       <Footer />
     </>

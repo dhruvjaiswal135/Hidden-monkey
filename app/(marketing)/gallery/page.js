@@ -1,60 +1,25 @@
-'use client'
-
-import { useState } from 'react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import GalleryHeader from '@/components/features/gallery/GalleryHeader'
-import GalleryGrid from '@/components/features/gallery/GalleryGrid'
-import GalleryModal from '@/components/features/gallery/GalleryModal'
-import { getGalleryImages } from '@/content/images'
+import GalleryPage from '@/components/features/gallery/GalleryPage'
 
-/**
- * Full Gallery Page
- * 
- * Dedicated page for browsing all hostel gallery images
- * Includes masonry grid, modal lightbox, and keyboard navigation
- */
+export const metadata = {
+  title: 'Gallery | Hidden Monkey Hostel',
+  description: 'Explore our visual journal — real moments from Hidden Monkey hostels captured by the travellers who stayed.',
+  openGraph: {
+    title: 'Gallery | Hidden Monkey Hostel',
+    description: 'Inside the Monkey House — rooms, spaces, events and nature captured by real guests.',
+    images: ['/images/og-gallery.jpg'],
+  },
+}
 
-export default function GalleryPage() {
-  const [selectedImageIndex, setSelectedImageIndex] = useState(null)
-  const images = getGalleryImages()
-
-  const handleImageClick = (index) => {
-    setSelectedImageIndex(index)
-  }
-
-  const handleCloseModal = () => {
-    setSelectedImageIndex(null)
-  }
-
-  const handleNextImage = () => {
-    setSelectedImageIndex((prev) => (prev + 1) % images.length)
-  }
-
-  const handlePrevImage = () => {
-    setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length)
-  }
-
+export default function GalleryRoute() {
   return (
     <>
       <Header />
-      <main className="bg-white">
-        <GalleryHeader />
-        <GalleryGrid onImageClick={handleImageClick} />
+      <main>
+        <GalleryPage />
       </main>
       <Footer />
-
-      {/* Modal - only render if an image is selected */}
-      {selectedImageIndex !== null && (
-        <GalleryModal
-          image={images[selectedImageIndex]}
-          currentIndex={selectedImageIndex}
-          totalImages={images.length}
-          onClose={handleCloseModal}
-          onNext={handleNextImage}
-          onPrev={handlePrevImage}
-        />
-      )}
     </>
   )
 }

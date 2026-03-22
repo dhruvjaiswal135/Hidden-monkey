@@ -1,8 +1,23 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useRef, useEffect, useState } from 'react'
 import Container from '@/components/ui/Container'
+
+function useReveal(threshold = 0.15) {
+  const [visible, setVisible] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
+      { threshold }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [threshold])
+  return [ref, visible]
+}
 
 /**
  * Meet the Tribe Section
@@ -16,7 +31,7 @@ const travelers = [
     id: 1,
     name: 'Sarah',
     country: 'Australia',
-    flag: '🇦🇺',
+    countryCode: 'AU',
     city: 'Melbourne',
     stayDates: 'Nov 2025',
     stayLength: '3 weeks',
@@ -28,7 +43,7 @@ const travelers = [
     id: 2,
     name: 'Marco',
     country: 'Italy',
-    flag: '🇮🇹',
+    countryCode: 'IT',
     city: 'Rome',
     stayDates: 'Oct 2025',
     stayLength: '2 months',
@@ -40,7 +55,7 @@ const travelers = [
     id: 3,
     name: 'Priya',
     country: 'India',
-    flag: '🇮🇳',
+    countryCode: 'IN',
     city: 'Delhi',
     stayDates: 'Dec 2025',
     stayLength: '10 days',
@@ -52,7 +67,7 @@ const travelers = [
     id: 4,
     name: 'Jake',
     country: 'USA',
-    flag: '🇺🇸',
+    countryCode: 'US',
     city: 'Portland',
     stayDates: 'Sep 2025',
     stayLength: '2 weeks',
@@ -64,7 +79,7 @@ const travelers = [
     id: 5,
     name: 'Elena',
     country: 'Germany',
-    flag: '🇩🇪',
+    countryCode: 'DE',
     city: 'Berlin',
     stayDates: 'Aug 2025',
     stayLength: '1 week',
@@ -76,8 +91,8 @@ const travelers = [
     id: 6,
     name: 'Carlos',
     country: 'Brazil',
-    flag: '🇧🇷',
-    city: 'São Paulo',
+    countryCode: 'BR',
+    city: 'S\u00e3o Paulo',
     stayDates: 'Jul 2025',
     stayLength: '3 weeks',
     quote: 'Brought my friends here for a reunion and we didn\'t want to leave. This place just has that special something that makes you feel like home.',
@@ -96,126 +111,81 @@ const communityStats = [
 
 // Testimonial Card
 function TestimonialCard({ traveler, index }) {
-  const [isHovered, setIsHovered] = useState(false)
-  
-  // Slight rotation for playful feel
-  const rotations = [-1.5, 1, -0.5, 1.5, -1, 0.5]
-  const rotation = rotations[index % rotations.length]
-  
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, rotate: rotation }}
-      whileInView={{ opacity: 1, y: 0, rotate: rotation }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -8, rotate: 0, transition: { duration: 0.3 } }}
-      className="flex-shrink-0 w-[320px] md:w-[360px]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    <div
+      className="flex-shrink-0 w-[320px] md:w-[360px] group"
     >
-      <div className="h-full bg-white rounded-[24px] p-6 border border-border shadow-soft hover:shadow-card-hover transition-all duration-300">
-        {/* Quote Icon */}
+      <div className="h-full bg-white rounded-[24px] p-6 border border-neutral-100 shadow-sm hover:-translate-y-1 transition-transform duration-300">
+        {/* Quote Icon + Highlight */}
         <div className="flex items-start gap-2 mb-4">
           <svg className="w-8 h-8 text-sunset-gold/30 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
           </svg>
-          {/* Highlight tag */}
-          <span className="px-3 py-1 bg-sunset-gold/10 text-sunset-gold text-xs font-medium rounded-full">
+          <span className="px-3 py-1 bg-neutral-100 text-neutral-500 text-xs rounded-full">
             {traveler.highlight}
           </span>
         </div>
-        
+
         {/* Quote */}
         <p className="text-charcoal text-[15px] leading-relaxed mb-6">
-          "{traveler.quote}"
+          &ldquo;{traveler.quote}&rdquo;
         </p>
-        
+
         {/* Divider */}
-        <div className="h-px bg-border mb-4" />
-        
+        <div className="h-px bg-neutral-100 mb-4" />
+
         {/* Author Info */}
         <div className="flex items-center gap-3">
-          {/* Avatar */}
           <div className="relative">
-            <img 
+            <img
               src={traveler.avatar}
               alt={traveler.name}
               className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
             />
-            {/* Country flag */}
-            <span className="absolute -bottom-1 -right-1 text-lg">
-              {traveler.flag}
+            <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-charcoal flex items-center justify-center text-white text-[8px] font-bold">
+              {traveler.countryCode}
             </span>
           </div>
-          
-          {/* Name & Details */}
           <div className="flex-1">
-            <p className="text-charcoal font-semibold text-sm">
-              {traveler.name}
-            </p>
-            <p className="text-charcoal-muted text-xs">
-              {traveler.city}, {traveler.country}
-            </p>
+            <p className="text-charcoal font-semibold text-sm">{traveler.name}</p>
+            <p className="text-charcoal-muted text-xs">{traveler.city}, {traveler.country}</p>
           </div>
-          
-          {/* Stay info */}
           <div className="text-right">
-            <p className="text-charcoal-muted text-[11px]">
-              {traveler.stayDates}
-            </p>
-            <p className="text-sunset-gold text-[11px] font-medium">
-              {traveler.stayLength}
-            </p>
+            <p className="text-charcoal-muted text-[11px]">{traveler.stayDates}</p>
+            <p className="text-sunset-gold text-[11px] font-medium">{traveler.stayLength}</p>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
-// Mini World Map showing community spread
+// Community banner
 function WorldMapPreview() {
   return (
-    <div className="relative bg-jungle-dark rounded-[24px] p-6 md:p-8 overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <svg className="w-full h-full" viewBox="0 0 400 200">
-          {/* Simplified world map outline */}
-          <ellipse cx="200" cy="100" rx="180" ry="80" fill="none" stroke="white" strokeWidth="0.5" strokeDasharray="4,4" />
-          <ellipse cx="200" cy="100" rx="120" ry="50" fill="none" stroke="white" strokeWidth="0.3" strokeDasharray="2,2" />
-        </svg>
-      </div>
-      
-      {/* Content */}
-      <div className="relative z-10">
-        <h3 className="text-white text-xl md:text-2xl font-bold mb-2">
-          A global tribe 🌍
-        </h3>
-        <p className="text-white/70 text-sm mb-6 max-w-xs">
-          Travelers from over 50 countries have called Hidden Monkey home.
-        </p>
-        
-        {/* Country flags floating */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {['🇦🇺', '🇮🇹', '🇺🇸', '🇩🇪', '🇧🇷', '🇫🇷', '🇬🇧', '🇯🇵', '🇨🇦', '🇳🇱', '🇪🇸', '🇮🇳'].map((flag, i) => (
-            <motion.span
-              key={i}
-              className="text-2xl"
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 + (i * 0.05), duration: 0.3, type: 'spring' }}
-            >
-              {flag}
-            </motion.span>
-          ))}
-          <span className="text-white/60 text-sm font-medium self-center ml-2">+38 more</span>
+    <div className="relative bg-charcoal rounded-[24px] p-6 md:p-8 overflow-hidden">
+      <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <h3 className="text-white text-xl md:text-2xl font-bold mb-2">
+            A global tribe
+          </h3>
+          <p className="text-white/65 text-sm max-w-xs">
+            Travelers from over 50 countries have called Hidden Monkey home.
+          </p>
         </div>
-        
+
+        {/* Country codes */}
+        <div className="flex flex-wrap gap-2">
+          {['AU', 'IT', 'US', 'DE', 'BR', 'FR', 'GB', 'JP', 'CA', 'NL', 'ES', 'IN'].map((code, i) => (
+            <span key={i} className="px-2 py-1 bg-white/10 text-white/70 text-[10px] font-medium rounded border border-white/15">{code}</span>
+          ))}
+          <span className="text-white/50 text-sm font-medium self-center ml-1">+38 more</span>
+        </div>
+
         {/* CTA */}
-        <a 
+        <a
           href="/community"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-full border border-white/20 transition-all duration-300"
+          className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-full border border-white/20 transition-colors"
         >
           Explore the community
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,84 +193,64 @@ function WorldMapPreview() {
           </svg>
         </a>
       </div>
-      
-      {/* Floating pins */}
-      <div className="absolute top-4 right-4 flex -space-x-2">
-        {['🇦🇺', '🇮🇹', '🇺🇸'].map((flag, i) => (
-          <motion.div
-            key={i}
-            className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-sm border border-white/30"
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
-          >
-            {flag}
-          </motion.div>
-        ))}
-      </div>
     </div>
   )
 }
 
 export default function MeetTheTribe() {
-  const sectionRef = useRef(null)
   const scrollContainerRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 })
-  
+  const [headerRef, headerVisible] = useReveal(0.1)
+  const [mapRef, mapVisible] = useReveal(0.1)
+
   return (
-    <section 
-      ref={sectionRef}
-      className="relative py-16 md:py-24 bg-white overflow-hidden"
+    <section
+      className="py-20 md:py-28 bg-white"
       aria-label="Meet the Tribe"
     >
-      <Container className="max-w-[1400px]">
+      <Container className="max-w-[1440px]">
         {/* Section Header */}
-        <motion.div 
-          className="mb-10 md:mb-14"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={headerRef}
+          className={`mb-10 md:mb-14 transition-all duration-700 ${
+            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
         >
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <motion.span 
-                className="inline-block px-3 py-1 bg-sunset-gold/10 text-sunset-gold text-sm font-medium rounded-full mb-4"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.2, duration: 0.4 }}
-              >
-                ❤️ Real stories from real travelers
-              </motion.span>
-              <h2 className="text-charcoal text-[28px] md:text-[40px] font-bold leading-tight">
+              <span className="inline-block px-3 py-1 bg-neutral-200 text-neutral-500 text-[11px] tracking-[0.2em] uppercase rounded-full mb-5">
+                Real stories from real travelers
+              </span>
+              <h2 className="text-charcoal font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight">
                 Meet the tribe
               </h2>
               <p className="text-charcoal-muted text-base md:text-lg mt-2 max-w-xl">
-                Thousands have stayed. Here's what they remember most.
+                Thousands have stayed. Here&rsquo;s what they remember most.
               </p>
             </div>
-            
+
             {/* Stats */}
             <div className="flex gap-6 md:gap-8">
               {communityStats.map((stat, i) => (
-                <motion.div 
+                <div
                   key={i}
-                  className="text-center"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.3 + (i * 0.1), duration: 0.4 }}
+                  className={`text-center transition-all duration-500 ${
+                    headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  }`}
+                  style={{ transitionDelay: `${200 + i * 80}ms` }}
                 >
                   <p className="text-charcoal text-2xl md:text-3xl font-bold">
-                    {stat.number}{stat.suffix || ''}
+                    {stat.number}
                   </p>
                   <p className="text-charcoal-muted text-xs md:text-sm">{stat.label}</p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
-        </motion.div>
-        
+        </div>
+
         {/* Testimonials Horizontal Scroll */}
         <div className="relative">
-          <div 
+          <div
             ref={scrollContainerRef}
             className="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 md:-mx-8 md:px-8 scrollbar-hide"
             style={{ scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch' }}
@@ -309,22 +259,20 @@ export default function MeetTheTribe() {
               <TestimonialCard key={traveler.id} traveler={traveler} index={index} />
             ))}
           </div>
-          
-          {/* Scroll indicators (fade edges) */}
+          {/* Fade edges */}
           <div className="absolute top-0 bottom-4 left-0 w-8 bg-gradient-to-r from-white to-transparent pointer-events-none hidden md:block" />
           <div className="absolute top-0 bottom-4 right-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none hidden md:block" />
         </div>
-        
-        {/* World Map Preview */}
-        <motion.div 
-          className="mt-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.5 }}
+
+        {/* Community Banner */}
+        <div
+          ref={mapRef}
+          className={`mt-12 transition-all duration-700 ${
+            mapVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
         >
           <WorldMapPreview />
-        </motion.div>
+        </div>
       </Container>
     </section>
   )

@@ -2,161 +2,118 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
 import RoomDetailModal from '@/components/modals/RoomDetailModal'
 
-/**
- * RoomCard Component (Community-First Redesign)
- * Experience-driven card that invites people to shared life
- * 
- * Philosophy:
- * "An invitation to a shared life, not a product listing"
- * 
- * Structure:
- * - Moment-based image (people first, beds secondary)
- * - Room name + vibe sentence (emotional language)
- * - Community signals (who stays here, how it feels)
- * - Minimal essential amenity icons
- * - Human-centered CTA ("See how it feels")
- * 
- * Feels like a place, not a transaction
- */
-
-// Amenity icons for quick visual reference
-const AMENITY_ICONS = {
-  locker: '🔐',
-  curtain: '🪟',
-  light: '💡',
-  charging: '🔌',
-  bathroom: '🚿',
-  wifi: '📶',
-  kitchen: '🍳',
-  female: '👩',
-  ac: '❄️',
-  towel: '🛁',
+const AMENITY_LABELS = {
+  locker: 'Locker',
+  curtain: 'Privacy curtain',
+  light: 'Reading light',
+  charging: 'Charging',
+  bathroom: 'Bathroom',
+  wifi: 'WiFi',
+  kitchen: 'Kitchen',
+  female: 'Women only',
+  ac: 'A/C',
+  towel: 'Towels',
 }
 
-export default function RoomCard({ room }) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+const PRICE_MAP = {
+  'mixed-dorm': 499,
+  'female-dorm': 549,
+  'private-room': 1499,
+}
 
+export default function RoomCard({ room, index = 0 }) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   if (!room) return null
 
-  // Ensure data exists
-  const communityTags = room.communityTags || []
-  const amenities = room.amenities || []
+  const price = PRICE_MAP[room.id] || 599
+  const displayAmenities = (room.amenities || []).slice(0, 3)
+  const extra = (room.amenities || []).length - 3
 
   return (
     <>
-      <motion.article
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.5 }}
-        className="h-full flex flex-col bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-elevated transition-all duration-300 group cursor-pointer"
+      <article
+        className="group cursor-pointer"
         onClick={() => setIsModalOpen(true)}
       >
-        {/* ────────────────────────────────────────
-            TOP SECTION: MOMENT IMAGE
-            ──────────────────────────────────────── */}
-        <div className="relative h-[280px] md:h-[320px] overflow-hidden bg-sand-cream">
+        {/* ── IMAGE ── */}
+        <div className="relative rounded-[20px] overflow-hidden aspect-[3/2] mb-5">
           <Image
             src={room.image}
             alt={room.name}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.05]"
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            quality={85}
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+            sizes="(max-width: 768px) 100vw, 33vw"
             unoptimized
           />
 
-          {/* Soft gradient overlay (subtle) */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          {/* Scrim */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-          {/* Room Label Pill - Top Left */}
-          <div className="absolute top-5 left-5">
-            <span className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm text-charcoal text-xs font-semibold px-3 py-2 rounded-full shadow-sm">
-              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-              {room.name}
-            </span>
-          </div>
-
-          {/* Price Badge - Top Right */}
-          <div className="absolute top-5 right-5">
-            <span className="inline-block bg-charcoal/80 backdrop-blur-sm text-white text-xs font-medium px-3 py-2 rounded-full">
-              From ₹599/night
-            </span>
-          </div>
-
-          {/* Hover CTA */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <motion.div 
-              initial={{ scale: 0.9 }}
-              whileHover={{ scale: 1 }}
-              className="bg-white text-charcoal text-sm font-medium px-6 py-3 rounded-full shadow-lg flex items-center gap-2"
-            >
-              See how it feels
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          {/* Photo count pill — top right */}
+          {(room.images || []).length > 1 && (
+            <div className="absolute top-3.5 right-3.5 flex items-center gap-1 bg-black/40 border border-white/15 backdrop-blur-sm rounded-full px-2.5 py-1">
+              <svg className="w-3 h-3 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-            </motion.div>
+              <span className="text-white text-[10px] font-medium">{room.images.length} photos</span>
+            </div>
+          )}
+
+          {/* Bottom row: price left, availability right */}
+          <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 flex items-end justify-between">
+            <div>
+              <p className="text-white/60 text-[10px] font-medium uppercase tracking-widest mb-0.5">From</p>
+              <p className="text-white font-bold text-xl leading-none">
+                &#8377;{price}<span className="text-white/50 text-xs font-normal ml-0.5">/night</span>
+              </p>
+            </div>
+            <div className="flex items-center gap-1.5 bg-black/30 border border-white/15 rounded-full px-2.5 py-1">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
+              </span>
+              <span className="text-white text-[10px] font-medium">Available</span>
+            </div>
           </div>
         </div>
 
-        {/* ────────────────────────────────────────
-            MIDDLE SECTION: ROOM STORY
-            ──────────────────────────────────────── */}
-        <div className="px-6 pt-5 pb-6 flex-1 flex flex-col">
-          {/* Room Name */}
-          <h3 className="text-charcoal text-xl font-semibold leading-snug mb-2 group-hover:text-sunset-gold transition-colors">
-            {room.name}
-          </h3>
+        {/* ── INFO ── */}
+        <div>
+          {/* Name + stars */}
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <h3 className="text-charcoal font-bold text-[17px] leading-tight group-hover:text-sunset-gold transition-colors duration-200">
+              {room.name}
+            </h3>
+            <div className="flex items-center gap-0.5 shrink-0 pt-0.5">
+              {[1,2,3,4,5].map(i => (
+                <svg key={i} className="w-3 h-3 text-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              ))}
+              <span className="text-[11px] text-charcoal-muted font-medium ml-1">4.9</span>
+            </div>
+          </div>
 
-          {/* Vibe Sentence (emotional, human language) */}
-          <p className="text-charcoal-muted text-sm leading-relaxed mb-4 flex-1">
+          <p className="text-charcoal-muted text-[13.5px] leading-relaxed mb-3.5 line-clamp-2">
             {room.vibe}
           </p>
 
-          {/* ────────────────────────────────────────
-              COMMUNITY SIGNALS (UNIQUE ELEMENT)
-              ──────────────────────────────────────── */}
-          {communityTags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {communityTags.slice(0, 3).map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="inline-block bg-jungle-light/10 text-jungle-dark text-xs font-medium px-3 py-1.5 rounded-full border border-jungle-light/20 group-hover:border-jungle-light/40 transition-all duration-300"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Amenity Icons Row */}
-          {amenities.length > 0 && (
-            <div className="flex items-center gap-1 pt-4 border-t border-border">
-              <div className="flex gap-2">
-                {amenities.slice(0, 5).map((amenity, idx) => (
-                  <span 
-                    key={idx} 
-                    className="text-base opacity-70 group-hover:opacity-100 transition-opacity"
-                    title={amenity}
-                  >
-                    {AMENITY_ICONS[amenity] || '✓'}
-                  </span>
-                ))}
-              </div>
-              {amenities.length > 5 && (
-                <span className="text-xs text-charcoal-muted ml-1">
-                  +{amenities.length - 5} more
-                </span>
-              )}
-            </div>
-          )}
+          {/* Amenity chips */}
+          <div className="flex items-center flex-wrap gap-1.5">
+            {displayAmenities.map((key, i) => (
+              <span key={i} className="text-[11px] text-charcoal-muted bg-white border border-neutral-200 px-2.5 py-0.5 rounded-full">
+                {AMENITY_LABELS[key] || key}
+              </span>
+            ))}
+            {extra > 0 && (
+              <span className="text-[11px] text-charcoal-muted/60">+{extra} more</span>
+            )}
+          </div>
         </div>
-      </motion.article>
+      </article>
 
-      {/* Room Detail Modal */}
       <RoomDetailModal
         room={room}
         isOpen={isModalOpen}
