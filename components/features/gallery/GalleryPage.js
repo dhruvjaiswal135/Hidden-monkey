@@ -167,49 +167,41 @@ export default function GalleryPage() {
 
   return (
     <>
-      {/* ─── HERO ─── */}
-      <section className="bg-charcoal -mt-20 overflow-hidden">
-        <div className="relative max-w-[1400px] mx-auto px-6 lg:px-10 pt-44 pb-14">
-
-          {/* Decorative background word */}
-          <div className="absolute top-16 right-0 pointer-events-none select-none overflow-hidden hidden lg:block">
-            <span className="text-[180px] font-bold leading-none tracking-tight text-white opacity-[0.025]">
-              VISUAL
-            </span>
-          </div>
-
-          {/* Title + stats */}
-          <div className="flex flex-col md:flex-row md:items-end gap-8 md:gap-16 relative">
-            <div className="flex-1">
-              <span className="inline-block px-3 py-1 bg-white/10 border border-white/15 text-white/60 text-[11px] tracking-[0.18em] uppercase rounded-full mb-6">
-                Visual journal
-              </span>
-              <h1 className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-bold text-white leading-[1.05] tracking-tight mb-5">
-                Inside the<br />
-                <span className="text-sunset-gold">Monkey House</span>
+      {/* ─── CUTE COMPACT HERO ─── */}
+      <section className="pt-12 pb-8 bg-[#FBFBF9] border-b border-[#E6E4DF]">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-4 h-[2px] bg-[#128790]"></span>
+                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">
+                  Visual Journal
+                </span>
+              </div>
+              <h1 className="text-[32px] md:text-[48px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.02em] mb-4">
+                Inside the <span className="text-[#FBB11A]">Monkey House.</span>
               </h1>
-              <p className="text-white/45 text-[17px] leading-relaxed max-w-md">
+              <p className="text-[#6B665E] text-[14px] md:text-[15px] font-light leading-relaxed max-w-xl">
                 Real moments from our hostels — captured by travellers who stayed, connected, and left changed.
               </p>
             </div>
 
             {/* Stats */}
-            <div className="flex gap-10 shrink-0 pb-1">
+            <div className="flex gap-6 shrink-0 md:pb-2">
               {[
                 { n: `${IMAGES.length}+`, label: 'Photos' },
-                { n: '4',                  label: 'Destinations' },
-                { n: '500+',               label: 'Guests featured' },
+                { n: '2',                  label: 'Destinations' },
               ].map(({ n, label }) => (
-                <div key={label}>
-                  <div className="text-[2.2rem] font-bold text-white leading-none">{n}</div>
-                  <div className="text-white/30 text-[11px] mt-1.5 uppercase tracking-widest">{label}</div>
+                <div key={label} className="text-center md:text-left">
+                  <div className="text-[24px] font-bold text-[#1E1F1C] leading-none mb-1">{n}</div>
+                  <div className="text-[#9A948C] text-[9px] uppercase tracking-widest font-bold">{label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Filter pills */}
-          <div className="mt-12 flex items-center gap-2 flex-wrap">
+          {/* Cute Filter Bar */}
+          <div className="mt-8 flex items-center gap-2 overflow-x-auto hide-scrollbar pb-2 md:pb-0">
             {FILTERS.map(f => {
               const count = f.id === 'all'
                 ? IMAGES.length
@@ -218,22 +210,22 @@ export default function GalleryPage() {
                 <button
                   key={f.id}
                   onClick={() => setFilter(f.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-[12.5px] font-semibold transition-all duration-200 ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
                     filter === f.id
-                      ? 'bg-white text-charcoal shadow-md'
-                      : 'bg-white/10 text-white/55 border border-white/10 hover:bg-white/15 hover:text-white/80'
+                      ? 'bg-[#128790] text-white border-[#128790]'
+                      : 'bg-white text-[#6B665E] border-[#E6E4DF] hover:border-[#128790]/50'
                   }`}
                 >
                   {f.label}
-                  <span className={`text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none ${
-                    filter === f.id ? 'bg-charcoal/15 text-charcoal/60' : 'bg-white/10 text-white/35'
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-md flex items-center justify-center leading-none ${
+                    filter === f.id ? 'bg-white/20 text-white' : 'bg-[#FBFBF9] text-[#9A948C]'
                   }`}>
                     {count}
                   </span>
                 </button>
               )
             })}
-            <span className="ml-auto text-white/25 text-[12px] font-medium hidden sm:block">
+            <span className="ml-auto text-[#9A948C] text-[11px] font-bold uppercase tracking-widest hidden sm:block">
               {filtered.length} photo{filtered.length !== 1 ? 's' : ''}
             </span>
           </div>
@@ -241,14 +233,14 @@ export default function GalleryPage() {
       </section>
 
       {/* ─── MASONRY GRID ─── */}
-      <section className="bg-[#F4EFEA] py-14 md:py-20">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <section className="bg-[#FBFBF9] py-10 min-h-[50vh]">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
           {filtered.length > 0 ? (
             <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4">
               {filtered.map((img) => (
                 <div
                   key={img.id}
-                  className="break-inside-avoid mb-4 group relative rounded-[20px] overflow-hidden cursor-pointer"
+                  className="break-inside-avoid mb-4 group relative rounded-[16px] overflow-hidden cursor-pointer shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-[#E6E4DF]"
                   onClick={() => openLightbox(img.id)}
                 >
                   {/* Image */}
@@ -257,35 +249,37 @@ export default function GalleryPage() {
                       src={img.url}
                       alt={img.alt}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-[1.07]"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       unoptimized
                     />
                   </div>
 
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                    <span className={`w-fit text-[9px] font-bold px-2 py-0.5 rounded-full text-white uppercase tracking-widest mb-2 ${CAT_COLOR[img.category]}`}>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1E1F1C]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                    <span className={`w-fit text-[9px] font-bold px-2 py-0.5 rounded-md text-white uppercase tracking-widest mb-2 ${CAT_COLOR[img.category]}`}>
                       {img.category}
                     </span>
-                    <p className="text-white/90 text-[13px] font-medium leading-snug">{img.alt}</p>
+                    <p className="text-white/90 text-[12px] font-medium leading-snug">{img.alt}</p>
                   </div>
 
                   {/* Expand icon */}
-                  <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-black/30 border border-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <div className="absolute top-2 right-2 w-6 h-6 rounded-md bg-black/40 border border-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                     </svg>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-24">
-              <p className="text-charcoal-muted text-sm">No photos in this category yet.</p>
+            <div className="text-center py-16 bg-white rounded-2xl border border-[#E6E4DF]">
+              <div className="text-3xl mb-3">📸</div>
+              <h3 className="text-[18px] font-bold text-[#1E1F1C] mb-1">No photos found</h3>
+              <p className="text-[#6B665E] text-[13px] mb-4">Try selecting a different category.</p>
               <button
                 onClick={() => setFilter('all')}
-                className="mt-4 px-6 py-2.5 bg-charcoal text-white text-sm font-semibold rounded-full hover:bg-charcoal/85 transition-colors"
+                className="px-4 py-2 bg-[#FBFBF9] border border-[#E6E4DF] text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-white transition-colors"
               >
                 View all photos
               </button>

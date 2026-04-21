@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useBooking } from '@/context/BookingContext'
 
 const navItems = [
   { href: '/#life', label: 'Life' },
@@ -10,8 +11,24 @@ const navItems = [
   { href: '/#work', label: 'Work' },
   { href: '/destinations', label: 'Destinations' },
   { href: '/gallery', label: 'Gallery' },
+  { href: '/blog', label: 'Stories' },
   { href: '/stays', label: 'Stays' },
 ]
+
+function BookButton({ className, onClick }) {
+  const { openBooking } = useBooking()
+  return (
+    <button
+      onClick={() => {
+        openBooking()
+        if (onClick) onClick()
+      }}
+      className={className}
+    >
+      Book Your Stay
+    </button>
+  )
+}
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -65,7 +82,7 @@ export default function Header() {
                 <span
                   className="font-semibold text-[15px] tracking-tight leading-none block"
                   style={{
-                    color: isScrolled ? '#171717' : 'white',
+                    color: '#171717',
                     transition: 'color 0.4s ease',
                   }}
                 >
@@ -74,7 +91,7 @@ export default function Header() {
                 <span
                   className="text-[9px] tracking-[0.12em] uppercase leading-none mt-0.5 block"
                   style={{
-                    color: isScrolled ? '#a3a3a3' : 'rgba(255,255,255,0.45)',
+                    color: '#a3a3a3',
                     transition: 'color 0.4s ease',
                   }}
                 >
@@ -91,7 +108,7 @@ export default function Header() {
                   href={item.href}
                   className="text-sm font-medium hover:text-sunset-gold"
                   style={{
-                    color: isScrolled ? '#404040' : 'rgba(255,255,255,0.82)',
+                    color: '#404040',
                     transition: 'color 0.2s ease',
                   }}
                 >
@@ -102,17 +119,7 @@ export default function Header() {
 
             {/* Actions */}
             <div className="flex items-center gap-4">
-              <Link
-                href="/stays"
-                className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-full"
-                style={{
-                  backgroundColor: isScrolled ? '#171717' : 'white',
-                  color: isScrolled ? 'white' : '#171717',
-                  transition: 'background-color 0.4s ease, color 0.4s ease',
-                }}
-              >
-                Book Your Stay
-              </Link>
+              <BookButton className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-full bg-[#171717] text-white hover:bg-[#128790] transition-colors" />
 
               {/* Hamburger */}
               <button
@@ -124,7 +131,7 @@ export default function Header() {
                   className="block h-[1.5px] rounded-full origin-center"
                   style={{
                     width: '22px',
-                    backgroundColor: isScrolled ? '#171717' : 'white',
+                    backgroundColor: '#171717',
                     transform: isMobileOpen ? 'rotate(45deg) translateY(6.5px)' : 'none',
                     transition: 'transform 0.25s ease, background-color 0.4s ease',
                   }}
@@ -133,7 +140,7 @@ export default function Header() {
                   className="block h-[1.5px] rounded-full"
                   style={{
                     width: '22px',
-                    backgroundColor: isScrolled ? '#171717' : 'white',
+                    backgroundColor: '#171717',
                     opacity: isMobileOpen ? 0 : 1,
                     transition: 'opacity 0.2s ease, background-color 0.4s ease',
                   }}
@@ -142,7 +149,7 @@ export default function Header() {
                   className="block h-[1.5px] rounded-full origin-center"
                   style={{
                     width: '22px',
-                    backgroundColor: isScrolled ? '#171717' : 'white',
+                    backgroundColor: '#171717',
                     transform: isMobileOpen ? 'rotate(-45deg) translateY(-6.5px)' : 'none',
                     transition: 'transform 0.25s ease, background-color 0.4s ease',
                   }}
@@ -203,13 +210,7 @@ export default function Header() {
             ))}
           </nav>
           <div className="px-6 py-6 border-t border-neutral-100">
-            <Link
-              href="/stays"
-              onClick={onLinkClick}
-              className="block w-full py-3.5 bg-neutral-900 text-white font-semibold text-center rounded-full hover:bg-neutral-800 transition-colors text-sm"
-            >
-              Book Your Stay
-            </Link>
+            <BookButton onClick={onLinkClick} className="block w-full py-3.5 bg-neutral-900 text-white font-semibold text-center rounded-full hover:bg-neutral-800 transition-colors text-sm" />
           </div>
         </div>
       </div>

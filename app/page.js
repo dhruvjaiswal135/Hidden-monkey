@@ -42,9 +42,9 @@ export default function Home() {
         </section>
         
         {/* What a day looks like - Timeline experience */}
-        <section id="experience">
+        {/* <section id="experience">
           <DayLookLike />
-        </section>
+        </section> */}
         
         {/* Community Events - Activities & gatherings */}
         <section id="events">
@@ -62,10 +62,10 @@ export default function Home() {
         </section>
         
         {/* Gallery - Visual tour */}
-        <section id="gallery">
-          {/* <Gallery /> */}
+        {/* <section id="gallery">
+          <Gallery />
         </section>
-        
+         */}
         {/* Stay Options - Room types */}
         <section id="stays">
           <RoomTypes />

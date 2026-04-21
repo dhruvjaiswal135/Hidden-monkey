@@ -1,40 +1,88 @@
 /**
- * Blog Post: Backpacking Bir Paragliding Adventure
+ * Blog Post: Darjeeling — Tea, Trains & Mountain Magic
+ * (Rewritten from Bir Paragliding to match active destinations)
  */
 
 export default {
   slug: 'backpacking-bir-paragliding',
-  title: 'Backpacking to Bir for Paragliding - Sky High Adventures',
+  title: 'Darjeeling — Tea, Trains & the Mountains That Make You Stay',
   excerpt:
-    'Bir Billng is the paragliding capital of India. Join us as we explore this adventure hotspot and experience the thrill of flying.',
+    'You come for the Kanchenjunga views. You stay for the misty mornings, the world\'s best chai, and a kind of peace that\'s hard to find anywhere else.',
   content: `
-    <p>Nestled in the Himalayas, Bir Billng is a hidden gem for adventure seekers and paragliding enthusiasts. With consistent thermals and breathtaking views, it's no wonder it's called the paragliding capital of India.</p>
+    <p>There's a moment in Darjeeling that every traveler remembers. You wake up before dawn, pull on three layers because it's freezing, and stumble to Tiger Hill or your hostel rooftop. The sky is gray, the air is thin, and you're wondering why you bothered. Then the first light hits Kanchenjunga — the third-highest peak on Earth turns gold, then pink, then white — and everything else in the world feels very, very small.</p>
 
-    <h6>Getting to Bir Billng</h6>
-    <p>The closest major city is Kangra. From there, it's a scenic drive through mountain roads. Buses and taxis are available. The journey itself is beautiful, passing through tea gardens and small villages.</p>
+    <h2>Getting There — The Journey Is the Destination</h2>
 
-    <h2>Paragliding Experience</h2>
-    <p>Whether you're a beginner or experienced pilot, Bir has something for you. Tandem flights are perfect for first-timers. Licensed instructors ensure safety while you experience the freedom of flying. The views of the Dhauladhar range are absolutely stunning.</p>
+    <p>Most travelers reach Darjeeling via New Jalpaiguri (NJP) station. From there, you have two beautiful options:</p>
 
-    <h2>Best Time to Visit</h2>
-    <p>October to November and March to May are ideal for paragliding when thermals are consistent. The weather is pleasant, and visibility is excellent. Summer can be crowded, while winter winds are too strong.</p>
+    <ol>
+      <li><strong>The Toy Train (DHR):</strong> A UNESCO World Heritage railway that climbs 7,000 feet in 8 hours. It's slow, bumpy, and absolutely magical. Batasia Loop — where the train spirals around itself with Kanchenjunga in the background — is the kind of moment that makes you put your phone down.</li>
+      <li><strong>Shared Jeep (3 hours):</strong> Faster, cheaper (₹200–300), and the mountain roads are stunning. You'll share the ride with locals carrying everything from vegetables to live chickens.</li>
+    </ol>
 
-    <h2>What to Expect</h2>
-    <p>Bir is small and laid-back. Expect basic amenities, but plenty of character. The paragliding community is welcoming and friendly. Most visitors are backpackers, adventure enthusiasts, and paragliders.</p>
+    <blockquote>
+      <p>"I almost took the jeep because it was faster. Thank god I didn't. The Toy Train ride to Darjeeling is the most charming travel experience I've ever had." — Emma, Germany</p>
+    </blockquote>
 
-    <h2>Beyond Paragliding</h2>
-    <p>Explore hiking trails, visit local temples, try rock climbing, and enjoy local Himachali cuisine. The village of Bir itself has cafes and homestays. Paragliding school interactions and shared meals create strong bonds among travelers.</p>
+    <h2>The Tea Gardens — Better Than Any Café</h2>
 
-    <h2>Accommodations</h2>
-    <p>Stay in guesthouses, hostels, or homestays. They're affordable and offer great opportunities to meet other travelers. Many places offer home-cooked meals that are delicious and budget-friendly.</p>
+    <p>Darjeeling tea is legendary for a reason. But drinking it here, at the source, is an entirely different experience from buying it at a fancy store.</p>
 
-    <p>Bir Billng isn't just about paragliding—it's about becoming part of a community of adventurers who understand the joy of pushing boundaries and embracing new experiences.</p>
+    <ul>
+      <li><strong>Happy Valley Tea Estate:</strong> Walk through rows of tea bushes, watch the plucking and processing, and taste fresh first-flush Darjeeling tea. The factory tour costs about ₹100.</li>
+      <li><strong>Makaibari Tea Estate:</strong> One of the world's first organic tea gardens. They do homestays too, if you want to wake up literally inside a tea garden.</li>
+      <li><strong>Roadside chai stalls:</strong> The best chai in Darjeeling isn't in the estates — it's in the tiny stalls on the road to Tiger Hill. ₹10 per cup. Strong, sweet, and brewed with leaves you can almost see the mountains through.</li>
+    </ul>
+
+    <h2>Trekking — From Easy Walks to Himalayan Adventures</h2>
+
+    <p>Darjeeling is a trekker's paradise, whether you want a gentle morning walk or a multi-day Himalayan expedition:</p>
+
+    <h3>For Beginners</h3>
+
+    <ul>
+      <li><strong>Observatory Hill:</strong> 20-minute walk from Mall Road. Sunset views, prayer flags, and a small temple at the top.</li>
+      <li><strong>Japanese Peace Pagoda:</strong> A 45-minute stroll through tea gardens. White dome, mountain views, zero crowds.</li>
+      <li><strong>Rock Garden & Ganga Maya Park:</strong> A beautiful 3km walk along a mountain stream with waterfalls.</li>
+    </ul>
+
+    <h3>For the Adventurous</h3>
+
+    <ul>
+      <li><strong>Sandakphu Trek (4 days):</strong> The only place on Earth where you can see four of the world's five highest peaks in one panorama — Everest, Kanchenjunga, Lhotse, and Makalu. This trek will ruin you for all future treks because nothing will compare.</li>
+      <li><strong>Singalila Ridge Trail:</strong> Walk along the India-Nepal border. The rhododendron forests in April–May are so beautiful they seem fake.</li>
+    </ul>
+
+    <h2>Darjeeling in the Mist — What Nobody Tells You</h2>
+
+    <p>Here's the honest truth: Darjeeling is misty. A lot. Some days you can't see the building across the street, let alone the Himalayas. And you know what? <em>Those are the best days.</em></p>
+
+    <p>On misty days, Darjeeling becomes intimate. You sit in a café with a book, drinking the world's best tea. You have long conversations with strangers because there's literally nothing else to do. You play cards in the hostel common room. You walk through clouds.</p>
+
+    <blockquote>
+      <p>"I was disappointed when the clouds rolled in and I couldn't see the mountains. Then I realized — I wasn't in Darjeeling for the mountains. I was there for the feeling. And the feeling was just as good in the mist." — Arun, Bangalore</p>
+    </blockquote>
+
+    <h2>The Food — Mountain Comfort at Its Best</h2>
+
+    <ul>
+      <li><strong>Momos:</strong> Darjeeling does momos better than anywhere else in India. Steamed, fried, or in soup — try them all. Kunga Restaurant is the local favorite.</li>
+      <li><strong>Thukpa:</strong> A Tibetan noodle soup that's basically a hug in a bowl. Essential on cold evenings.</li>
+      <li><strong>Churpi:</strong> Hardened yak cheese. It sounds weird. It's delicious. And it lasts forever in your backpack.</li>
+      <li><strong>Sel Roti:</strong> A Nepali rice bread that's slightly sweet and perfect with morning tea.</li>
+    </ul>
+
+    <hr />
+
+    <p>Darjeeling isn't an adrenaline destination. It's a <em>slow down</em> destination. It's the place you go when the world feels too fast, too loud, too much. It wraps you in clouds and tea and mountain silence, and when you leave, you leave quieter. Calmer. A little bit changed.</p>
+
+    <p><strong>The mountains will be here when you're ready. 🏔️</strong></p>
   `,
-  publishedAt: '2024-02-10',
+  publishedAt: 'Feb 10, 2024',
   author: 'Hidden Monkey Team',
-  readingTime: 6,
+  readingTime: '9 min',
   image: 'cover.jpg',
   category: 'destination',
   featured: false,
-  tags: ['bir', 'paragliding', 'adventure', 'himalayas', 'india'],
+  tags: ['darjeeling', 'mountains', 'tea', 'trekking', 'india', 'himalayas'],
 }

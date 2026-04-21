@@ -2,109 +2,90 @@
 
 import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import Container from '@/components/ui/Container'
 
-function useReveal(threshold = 0.15) {
+function useReveal(threshold = 0.1) {
   const [visible, setVisible] = useState(false)
   const ref = useRef(null)
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold }
-    )
+    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setVisible(true) }, { threshold })
     observer.observe(el)
     return () => observer.disconnect()
   }, [threshold])
   return [ref, visible]
 }
 
-const stats = [
-  { value: '50+', label: 'Countries' },
-  { value: '12k+', label: 'Travelers' },
-  { value: '4.9', label: 'Rating' },
-  { value: '85%', label: 'Return visitors' },
-]
-
 export default function CTA() {
-  const [sectionRef, isInView] = useReveal(0.25)
+  const [sectionRef, isInView] = useReveal(0.1)
 
   return (
     <section
       ref={sectionRef}
-      className="py-20 md:py-28 bg-charcoal"
+      className="py-16 md:py-24 bg-white"
       aria-label="Call to Action"
     >
-      <Container className="max-w-5xl">
-        {/* Stats row */}
-        <div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-16 mb-16 border-b border-white/10"
-          style={{
-            opacity: isInView ? 1 : 0,
-            transform: isInView ? 'translateY(0)' : 'translateY(16px)',
-            transition: 'opacity 0.7s ease, transform 0.7s ease',
-          }}
+      <Container className="max-w-[1000px]">
+        <div 
+          className={`relative bg-[#128790] rounded-[40px] p-8 md:p-16 overflow-hidden transition-all duration-1000 ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
         >
-          {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <p className="text-white font-bold text-3xl md:text-4xl tracking-tight">{s.value}</p>
-              <p className="text-white/40 text-sm mt-1">{s.label}</p>
+          {/* Decorative background elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#FBB11A]/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 text-center">
+            <div className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 bg-white/10 rounded-full border border-white/10 backdrop-blur-sm">
+               <span className="w-2 h-2 rounded-full bg-[#FBB11A] animate-pulse" />
+               <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-white/90">Join the tribe</span>
             </div>
-          ))}
-        </div>
 
-        {/* Main CTA */}
-        <div
-          className="text-center"
-          style={{
-            opacity: isInView ? 1 : 0,
-            transform: isInView ? 'translateY(0)' : 'translateY(16px)',
-            transition: 'opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s',
-          }}
-        >
-          <p className="text-white/40 text-[11px] font-medium tracking-[0.2em] uppercase mb-5">
-            Join the Tribe
-          </p>
+            <h2 className="text-white font-bold leading-[1.1] tracking-[-0.03em] mb-6 text-[32px] md:text-[48px] lg:text-[56px] max-w-2xl mx-auto">
+              Ready for your next <span className="text-[#FBB11A]">adventure?</span>
+            </h2>
 
-          <h2 className="text-white font-bold leading-tight tracking-tight mb-5" style={{ fontSize: 'clamp(2rem,5vw,3.5rem)' }}>
-            Ready for your next<br />
-            <span className="text-sunset-gold">adventure?</span>
-          </h2>
+            <p className="text-white/70 text-[15px] md:text-[17px] font-light leading-relaxed max-w-lg mx-auto mb-10">
+              Thousands of travelers have called Hidden Monkey home. It's time to start your story.
+            </p>
 
-          <p className="text-white/50 text-base md:text-lg max-w-lg mx-auto mb-10 font-light leading-relaxed">
-            Book now and become part of the tribe that thousands of travelers
-            already call home.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/stays"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-sunset-gold text-white text-sm font-semibold rounded-full hover:opacity-90 transition-opacity"
-            >
-              Check availability
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-            <Link
-              href="/destinations"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-white/8 text-white/80 text-sm font-medium rounded-full border border-white/15 hover:bg-white/12 hover:text-white transition-colors"
-            >
-              Explore destinations
-            </Link>
-          </div>
-
-          {/* Star rating */}
-          <div className="flex items-center justify-center gap-2 mt-10">
-            <div className="flex">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <svg key={i} className="w-4 h-4 text-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/stays"
+                className="w-full sm:w-auto px-8 py-3.5 bg-white text-[#128790] text-[12px] font-bold uppercase tracking-widest rounded-full hover:bg-[#FBB11A] hover:text-white transition-all shadow-xl shadow-black/10"
+              >
+                Check availability
+              </Link>
+              <Link
+                href="/destinations"
+                className="w-full sm:w-auto px-8 py-3.5 bg-[#128790] text-white text-[12px] font-bold uppercase tracking-widest rounded-full border border-white/20 hover:bg-white/10 transition-all"
+              >
+                Explore Destinations
+              </Link>
             </div>
-            <span className="text-white/70 text-sm">4.9 &middot; 12,000+ travelers</span>
+
+            {/* Social Proof */}
+            <div className="mt-12 flex flex-col items-center gap-3">
+               <div className="flex -space-x-2">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#128790] overflow-hidden bg-[#FBFBF9]">
+                       <Image 
+                         src={`https://i.pravatar.cc/100?img=${i + 10}`} 
+                         alt="Traveler" 
+                         width={40} 
+                         height={40} 
+                         className="object-cover"
+                         unoptimized
+                       />
+                    </div>
+                  ))}
+               </div>
+               <p className="text-white/60 text-[11px] font-medium tracking-wide uppercase">
+                  Join 12,000+ happy travelers from <span className="text-white font-bold">50+ countries.</span>
+               </p>
+            </div>
           </div>
         </div>
       </Container>

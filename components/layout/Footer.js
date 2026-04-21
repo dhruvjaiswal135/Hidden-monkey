@@ -2,176 +2,221 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
 
+/**
+ * Footer — Modern, compact editorial footer
+ * Matches the site's Teal/Gold design language
+ */
+
+const LINKS = {
+  explore: [
+    { href: '/destinations', label: 'Destinations' },
+    { href: '/stays', label: 'Stays' },
+    { href: '/experiences', label: 'Experiences' },
+    { href: '/gallery', label: 'Gallery' },
+  ],
+  company: [
+    { href: '/about', label: 'About Us' },
+    { href: '/blog', label: 'Stories' },
+    { href: '/contact', label: 'Contact' },
+  ],
+  support: [
+    { href: '/faq', label: 'FAQ' },
+    { href: '/cancellation', label: 'Cancellation Policy' },
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/terms', label: 'Terms of Service' },
+  ],
+}
+
+const SOCIALS = [
+  {
+    label: 'Instagram',
+    href: 'https://instagram.com/hiddenmonkey.in',
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+      </svg>
+    ),
+  },
+  {
+    label: 'YouTube',
+    href: 'https://youtube.com/@hiddenmonkey',
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+      </svg>
+    ),
+  },
+  {
+    label: 'Facebook',
+    href: 'https://facebook.com/hiddenmonkey.in',
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    ),
+  },
+  {
+    label: 'Twitter',
+    href: 'https://twitter.com/hiddenmonkeyin',
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    ),
+  },
+]
+
+const DESTINATIONS = [
+  { name: 'Darjeeling', href: '/destinations#darjeeling' },
+  { name: 'Varanasi', href: '/destinations#varanasi' },
+]
+
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="relative bg-[#FAFAF9] overflow-hidden">
+    <footer className="relative bg-[#1E1F1C] overflow-hidden">
+      {/* Subtle grain texture overlay */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E')" }} />
 
-      {/* Background Typography Watermark */}
-      <div className="absolute inset-0 hidden md:block mt-16 items-center justify-center pointer-events-none overflow-hidden">
-        <div className="text-[60px] sm:text-[100px] md:text-[140px] lg:text-[200px] font-bold text-[#1E1F1C] opacity-[0.04] whitespace-nowrap leading-none">
-          Hidden Monkey
-        </div>
-      </div>
-
-      <div className="absolute inset-0 block md:hidden mt-36 pl-32 pointer-events-none overflow-hidden">
-        <div className="text-[60px] sm:text-[100px] md:text-[140px] lg:text-[200px] font-bold text-[#1E1F1C] opacity-[0.04] whitespace-nowrap leading-none">
-          Hidden <br /> Monkey
-        </div>
-      </div>
-      {/* Main Footer Content */}
-      <div className="relative pt-10 pb-32 md:py-12 lg:py-14">
+      {/* ─── MAIN CONTENT ─── */}
+      <div className="relative pt-12 pb-8 md:pt-14 md:pb-10">
         <Container className="max-w-[1400px]">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-10">
+          {/* Top Row: Brand + Newsletter */}
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 pb-8 border-b border-white/8">
+            {/* Brand */}
+            <div className="max-w-[300px]">
+              <Link href="/" className="inline-flex items-center gap-2.5 mb-3">
+                <div className="relative w-7 h-7 rounded-lg overflow-hidden">
+                  <Image src="/images/logo.png" alt="Hidden Monkey" fill className="object-contain" />
+                </div>
+                <span className="font-semibold text-[15px] text-white tracking-tight">
+                  Hidden<span className="text-[#FBB11A]">Monkey</span>
+                </span>
+              </Link>
+              <p className="text-white/40 text-[12px] font-light leading-relaxed">
+                Community hostels in India&apos;s most soulful destinations. Where strangers become travel family.
+              </p>
+            </div>
 
-            {/* ZONE 1: Brand & Links (Mobile: Full, Tablet: 50%, Desktop: 4 cols) */}
-            <div className="md:col-span-1 lg:col-span-4 flex flex-col justify-between">
-              <div>
-                <Link href="/" className="inline-block mb-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="relative w-32 h-20 flex-shrink-0">
-                      <Image
-                        src="/images/logo.png"
-                        alt="Hidden Monkey Logo"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                    
-                  </div>
-                </Link>
-
-                <p className="text-[#5E625A] text-[13px] leading-relaxed mb-6 max-w-[280px]">
-                  A home for travellers, not tourists.
-                </p>
+            {/* Newsletter Mini */}
+            <div className="flex-shrink-0">
+              <p className="text-[9px] font-bold text-[#128790] uppercase tracking-[0.2em] mb-2">Stay in the loop</p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  className="w-[180px] md:w-[200px] px-3.5 py-2 bg-white/5 border border-white/10 rounded-full text-[11px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#128790]/40 transition-colors"
+                />
+                <button className="px-4 py-2 bg-[#128790] hover:bg-[#0e6e75] text-white text-[10px] font-bold uppercase tracking-widest rounded-full transition-colors">
+                  Join
+                </button>
               </div>
+            </div>
+          </div>
 
+          {/* Link Columns */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8 mb-10">
+            {/* Explore */}
+            <div>
+              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Explore</p>
               <ul className="space-y-2">
-                <li>
-                  <Link href="/stays" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">
-                    Stays
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/destinations" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">
-                    Destinations
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/stories" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">
-                    Stories
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="text-[#5E625A] text-[12px] hover:text-[#EEA727] transition-colors">
-                    Contact
-                  </Link>
-                </li>
+                {LINKS.explore.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* ZONE 2: QR Feedback (Mobile: Full, Tablet: 50%, Desktop: 4 cols) */}
-            <div className="md:col-span-1 lg:col-span-4 flex items-center md:items-end lg:items-center justify-start md:justify-center lg:justify-center">
-              <div className="bg-white border border-[#E6E4DF] rounded-[18px] p-4 md:p-5 lg:p-6 shadow-sm hover:shadow-md transition-shadow duration-300 w-full md:w-auto flex md:flex-col items-center gap-4 md:gap-4">
+            {/* Company */}
+            <div>
+              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Company</p>
+              <ul className="space-y-2">
+                {LINKS.company.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-                {/* QR */}
-                <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] lg:w-[110px] lg:h-[110px] flex-shrink-0 md:flex-shrink bg-gradient-to-br from-[#1E1F1C] to-[#5E625A] rounded-lg flex items-center justify-center relative overflow-hidden">
-                  <svg className="w-full h-full" viewBox="0 0 110 110" fill="none">
-                    <rect x="8" y="8" width="20" height="20" fill="white" opacity="0.3" />
-                    <rect x="82" y="8" width="20" height="20" fill="white" opacity="0.3" />
-                    <rect x="8" y="82" width="20" height="20" fill="white" opacity="0.3" />
+            {/* Support */}
+            <div>
+              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Support</p>
+              <ul className="space-y-2">
+                {LINKS.support.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-                    <circle cx="30" cy="35" r="2.5" fill="white" opacity="0.4" />
-                    <circle cx="50" cy="45" r="2" fill="white" opacity="0.5" />
-                    <circle cx="70" cy="40" r="2" fill="white" opacity="0.4" />
-                    <circle cx="35" cy="60" r="2.5" fill="white" opacity="0.5" />
-                    <circle cx="65" cy="65" r="2" fill="white" opacity="0.4" />
-                    <circle cx="45" cy="75" r="2" fill="white" opacity="0.5" />
-                    <circle cx="55" cy="55" r="3" fill="white" opacity="0.6" />
-                  </svg>
+            {/* Destinations */}
+            <div>
+              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Destinations</p>
+              <ul className="space-y-2">
+                {DESTINATIONS.map((d) => (
+                  <li key={d.href}>
+                    <Link href={d.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors flex items-center gap-1.5">
+                      <span className="w-1 h-1 rounded-full bg-[#128790]" />
+                      {d.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
 
-                  <div className="absolute inset-0 flex items-end justify-center pb-2">
-                    <span className="text-white text-[8px] font-medium opacity-40">
-                      scan
-                    </span>
-                  </div>
-                </div>
-
-                {/* QR Text */}
-                <div className="md:text-center flex-1 md:flex-none">
-                  <p className="text-[#1E1F1C] text-[12px] font-medium mb-1">
-                    Tell us how it was
-                  </p>
-                  <p className="text-[#5E625A] text-[11px]">
-                    Share your Monkey House moment
-                  </p>
-                </div>
-
+              {/* Contact shortcut */}
+              <div className="mt-5 pt-4 border-t border-white/5">
+                <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-2">Get in touch</p>
+                <a href="mailto:hello@hiddenmonkey.in" className="text-white/50 text-[11px] hover:text-[#128790] transition-colors">
+                  hello@hiddenmonkey.in
+                </a>
+                <br />
+                <a href="tel:+919876543210" className="text-white/50 text-[11px] hover:text-[#128790] transition-colors">
+                  +91 98765 43210
+                </a>
               </div>
             </div>
-
-            {/* ZONE 3: Illustration (Hidden mobile/tablet, Visible desktop, 4 cols) */}
-            <div className="hidden lg:flex lg:col-span-4 justify-end items-center ">
-              <svg
-                className="w-[160px] lg:w-[180px] h-auto opacity-[0.1]"
-                viewBox="0 0 200 220"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M60 80 L70 140 Q70 150 60 150 L50 150 Q40 150 40 140 L50 80 Z"
-                      stroke="#1E1F1C" strokeWidth="2" fill="none" />
-
-                <path d="M70 100 Q90 100 90 120"
-                      stroke="#1E1F1C" strokeWidth="2" fill="none" strokeLinecap="round" />
-
-                <ellipse cx="55" cy="155" rx="20" ry="8"
-                         stroke="#1E1F1C" strokeWidth="2" fill="none" />
-
-                <path d="M55 100 Q60 90 50 85"
-                      stroke="#1E1F1C" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <path d="M60 95 Q68 92 65 82"
-                      stroke="#1E1F1C" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-
-                <path d="M30 60 L45 35 L60 50 L75 20 L90 45 L105 30"
-                      stroke="#1E1F1C" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-
-                <path d="M25 65 Q40 62 55 65"
-                      stroke="#1E1F1C" strokeWidth="1" fill="none" opacity="0.6" />
-                <path d="M35 72 Q50 70 65 72"
-                      stroke="#1E1F1C" strokeWidth="1" fill="none" opacity="0.5" />
-
-                <circle cx="45" cy="110" r="1.5" fill="#1E1F1C" opacity="0.6" />
-                <circle cx="75" cy="105" r="1.5" fill="#1E1F1C" opacity="0.6" />
-                <circle cx="50" cy="130" r="1" fill="#1E1F1C" opacity="0.5" />
-              </svg>
-            </div>
-
           </div>
+
         </Container>
       </div>
 
-      {/* Bottom Strip */}
-      <div className="border-t border-[#E6E4DF] relative -mt-8">
-        <Container className="max-w-[1400px] py-3 md:py-4 ">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] md:text-[12px]">
-            <p className="text-[#5E625A]">
-              © {currentYear} Hidden Monkey
+      {/* ─── BOTTOM BAR ─── */}
+      <div className="border-t border-white/8 relative">
+        <Container className="max-w-[1200px] py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-white/25 text-[11px]">
+              © {currentYear} Hidden Monkey Hostels Pvt. Ltd. All rights reserved.
             </p>
-            <div className="flex items-center gap-3 md:gap-4 ">
-              <Link href="/privacy" className="text-[#5E625A] hover:text-[#EEA727] transition-colors">
-                Privacy
-              </Link>
-              <span className="text-[#E6E4DF]">·</span>
-              <Link href="/terms" className="text-[#5E625A] hover:text-[#EEA727] transition-colors">
-                Terms
-              </Link>
+
+            {/* Socials */}
+            <div className="flex items-center gap-3">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/30 hover:bg-[#128790]/20 hover:text-[#128790] transition-all"
+                >
+                  {s.icon}
+                </a>
+              ))}
             </div>
           </div>
         </Container>
       </div>
-
     </footer>
   )
 }

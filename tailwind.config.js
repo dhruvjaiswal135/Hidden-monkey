@@ -7,6 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Primary Brand Colors
+        brand: {
+          teal: '#128790',
+          gold: '#FBB11A',
+        },
+        
         // Primary - Jungle Theme
         jungle: {
           dark: '#0F2F2A',      // Deep jungle - primary dark
@@ -18,8 +24,8 @@ module.exports = {
         
         // Accent - Sunset/Adventure
         sunset: {
-          gold: '#EEA727',       // Primary CTA - vibrant gold
-          DEFAULT: '#EEA727',
+          gold: '#FBB11A',       // Updated to Match Brand Gold
+          DEFAULT: '#FBB11A',
           orange: '#E84D1B',     // Hover/active state
           coral: '#FF8770',      // Soft accent
           warm: '#F59E0B',       // Alternative warm

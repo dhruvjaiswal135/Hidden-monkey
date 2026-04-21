@@ -10,23 +10,19 @@ import ExperienceModal from '@/components/modals/ExperienceModal'
 /**
  * Experiences Page
  * Full catalog of all Hidden Monkey experiences across destinations
- * 
- * Design Philosophy:
- * "Adventures that make strangers into friends"
  */
 
-// Full experiences data by category
 const allExperiences = [
   // Adventure
   {
     id: 'hidden-trails-trek',
     title: 'Hidden Trails Trek',
-    description: 'Discover secret viewpoints with our local guides. Moderate difficulty, epic views.',
+    description: 'Discover secret viewpoints with our local nature guides.',
     image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&auto=format&fit=crop&q=80',
-    category: 'adventure',
-    date: 'Every Wednesday',
+    category: 'Adventure',
+    date: 'Wednesday',
     time: '7:00 AM',
-    duration: '5 hours',
+    duration: '5 hrs',
     spots: 8,
     spotsLeft: 3,
     price: '299',
@@ -35,47 +31,43 @@ const allExperiences = [
     includes: ['Local guide', 'Packed lunch', 'Trail snacks', 'First aid kit'],
     timeline: [
       { time: '7:00 AM', activity: 'Breakfast & briefing' },
-      { time: '8:00 AM', activity: 'Trek begins' },
       { time: '10:30 AM', activity: 'Summit viewpoint' },
-      { time: '12:00 PM', activity: 'Return trek' },
     ],
     whatToBring: ['Trekking shoes', 'Sunscreen', 'Water bottle', 'Camera'],
-    pastJoiners: ['🇫🇷', '🇧🇪', '🇦🇺', '🇰🇷', '🇲🇽'],
+    pastJoiners: ['🇫🇷', '🇧🇪', '🇦🇺'],
   },
   {
     id: 'rafting-adventure',
     title: 'White Water Rafting',
-    description: 'Conquer the rapids of the Ganges! Grade III-IV rapids for the brave-hearted.',
+    description: 'Conquer the rapids! Grade III-IV rapids for the brave-hearted.',
     image: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?w=800&auto=format&fit=crop&q=80',
-    category: 'adventure',
-    date: 'Daily (Sep-May)',
+    category: 'Adventure',
+    date: 'Daily',
     time: '9:00 AM',
-    duration: '4 hours',
+    duration: '4 hrs',
     spots: 12,
     spotsLeft: 7,
     price: '1499',
-    location: 'Rishikesh',
+    location: 'Darjeeling',
     host: { name: 'Adventure Team', avatar: '🚣' },
     includes: ['All safety gear', 'Trained guides', 'Transport', 'Photos'],
     timeline: [
       { time: '9:00 AM', activity: 'Safety briefing' },
-      { time: '10:00 AM', activity: 'Hit the rapids' },
       { time: '12:00 PM', activity: 'Cliff jumping spot' },
-      { time: '1:00 PM', activity: 'Return to base' },
     ],
     whatToBring: ['Swimwear', 'Change of clothes', 'Sandals'],
-    pastJoiners: ['🇬🇧', '🇺🇸', '🇮🇳', '🇦🇺', '🇩🇪'],
+    pastJoiners: ['🇬🇧', '🇺🇸', '🇮🇳'],
   },
   // Wellness
   {
     id: 'sunrise-yoga',
     title: 'Sunrise Yoga Session',
-    description: 'Start your day right with guided yoga overlooking the valley. All levels welcome.',
+    description: 'Start your day right with guided breathing overlooking the valley.',
     image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&auto=format&fit=crop&q=80',
-    category: 'wellness',
+    category: 'Wellness',
     date: 'Daily',
     time: '6:30 AM',
-    duration: '1 hour',
+    duration: '1 hr',
     spots: 12,
     spotsLeft: 5,
     price: 'Free',
@@ -84,46 +76,43 @@ const allExperiences = [
     includes: ['Yoga mats provided', 'Morning chai', 'Peaceful views'],
     timeline: [
       { time: '6:30 AM', activity: 'Arrive & set up' },
-      { time: '6:40 AM', activity: 'Breathing exercises' },
       { time: '7:00 AM', activity: 'Asana practice' },
-      { time: '7:25 AM', activity: 'Meditation' },
     ],
     whatToBring: ['Comfortable clothes', 'Water bottle'],
-    pastJoiners: ['🇮🇳', '🇬🇧', '🇨🇦', '🇳🇱', '🇮🇹'],
+    pastJoiners: ['🇮🇳', '🇬🇧', '🇨🇦'],
   },
   {
     id: 'meditation-circle',
-    title: 'Evening Meditation Circle',
-    description: 'Unwind with a guided meditation session by the river. Find your inner peace.',
+    title: 'Evening Meditation',
+    description: 'Unwind with a guided river meditation session. Find your inner peace.',
     image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80',
-    category: 'wellness',
-    date: 'Every evening',
+    category: 'Wellness',
+    date: 'Evening',
     time: '6:00 PM',
     duration: '45 mins',
     spots: 15,
     spotsLeft: 10,
     price: 'Free',
-    location: 'Rishikesh',
+    location: 'Varanasi',
     host: { name: 'Swami Ji', avatar: '🕯️' },
     includes: ['Cushions provided', 'Incense', 'Tea afterwards'],
     timeline: [
       { time: '6:00 PM', activity: 'Gather & settle' },
       { time: '6:10 PM', activity: 'Guided meditation' },
-      { time: '6:45 PM', activity: 'Closing & chai' },
     ],
     whatToBring: ['Open mind', 'Warm layer'],
-    pastJoiners: ['🇺🇸', '🇬🇧', '🇯🇵', '🇧🇷'],
+    pastJoiners: ['🇺🇸', '🇬🇧', '🇯🇵'],
   },
   // Social
   {
     id: 'bonfire-stories',
     title: 'Bonfire & Stories Night',
-    description: 'Share travel tales, roast marshmallows, and make new friends under the stars.',
-    image: 'https://images.unsplash.com/photo-1517457373614-b7152f800fd1?w=800&auto=format&fit=crop&q=80',
-    category: 'social',
-    date: 'Every Saturday',
+    description: 'Share travel tales and roast marshmallows under the stars.',
+    image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&auto=format&fit=crop&q=80',
+    category: 'Social',
+    date: 'Saturday',
     time: '8:00 PM',
-    duration: '3 hours',
+    duration: '3 hrs',
     spots: 20,
     spotsLeft: 20,
     price: 'Free',
@@ -132,22 +121,20 @@ const allExperiences = [
     includes: ['Marshmallows', 'Bonfire setup', 'Chai & snacks'],
     timeline: [
       { time: '8:00 PM', activity: 'Gather around the fire' },
-      { time: '8:30 PM', activity: 'Ice breakers' },
       { time: '9:00 PM', activity: 'Story sharing' },
-      { time: '10:30 PM', activity: 'Music & chill' },
     ],
     whatToBring: ['Warm clothes', 'Your best travel story'],
-    pastJoiners: ['🇦🇺', '🇩🇪', '🇺🇸', '🇯🇵', '🇧🇷', '🇫🇷'],
+    pastJoiners: ['🇦🇺', '🇩🇪', '🇺🇸'],
   },
   {
     id: 'open-mic',
     title: 'Open Mic Night',
-    description: 'Got a song, poem, or story? Share it! Or just come to listen and vibe.',
+    description: 'Got a talent? Share it! Or just enjoy the jam session.',
     image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&auto=format&fit=crop&q=80',
-    category: 'nightlife',
-    date: 'Every Friday',
+    category: 'Nightlife',
+    date: 'Friday',
     time: '9:00 PM',
-    duration: '2-3 hours',
+    duration: '2-3 hrs',
     spots: 30,
     spotsLeft: 30,
     price: 'Free',
@@ -155,12 +142,11 @@ const allExperiences = [
     host: { name: 'Hidden Monkey Crew', avatar: '🎤' },
     includes: ['Sound system', 'Basic instruments', 'Drinks available'],
     timeline: [
-      { time: '9:00 PM', activity: 'Sign-up sheet' },
-      { time: '9:30 PM', activity: 'First performances' },
+      { time: '9:30 PM', activity: 'Performances' },
       { time: '10:30 PM', activity: 'Open jam' },
     ],
     whatToBring: ['Your talent (optional)', 'Good energy'],
-    pastJoiners: ['🇪🇸', '🇦🇷', '🇿🇦', '🇺🇸', '🇮🇳'],
+    pastJoiners: ['🇪🇸', '🇦🇷', '🇿🇦'],
   },
   // Food
   {
@@ -168,10 +154,10 @@ const allExperiences = [
     title: 'Local Cooking Class',
     description: 'Learn to make authentic Indian dishes with our local chef. Eat what you cook!',
     image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&auto=format&fit=crop&q=80',
-    category: 'food',
-    date: 'Every Tuesday & Thursday',
+    category: 'Food',
+    date: 'Tues & Thurs',
     time: '4:00 PM',
-    duration: '3 hours',
+    duration: '3 hrs',
     spots: 8,
     spotsLeft: 4,
     price: '499',
@@ -179,195 +165,105 @@ const allExperiences = [
     host: { name: 'Chef Auntie', avatar: '👩‍🍳' },
     includes: ['All ingredients', 'Recipe cards', 'Dinner', 'Chai'],
     timeline: [
-      { time: '4:00 PM', activity: 'Market visit (optional)' },
       { time: '4:30 PM', activity: 'Prep & cooking' },
       { time: '6:30 PM', activity: 'Eat together!' },
     ],
     whatToBring: ['Empty stomach', 'Apron (provided if needed)'],
-    pastJoiners: ['🇯🇵', '🇫🇷', '🇺🇸', '🇧🇷'],
-  },
-  {
-    id: 'street-food-trail',
-    title: 'Street Food Trail',
-    description: 'Explore the best street food spots with a local foodie. Discover hidden gems!',
-    image: 'https://images.unsplash.com/photo-1567337710282-00832b415979?w=800&auto=format&fit=crop&q=80',
-    category: 'food',
-    date: 'Every Monday & Friday',
-    time: '5:00 PM',
-    duration: '2.5 hours',
-    spots: 10,
-    spotsLeft: 6,
-    price: '349',
-    location: 'Varanasi',
-    host: { name: 'Foodie Rahul', avatar: '🍜' },
-    includes: ['6-8 food stops', 'Water', 'Food story guide'],
-    timeline: [
-      { time: '5:00 PM', activity: 'Meet at hostel' },
-      { time: '5:15 PM', activity: 'First stop - chaat' },
-      { time: '6:00 PM', activity: 'Sweet shops' },
-      { time: '7:00 PM', activity: 'Main course spots' },
-    ],
-    whatToBring: ['Empty stomach', 'Comfortable shoes'],
-    pastJoiners: ['🇬🇧', '🇩🇪', '🇦🇺', '🇨🇦'],
-  },
-  // Culture
-  {
-    id: 'ganga-aarti',
-    title: 'Ganga Aarti Experience',
-    description: 'Witness the magical evening ceremony on the ghats. A spiritual awakening.',
-    image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&auto=format&fit=crop&q=80',
-    category: 'culture',
-    date: 'Every evening',
-    time: '6:30 PM',
-    duration: '1.5 hours',
-    spots: 15,
-    spotsLeft: 8,
-    price: 'Free',
-    location: 'Varanasi',
-    host: { name: 'Local Guide', avatar: '🛕' },
-    includes: ['Best viewing spots', 'Cultural context', 'Flower offerings'],
-    timeline: [
-      { time: '6:30 PM', activity: 'Meet at hostel' },
-      { time: '6:45 PM', activity: 'Walk to ghats' },
-      { time: '7:00 PM', activity: 'Aarti ceremony' },
-      { time: '8:00 PM', activity: 'Boat ride (optional)' },
-    ],
-    whatToBring: ['Camera', 'Respectful clothing'],
-    pastJoiners: ['🇫🇷', '🇮🇹', '🇯🇵', '🇺🇸', '🇧🇷'],
-  },
-  {
-    id: 'tea-garden-tour',
-    title: 'Tea Garden Walk',
-    description: 'Explore the famous tea estates of Darjeeling. Learn about tea and taste the best.',
-    image: 'https://images.unsplash.com/photo-1582793988951-9aed5509eb97?w=800&auto=format&fit=crop&q=80',
-    category: 'culture',
-    date: 'Every Monday & Wednesday',
-    time: '9:00 AM',
-    duration: '4 hours',
-    spots: 10,
-    spotsLeft: 5,
-    price: '599',
-    location: 'Darjeeling',
-    host: { name: 'Tea Master', avatar: '🍵' },
-    includes: ['Transport', 'Tea tasting session', 'Snacks', 'Tea to take home'],
-    timeline: [
-      { time: '9:00 AM', activity: 'Depart from hostel' },
-      { time: '9:45 AM', activity: 'Arrive at estate' },
-      { time: '10:00 AM', activity: 'Garden walk & learning' },
-      { time: '11:30 AM', activity: 'Tea tasting' },
-    ],
-    whatToBring: ['Hat', 'Camera', 'Comfortable shoes'],
-    pastJoiners: ['🇯🇵', '🇬🇧', '🇨🇳', '🇺🇸'],
+    pastJoiners: ['🇯🇵', '🇫🇷', '🇺🇸'],
   },
 ]
 
 // Category filter options
 const categories = [
-  { id: 'all', name: 'All Experiences', icon: '✨' },
-  { id: 'adventure', name: 'Adventure', icon: '🏔️' },
-  { id: 'wellness', name: 'Wellness', icon: '🧘' },
-  { id: 'social', name: 'Social', icon: '🎉' },
-  { id: 'food', name: 'Food & Drink', icon: '🍜' },
-  { id: 'culture', name: 'Culture', icon: '🎭' },
-  { id: 'nightlife', name: 'Nightlife', icon: '🌙' },
+  { id: 'all', name: 'All' },
+  { id: 'Adventure', name: 'Adventure' },
+  { id: 'Wellness', name: 'Wellness' },
+  { id: 'Social', name: 'Social' },
+  { id: 'Food', name: 'Food' },
 ]
 
 // Location filter options
 const locations = [
-  { id: 'all', name: 'All Locations' },
-  { id: 'Varanasi', name: 'Varanasi' },
+  { id: 'all', name: 'Everywhere' },
   { id: 'Darjeeling', name: 'Darjeeling' },
-  { id: 'Rishikesh', name: 'Rishikesh' },
-  { id: 'Goa', name: 'Goa' },
+  { id: 'Varanasi', name: 'Varanasi' },
 ]
 
-function ExperienceCard({ experience, index, onClick }) {
-  const categoryColors = {
-    adventure: 'bg-blue-500',
-    wellness: 'bg-green-500',
-    social: 'bg-orange-500',
-    food: 'bg-yellow-500',
-    culture: 'bg-purple-500',
-    nightlife: 'bg-indigo-500',
-  }
-
+function CompactExperienceCard({ experience, index, onClick }) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
+      initial={{ opacity: 0, scale: 0.95, y: 10 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
       onClick={() => onClick(experience)}
-      className="group bg-white rounded-2xl overflow-hidden border border-border hover:border-sunset-gold/30 transition-all duration-300 hover:shadow-elevated hover:-translate-y-1 cursor-pointer"
+      className="group bg-white rounded-[20px] overflow-hidden border border-[#E6E4DF] hover:border-[#128790]/30 transition-all duration-500 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-1 cursor-pointer flex flex-col"
     >
-      <div className="relative h-48 overflow-hidden">
-        <Image
-          src={experience.image}
-          alt={experience.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          unoptimized
-        />
-        
-        {/* Category Badge */}
-        <div className="absolute top-3 left-3">
-          <span className={`px-3 py-1 ${categoryColors[experience.category] || 'bg-gray-500'} text-white text-xs font-bold rounded-full uppercase tracking-wide`}>
-            {experience.category}
-          </span>
-        </div>
-        
-        {/* Location Badge */}
-        <div className="absolute top-3 right-3">
-          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-charcoal text-xs font-medium rounded-full">
-            📍 {experience.location}
-          </span>
-        </div>
-        
-        {/* Price Badge */}
-        {experience.price !== 'Free' && (
-          <div className="absolute bottom-3 right-3">
-            <span className="px-3 py-1.5 bg-charcoal/80 backdrop-blur-sm text-white text-sm font-semibold rounded-full">
-              ₹{experience.price}
-            </span>
-          </div>
-        )}
-        {experience.price === 'Free' && (
-          <div className="absolute bottom-3 right-3">
-            <span className="px-3 py-1.5 bg-green-500 text-white text-sm font-semibold rounded-full">
-              Free
-            </span>
-          </div>
-        )}
+      <div className="p-1.5 pb-0">
+         <div className="relative h-[150px] overflow-hidden rounded-[14px]">
+           <Image
+             src={experience.image}
+             alt={experience.title}
+             fill
+             className="object-cover group-hover:scale-105 transition-transform duration-500"
+             unoptimized
+           />
+           
+           {/* Date Badge */}
+           <div className="absolute top-2 right-2 bg-white/95 backdrop-blur-sm text-[#1E1F1C] px-2 py-1 rounded-lg text-center shadow-sm">
+             <div className="text-[8px] font-bold uppercase tracking-widest text-[#128790]">
+                {String(experience.date).split(' ')[0]}
+             </div>
+             <div className="text-[14px] font-black leading-none mt-[2px]">
+                {String(experience.time).split(':')[0]}
+             </div>
+           </div>
+           
+           {/* Price Badge */}
+           {experience.price !== 'Free' ? (
+             <div className="absolute bottom-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-md rounded-md text-[#1E1F1C] text-[10px] font-bold">
+               ₹{experience.price}
+             </div>
+           ) : (
+             <div className="absolute bottom-2 left-2 px-2 py-1 bg-[#128790] text-white text-[10px] font-bold rounded-md uppercase tracking-wider">
+               Free
+             </div>
+           )}
+         </div>
       </div>
       
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-charcoal mb-2 group-hover:text-sunset-gold transition-colors">
+      <div className="p-4 flex-1 flex flex-col">
+        {/* Tiny Pill Badges */}
+        <div className="mb-2 flex items-center gap-2">
+           <span className="inline-block px-2 py-0.5 bg-[#FBFBF9] border border-[#E6E4DF] rounded-full text-[#128790] text-[9px] font-bold uppercase tracking-widest">
+             {experience.category}
+           </span>
+           <span className="inline-block px-2 py-0.5 bg-white text-[#9A948C] text-[9px] font-semibold tracking-wider">
+             📍 {experience.location}
+           </span>
+        </div>
+
+        <h3 className="text-[16px] font-bold text-[#1E1F1C] mb-1.5 group-hover:text-[#128790] transition-colors leading-[1.2]">
           {experience.title}
         </h3>
-        <p className="text-charcoal-muted text-sm leading-relaxed mb-4 line-clamp-2">
+        <p className="text-[#6B665E] text-[12px] font-light leading-relaxed mb-4 line-clamp-2 flex-1">
           {experience.description}
         </p>
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-xs text-charcoal-muted">
+        <div className="flex items-center justify-between border-t border-[#E6E4DF] pt-3">
+          <div className="flex items-center gap-2 text-[10px] text-[#9A948C] font-semibold">
             <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              {experience.date}
-            </span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 text-[#128790]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {experience.duration}
             </span>
           </div>
           
-          <span className="text-sunset-gold text-sm font-medium flex items-center gap-1">
+          <span className="text-[#1E1F1C] text-[11px] font-bold uppercase tracking-widest flex items-center gap-1 group-hover:text-[#FBB11A]">
             View
-            <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </span>
         </div>
@@ -382,102 +278,69 @@ export default function ExperiencesPage() {
   const [selectedExperience, setSelectedExperience] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const heroRef = useRef(null)
-  const isHeroInView = useInView(heroRef, { once: true })
+  const isHeroInView = useInView(heroRef, { once: true, margin: "-100px" })
 
-  // Filter experiences
   const filteredExperiences = allExperiences.filter((exp) => {
     const categoryMatch = selectedCategory === 'all' || exp.category === selectedCategory
     const locationMatch = selectedLocation === 'all' || exp.location === selectedLocation
     return categoryMatch && locationMatch
   })
 
-  const handleExperienceClick = (experience) => {
-    setSelectedExperience(experience)
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedExperience(null)
-  }
-
   return (
     <>
-      {/* Hero Section */}
-      <section ref={heroRef} className="relative py-16 md:py-24 bg-gradient-to-b from-sunset-gold/5 to-white overflow-hidden">
-        <Container className="max-w-[1400px]">
+      <section ref={heroRef} className="pt-12 pb-8 bg-[#FBFBF9] border-b border-[#E6E4DF]">
+        <Container className="max-w-[1200px]">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-center max-w-3xl mx-auto"
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6"
           >
-            <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: 0.2, duration: 0.4 }}
-              className="inline-block px-4 py-2 bg-sunset-gold/10 text-sunset-gold text-sm font-medium rounded-full mb-6"
-            >
-              🎪 Hidden Monkey Experiences
-            </motion.span>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-6 leading-tight">
-              Adventures that become <span className="text-sunset-gold">memories</span>
-            </h1>
-            
-            <p className="text-charcoal-muted text-lg md:text-xl leading-relaxed mb-8">
-              Treks, yoga sessions, cooking classes, and spontaneous adventures. 
-              The best part? You'll do them with fellow travelers.
-            </p>
-            
-            {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-              <div className="text-center">
-                <p className="text-3xl font-bold text-charcoal">{allExperiences.length}+</p>
-                <p className="text-sm text-charcoal-muted">Experiences</p>
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-4 h-[2px] bg-[#128790]"></span>
+                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">
+                  Culture & Community
+                </span>
               </div>
-              <div className="text-center">
-                <p className="text-3xl font-bold text-charcoal">4</p>
-                <p className="text-sm text-charcoal-muted">Locations</p>
-              </div>
-              <div className="text-center">
-                <p className="text-3xl font-bold text-charcoal">5,000+</p>
-                <p className="text-sm text-charcoal-muted">Happy participants</p>
-              </div>
+              <h1 className="text-[32px] md:text-[48px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.02em] mb-4">
+                Adventures that become <span className="text-[#FBB11A]">memories.</span>
+              </h1>
+              <p className="text-[#6B665E] text-[14px] md:text-[15px] font-light leading-relaxed max-w-xl">
+                Treks, yoga sessions, cooking classes, and spontaneous adventures. 
+                Do them with fellow travelers and turn strangers into lifelong friends.
+              </p>
             </div>
           </motion.div>
         </Container>
       </section>
 
-      {/* Filters */}
-      <section className="py-6 bg-white border-b border-border sticky top-16 z-40">
-        <Container className="max-w-[1400px]">
-          <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-            {/* Category Filters */}
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 md:pb-0">
+      {/* Cute Filters Bar */}
+      <section className="py-4 bg-white border-b border-[#E6E4DF] sticky top-[60px] z-40 shadow-sm">
+        <Container className="max-w-[1200px]">
+          <div className="flex flex-col md:flex-row gap-3 md:items-center justify-between">
+            <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 md:pb-0">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
                     selectedCategory === cat.id
-                      ? 'bg-sunset-gold text-white'
-                      : 'bg-sand-cream text-charcoal hover:bg-sand-light'
+                      ? 'bg-[#128790] text-white border-[#128790]'
+                      : 'bg-white text-[#6B665E] border-[#E6E4DF] hover:border-[#128790]/50'
                   }`}
                 >
-                  <span>{cat.icon}</span>
                   {cat.name}
                 </button>
               ))}
             </div>
             
-            {/* Location Filter */}
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-charcoal-muted">Location:</span>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#9A948C]">Where:</span>
               <select
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                className="px-4 py-2 bg-sand-cream border border-border rounded-full text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-sunset-gold"
+                className="px-3 py-1.5 bg-[#FBFBF9] border border-[#E6E4DF] rounded-lg text-[12px] font-semibold text-[#1E1F1C] focus:outline-none focus:border-[#128790] cursor-pointer"
               >
                 {locations.map((loc) => (
                   <option key={loc.id} value={loc.id}>{loc.name}</option>
@@ -488,59 +351,59 @@ export default function ExperiencesPage() {
         </Container>
       </section>
 
-      {/* Experiences Grid */}
-      <section className="py-12 md:py-20 bg-sand-light">
-        <Container className="max-w-[1400px]">
+      {/* Compact Grid */}
+      <section className="py-10 bg-[#FBFBF9] min-h-[50vh]">
+        <Container className="max-w-[1200px]">
           {filteredExperiences.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
               {filteredExperiences.map((experience, index) => (
-                <ExperienceCard
+                <CompactExperienceCard
                   key={experience.id}
                   experience={experience}
                   index={index}
-                  onClick={handleExperienceClick}
+                  onClick={setSelectedExperience}
                 />
               ))}
             </div>
           ) : (
-            <div className="text-center py-20">
-              <p className="text-6xl mb-4">🔍</p>
-              <h3 className="text-2xl font-bold text-charcoal mb-2">No experiences found</h3>
-              <p className="text-charcoal-muted">
-                Try adjusting your filters to find more adventures.
-              </p>
+            <div className="text-center py-16 bg-white rounded-2xl border border-[#E6E4DF]">
+              <p className="text-3xl mb-3">🧳</p>
+              <h3 className="text-[18px] font-bold text-[#1E1F1C] mb-1">No adventures found here... yet.</h3>
+              <p className="text-[#6B665E] text-[13px] mb-4">Try adjusting your filters to discover something new.</p>
               <button
                 onClick={() => { setSelectedCategory('all'); setSelectedLocation('all'); }}
-                className="mt-4 px-6 py-2 bg-sunset-gold text-white rounded-full font-medium hover:bg-sunset-orange transition-colors"
+                className="px-4 py-2 bg-[#FBFBF9] border border-[#E6E4DF] text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-white transition-colors"
               >
-                Reset filters
+                Clear Filters
               </button>
             </div>
           )}
         </Container>
       </section>
 
-      {/* Propose Experience CTA */}
-      <section className="py-16 md:py-24 bg-white">
-        <Container className="max-w-[1400px]">
-          <div className="text-center max-w-2xl mx-auto">
-            <span className="text-5xl mb-4 block">💡</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
-              Got an idea for an experience?
-            </h2>
-            <p className="text-charcoal-muted text-lg mb-8">
-              Our best experiences come from travelers like you. Propose a yoga class, 
-              cooking workshop, or adventure trek!
-            </p>
-            <Link
-              href="/propose-experience"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-jungle-dark hover:bg-jungle-moss text-white font-semibold rounded-full transition-colors"
-            >
-              Propose an experience
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
+      {/* Cute Propose Experience CTA */}
+      <section className="py-12 bg-white border-t border-[#E6E4DF]">
+        <Container className="max-w-[800px]">
+          <div className="bg-[#128790] rounded-[24px] p-8 md:p-10 text-center relative overflow-hidden group">
+            <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/10 rounded-full blur-[20px] transition-transform duration-700 group-hover:scale-150" />
+            <div className="relative z-10">
+               <span className="text-3xl mb-3 block">💡</span>
+               <h2 className="text-[24px] md:text-[32px] font-bold text-[#FBB11A] mb-3 leading-[1]">
+                 Host an experience?
+               </h2>
+               <p className="text-white/90 text-[13px] md:text-[14px] font-light mb-6">
+                 Travelers often lead their own sessions — yoga, cooking, or jam nights. If you have a skill to share, let's make it happen.
+               </p>
+               <Link
+                 href="/propose-experience"
+                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-[#FBFBF9] transition-colors"
+               >
+                 Let's Talk
+                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                 </svg>
+               </Link>
+            </div>
           </div>
         </Container>
       </section>
@@ -548,8 +411,8 @@ export default function ExperiencesPage() {
       {/* Experience Modal */}
       <ExperienceModal
         experience={selectedExperience}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={!!selectedExperience}
+        onClose={() => setSelectedExperience(null)}
       />
     </>
   )

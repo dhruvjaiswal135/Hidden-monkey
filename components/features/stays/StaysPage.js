@@ -44,7 +44,7 @@ const ALL_ROOMS = [
     available: true,
     rating: 4.8,
     reviews: 234,
-    locations: ['Varanasi', 'Rishikesh', 'Goa', 'Darjeeling'],
+    locations: ['Varanasi', 'Darjeeling'],
     detailedDescription: [
       'Our Mixed Dorm is the heart of the Monkey House community. Share a space with travelers from around the world and make lasting friendships.',
       'Each bed has a personal locker, privacy curtain, and reading light. Shared bathrooms are cleaned throughout the day.',
@@ -75,7 +75,7 @@ const ALL_ROOMS = [
     available: true,
     rating: 4.9,
     reviews: 156,
-    locations: ['Varanasi', 'Rishikesh', 'Goa'],
+    locations: ['Varanasi', 'Darjeeling'],
     detailedDescription: [
       'A dedicated space designed with women travelers in mind — safe, respected, and part of a supportive community.',
       'All pods feature personal lockers, blackout privacy curtains, and individual reading lights.',
@@ -105,7 +105,7 @@ const ALL_ROOMS = [
     available: true,
     rating: 4.9,
     reviews: 112,
-    locations: ['Varanasi', 'Goa'],
+    locations: ['Varanasi', 'Darjeeling'],
     detailedDescription: [
       'The cozier dorm option — just 4 beds means more space, less noise, and a more intimate atmosphere.',
       'Includes an en-suite bathroom shared only between the 4 pod guests.',
@@ -136,7 +136,7 @@ const ALL_ROOMS = [
     available: true,
     rating: 4.9,
     reviews: 89,
-    locations: ['Goa', 'Rishikesh'],
+    locations: ['Varanasi', 'Darjeeling'],
     detailedDescription: [
       'Your own cozy room with a comfortable queen bed. Privacy without losing the hostel vibe.',
       'Includes a private attached bathroom, AC, fast WiFi, and access to all community spaces.',
@@ -168,7 +168,7 @@ const ALL_ROOMS = [
     available: true,
     rating: 5.0,
     reviews: 45,
-    locations: ['Goa', 'Darjeeling'],
+    locations: ['Darjeeling'],
     detailedDescription: [
       'Our most spacious room with premium amenities — king bed, private balcony with stunning views, mini bar, coffee maker.',
       'Perfect for couples seeking luxury comfort while still experiencing the Monkey House community.',
@@ -187,10 +187,8 @@ const FILTERS = [
 
 const LOCATIONS = [
   { id: 'all', label: 'All locations' },
-  { id: 'Varanasi', label: 'Varanasi' },
-  { id: 'Rishikesh', label: 'Rishikesh' },
-  { id: 'Goa', label: 'Goa' },
   { id: 'Darjeeling', label: 'Darjeeling' },
+  { id: 'Varanasi', label: 'Varanasi' },
 ]
 
 const FAQ = [
@@ -201,97 +199,81 @@ const FAQ = [
   { q: "What's your cancellation policy?", a: 'Free cancellation up to 48 hours before check-in. Within 48 hours the first night is non-refundable.' },
 ]
 
-/* ─── Room card for Stays page ─────────────────────────────── */
 function StaysRoomCard({ room, index, onOpen }) {
   const discount = Math.round((1 - room.price / room.originalPrice) * 100)
   return (
     <article
       onClick={() => onOpen(room)}
-      className="group cursor-pointer bg-white rounded-[22px] overflow-hidden border border-neutral-100 hover:border-sunset-gold/40 hover:shadow-xl transition-all duration-300"
+      className="group cursor-pointer bg-white rounded-[20px] overflow-hidden border border-[#E6E4DF] hover:border-[#128790]/30 transition-all duration-500 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-1 flex flex-col"
     >
-      {/* Image */}
-      <div className="relative h-56 overflow-hidden">
-        <Image
-          src={room.images[0]}
-          alt={room.name}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          unoptimized
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+      <div className="p-1.5 pb-0">
+        <div className="relative h-[160px] md:h-[180px] overflow-hidden rounded-[14px]">
+          <Image
+            src={room.images[0]}
+            alt={room.name}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            unoptimized
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-        {/* Top badges */}
-        <div className="absolute top-3.5 left-3.5 flex items-center gap-2">
-          <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide ${
-            room.category === 'dorm' ? 'bg-sky-500 text-white' : 'bg-violet-500 text-white'
-          }`}>
-            {room.category === 'dorm' ? 'Dorm' : 'Private'}
-          </span>
-          {discount >= 20 && (
-            <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-emerald-500 text-white">
-              {discount}% off
+          {/* Top badges */}
+          <div className="absolute top-2 left-2 flex items-center gap-1.5">
+            <span className={`text-[9px] font-bold px-2 py-1 rounded-md uppercase tracking-widest ${
+              room.category === 'dorm' ? 'bg-[#128790] text-white' : 'bg-[#FBB11A] text-[#1E1F1C]'
+            }`}>
+              {room.category === 'dorm' ? 'Dorm' : 'Private'}
             </span>
-          )}
-        </div>
-
-        {/* Rating */}
-        <div className="absolute top-3.5 right-3.5 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1">
-          <svg className="w-3 h-3 text-sunset-gold" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-          </svg>
-          <span className="text-[11px] font-semibold text-charcoal">{room.rating}</span>
-          <span className="text-[10px] text-charcoal-muted">({room.reviews})</span>
-        </div>
-
-        {/* Price */}
-        <div className="absolute bottom-3.5 right-3.5">
-          <div className="bg-charcoal/80 backdrop-blur-sm rounded-full px-3 py-1.5 text-right">
-            {room.originalPrice && (
-              <span className="block text-[9px] text-white/50 line-through leading-none">&#8377;{room.originalPrice}</span>
+            {discount >= 20 && (
+              <span className="text-[9px] font-bold px-2 py-1 rounded-md bg-emerald-500 text-white shadow-sm">
+                -{discount}%
+              </span>
             )}
-            <span className="text-white font-bold text-sm leading-tight">&#8377;{room.price}<span className="text-[10px] font-normal text-white/60">/night</span></span>
           </div>
-        </div>
 
-        {/* Photo count */}
-        <div className="absolute bottom-3.5 left-3.5 flex items-center gap-1 bg-black/30 border border-white/15 rounded-full px-2 py-1">
-          <svg className="w-3 h-3 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span className="text-white text-[10px]">{room.images.length}</span>
+          {/* Rating */}
+          <div className="absolute top-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur-sm rounded-md px-2 py-1 shadow-sm">
+            <svg className="w-2.5 h-2.5 text-[#FBB11A]" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+            <span className="text-[10px] font-bold text-[#1E1F1C]">{room.rating}</span>
+          </div>
+
+          {/* Photo count */}
+          <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/40 backdrop-blur-sm border border-white/15 rounded-md px-2 py-1">
+            <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span className="text-white text-[9px] font-medium">{room.images.length}</span>
+          </div>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="p-5">
-        <h3 className="text-[16px] font-bold text-charcoal mb-1 group-hover:text-sunset-gold transition-colors leading-snug">
+      <div className="p-4 flex-1 flex flex-col">
+        <h3 className="text-[16px] font-bold text-[#1E1F1C] mb-1 group-hover:text-[#128790] transition-colors leading-[1.2]">
           {room.name}
         </h3>
-        <p className="text-[13px] text-charcoal-muted mb-3.5 line-clamp-2 leading-relaxed">{room.tagline}</p>
-
-        {/* Highlights */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {room.highlights.slice(0, 3).map((h, i) => (
-            <span key={i} className="text-[11px] text-charcoal-muted bg-[#F4EFEA] px-2.5 py-0.5 rounded-full">
-              {h}
-            </span>
-          ))}
-        </div>
+        <p className="text-[12px] text-[#6B665E] font-light mb-3 line-clamp-2 leading-relaxed flex-1">
+          {room.tagline}
+        </p>
 
         {/* Meta row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-[11px] text-charcoal-muted">
+        <div className="flex items-center justify-between border-t border-[#E6E4DF] pt-3">
+          <div className="flex items-center gap-2 text-[10px] text-[#9A948C]">
             <span>{room.capacity}</span>
-            <span className="text-neutral-200">·</span>
+            <span className="w-1 h-1 rounded-full bg-[#E6E4DF]"></span>
             <span>{room.size}</span>
           </div>
-          <span className="text-[12px] font-semibold text-sunset-gold flex items-center gap-1 group-hover:gap-2 transition-all">
-            View room
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/>
-            </svg>
-          </span>
+          
+          <div className="text-right">
+             <div className="flex flex-col">
+               {room.originalPrice && (
+                 <span className="text-[9px] text-[#9A948C] line-through leading-none">&#8377;{room.originalPrice}</span>
+               )}
+               <span className="text-[#1E1F1C] font-bold text-[14px] leading-tight">&#8377;{room.price}<span className="text-[10px] font-normal text-[#6B665E]">/nt</span></span>
+             </div>
+          </div>
         </div>
       </div>
     </article>
@@ -322,135 +304,72 @@ export default function StaysPage() {
 
   return (
     <>
-      {/* ─── HERO ─── */}
-      <section ref={heroRef} className="relative bg-charcoal overflow-hidden -mt-20">
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=1600&auto=format&fit=crop&q=60"
-            alt=""
-            fill
-            className="object-cover opacity-25"
-            unoptimized
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-charcoal/60 via-charcoal/80 to-charcoal" />
-        </div>
-
-        <div className="relative max-w-[1400px] mx-auto px-6 lg:px-10 pt-20 pb-0">
-          <div className={`text-center max-w-3xl mx-auto transition-all duration-700 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="inline-block px-3 py-1 bg-white/10 border border-white/15 text-white text-[11px] tracking-[0.18em] uppercase rounded-full mb-6">
-              Book your stay
-            </span>
-            <h1 className="text-[clamp(2.5rem,5.5vw,4.25rem)] font-bold text-white leading-[1.1] tracking-tight mb-5">
-              Find your perfect<br />
-              <span className="text-sunset-gold">space</span> in our community
-            </h1>
-            <p className="text-white/60 text-lg leading-relaxed max-w-xl mx-auto mb-10">
-              From social dorms to private retreats — every room is designed for comfort, connection, and the best sleep of your trip.
-            </p>
-          </div>
-
-          {/* ─── BOOKING WIDGET ─── */}
-          <div className={`max-w-3xl mx-auto transition-all duration-700 delay-150 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="bg-white rounded-[20px] p-1 shadow-2xl mb-0 relative top-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-0.5">
-                <div className="px-4 py-3.5">
-                  <label className="block text-[10px] font-bold text-charcoal uppercase tracking-wider mb-1.5">Location</label>
-                  <select
-                    value={location}
-                    onChange={e => setLocation(e.target.value)}
-                    className="w-full bg-transparent text-[13.5px] text-charcoal font-medium focus:outline-none cursor-pointer"
-                  >
-                    {LOCATIONS.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
-                  </select>
-                </div>
-                <div className="px-4 py-3.5 border-l border-neutral-100">
-                  <label className="block text-[10px] font-bold text-charcoal uppercase tracking-wider mb-1.5">Check in</label>
-                  <input
-                    type="date"
-                    value={checkIn}
-                    onChange={e => setCheckIn(e.target.value)}
-                    min={today}
-                    className="w-full bg-transparent text-[13.5px] text-charcoal font-medium focus:outline-none cursor-pointer"
-                  />
-                </div>
-                <div className="px-4 py-3.5 border-l border-neutral-100">
-                  <label className="block text-[10px] font-bold text-charcoal uppercase tracking-wider mb-1.5">Check out</label>
-                  <input
-                    type="date"
-                    value={checkOut}
-                    onChange={e => setCheckOut(e.target.value)}
-                    min={checkIn || today}
-                    className="w-full bg-transparent text-[13.5px] text-charcoal font-medium focus:outline-none cursor-pointer"
-                  />
-                </div>
-                <div className="px-4 py-3.5 border-l border-neutral-100 flex items-center justify-between gap-3">
-                  <div>
-                    <label className="block text-[10px] font-bold text-charcoal uppercase tracking-wider mb-1.5">Guests</label>
-                    <select
-                      value={guests}
-                      onChange={e => setGuests(Number(e.target.value))}
-                      className="w-full bg-transparent text-[13.5px] text-charcoal font-medium focus:outline-none cursor-pointer"
-                    >
-                      {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>)}
-                    </select>
-                  </div>
-                  <button className="shrink-0 w-10 h-10 bg-sunset-gold hover:bg-sunset-orange rounded-full flex items-center justify-center transition-colors shadow">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                  </button>
-                </div>
+      {/* ─── CUTE COMPACT HERO ─── */}
+      <section ref={heroRef} className="pt-12 pb-8 bg-[#FBFBF9] border-b border-[#E6E4DF]">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className={`max-w-2xl transition-all duration-700 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-4 h-[2px] bg-[#128790]"></span>
+                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">
+                  Book your stay
+                </span>
               </div>
+              <h1 className="text-[32px] md:text-[48px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.02em] mb-4">
+                Find your perfect <span className="text-[#FBB11A]">space.</span>
+              </h1>
+              <p className="text-[#6B665E] text-[14px] md:text-[15px] font-light leading-relaxed max-w-xl">
+                From social dorms to private retreats — every room is designed for comfort, connection, and the best sleep of your trip.
+              </p>
             </div>
+
+            {/* ─── CUTE BOOKING WIDGET ─── */}
+            {/*  */}
           </div>
         </div>
       </section>
 
-      {/* ─── STICKY FILTER BAR ─── */}
-      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-100">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-3.5 flex items-center gap-3 overflow-x-auto scrollbar-hide">
-          {FILTERS.map(f => (
-            <button
-              key={f.id}
-              onClick={() => setFilter(f.id)}
-              className={`shrink-0 px-5 py-2 rounded-full text-[12.5px] font-semibold whitespace-nowrap transition-all duration-200 ${
-                filter === f.id
-                  ? 'bg-charcoal text-white'
-                  : 'bg-neutral-100 text-charcoal hover:bg-neutral-200'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-          <div className="ml-auto shrink-0 text-[12px] text-charcoal-muted font-medium">
+      {/* ─── CUTE FILTER BAR ─── */}
+      <section className="py-4 bg-white border-b border-[#E6E4DF] sticky top-[60px] z-40 shadow-sm">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row gap-3 md:items-center justify-between">
+          <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 md:pb-0">
+            {FILTERS.map(f => (
+              <button
+                key={f.id}
+                onClick={() => setFilter(f.id)}
+                className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
+                  filter === f.id
+                    ? 'bg-[#128790] text-white border-[#128790]'
+                    : 'bg-white text-[#6B665E] border-[#E6E4DF] hover:border-[#128790]/50'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <div className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-[#9A948C]">
             {filtered.length} room{filtered.length !== 1 ? 's' : ''} available
           </div>
         </div>
-      </div>
+      </section>
 
       {/* ─── ROOMS GRID ─── */}
-      <section className="bg-[#F4EFEA] py-16 md:py-20">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
+      <section className="bg-[#FBFBF9] py-10 min-h-[50vh]">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
           {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
               {filtered.map((room, i) => (
                 <StaysRoomCard key={room.id} room={room} index={i} onOpen={openModal} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-24">
-              <div className="w-16 h-16 bg-neutral-200 rounded-full flex items-center justify-center mx-auto mb-5">
-                <svg className="w-7 h-7 text-charcoal-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-charcoal mb-2">No rooms match</h3>
-              <p className="text-charcoal-muted mb-5 text-sm">Try a different location or room type.</p>
+            <div className="text-center py-16 bg-white rounded-2xl border border-[#E6E4DF]">
+              <div className="text-3xl mb-3">🛌</div>
+              <h3 className="text-[18px] font-bold text-[#1E1F1C] mb-1">No rooms match</h3>
+              <p className="text-[#6B665E] text-[13px] mb-4">Try a different location or room type.</p>
               <button
                 onClick={() => { setFilter('all'); setLocation('all') }}
-                className="px-6 py-2.5 bg-charcoal text-white text-sm font-semibold rounded-full hover:bg-charcoal/85 transition-colors"
+                className="px-4 py-2 bg-[#FBFBF9] border border-[#E6E4DF] text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-white transition-colors"
               >
                 Reset filters
               </button>
@@ -460,24 +379,25 @@ export default function StaysPage() {
       </section>
 
       {/* ─── GROUP BOOKING ─── */}
-      <section className="bg-white py-16 md:py-24">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
-          <div className="bg-charcoal rounded-[28px] overflow-hidden grid md:grid-cols-2 gap-0">
-            <div className="px-10 py-14 lg:px-16 lg:py-16 flex flex-col justify-center">
-              <span className="inline-block px-3 py-1 bg-white/10 border border-white/15 text-white text-[11px] tracking-[0.18em] uppercase rounded-full mb-6 w-fit">
+      <section className="bg-white py-12 border-t border-[#E6E4DF]">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
+          <div className="bg-[#128790] rounded-[24px] overflow-hidden grid md:grid-cols-2 gap-0 group">
+            <div className="px-8 py-10 lg:px-12 lg:py-12 flex flex-col justify-center relative z-10">
+              <div className="absolute -top-12 -left-12 w-32 h-32 bg-white/10 rounded-full blur-[20px] transition-transform duration-700 group-hover:scale-150" />
+              <span className="inline-block px-3 py-1 bg-white/10 border border-white/20 text-white text-[9px] font-bold uppercase tracking-widest rounded-md w-fit mb-4">
                 Group rates
               </span>
-              <h2 className="text-[clamp(1.75rem,3vw,2.75rem)] font-bold text-white leading-tight mb-4">
+              <h2 className="text-[28px] md:text-[36px] font-bold text-[#FBB11A] leading-[1] mb-3">
                 Traveling with<br />a group?
               </h2>
-              <p className="text-white/60 leading-relaxed mb-8 max-w-sm">
-                Special rates for 5+ people. Mix dorms and private rooms. We&apos;ll help you find the perfect combination.
+              <p className="text-white/90 text-[13px] font-light leading-relaxed mb-6">
+                Special rates for 5+ people. Mix dorms and private rooms. We'll help you find the perfect combination.
               </p>
-              <ul className="space-y-3 mb-10">
+              <ul className="space-y-2 mb-8">
                 {['Group discounts up to 20%', 'Private event space available', 'Customizable experience packages'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3 text-white/80 text-sm">
-                    <span className="w-5 h-5 rounded-full bg-sunset-gold/20 border border-sunset-gold/40 flex items-center justify-center shrink-0">
-                      <svg className="w-2.5 h-2.5 text-sunset-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <li key={i} className="flex items-center gap-2 text-white/90 text-[12px] font-medium">
+                    <span className="w-4 h-4 rounded-full bg-[#FBB11A]/20 flex items-center justify-center shrink-0">
+                      <svg className="w-2.5 h-2.5 text-[#FBB11A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
                       </svg>
                     </span>
@@ -487,15 +407,15 @@ export default function StaysPage() {
               </ul>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 w-fit px-7 py-3 bg-sunset-gold hover:bg-sunset-orange text-white text-sm font-bold rounded-full transition-colors"
+                className="inline-flex items-center gap-2 w-fit px-5 py-2.5 bg-white text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-[#FBFBF9] transition-colors"
               >
-                Inquire about group rates
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                Inquire now
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
               </Link>
             </div>
-            <div className="relative min-h-[280px] md:min-h-0">
+            <div className="relative min-h-[240px] md:min-h-0">
               <Image
                 src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&auto=format&fit=crop&q=80"
                 alt="Group travelers"
@@ -503,48 +423,43 @@ export default function StaysPage() {
                 className="object-cover"
                 unoptimized
               />
-              <div className="absolute inset-0 bg-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#128790] to-transparent opacity-80 md:hidden" />
             </div>
           </div>
         </div>
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="bg-[#F4EFEA] py-20 md:py-28">
-        <div className="max-w-[860px] mx-auto px-6 lg:px-10">
+      <section className="bg-[#FBFBF9] py-16 md:py-20">
+        <div className="max-w-[800px] mx-auto px-6 lg:px-10">
 
-          {/* Header */}
-          <div className="flex items-end justify-between mb-16 gap-6">
-            <h2 className="text-[clamp(2rem,4vw,3rem)] font-bold text-charcoal leading-tight tracking-tight">
+          <div className="flex items-end justify-between mb-10 gap-6">
+            <h2 className="text-[28px] md:text-[36px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.02em]">
               Frequently asked<br />questions
             </h2>
-            <p className="text-charcoal/50 text-sm leading-relaxed max-w-[200px] text-right hidden sm:block">
-              {FAQ.length} questions answered
-            </p>
           </div>
 
-          {/* Items */}
-          <div className="divide-y divide-charcoal/10">
+          <div className="divide-y divide-[#E6E4DF]">
             {FAQ.map((f, i) => (
               <div key={i}>
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="group w-full py-6 flex items-start justify-between gap-6 text-left"
+                  className="group w-full py-5 flex items-start justify-between gap-6 text-left"
                 >
-                  <div className="flex items-start gap-5">
-                    <span className="text-[11px] font-bold text-charcoal/25 tabular-nums mt-1 w-5 shrink-0">
+                  <div className="flex items-start gap-4">
+                    <span className="text-[11px] font-bold text-[#128790] tabular-nums mt-1 w-5 shrink-0">
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span className={`text-[15px] font-semibold leading-snug transition-colors duration-200 ${
-                      openFaq === i ? 'text-sunset-gold' : 'text-charcoal group-hover:text-sunset-gold/80'
+                    <span className={`text-[14px] font-bold leading-snug transition-colors duration-200 ${
+                      openFaq === i ? 'text-[#FBB11A]' : 'text-[#1E1F1C] group-hover:text-[#FBB11A]'
                     }`}>
                       {f.q}
                     </span>
                   </div>
-                  <span className={`shrink-0 w-7 h-7 rounded-full border flex items-center justify-center transition-all duration-200 mt-0.5 ${
+                  <span className={`shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-all duration-200 ${
                     openFaq === i
-                      ? 'bg-charcoal border-charcoal text-white'
-                      : 'border-charcoal/20 text-charcoal/40 group-hover:border-charcoal/40 group-hover:text-charcoal/70'
+                      ? 'bg-[#128790] border-[#128790] text-white'
+                      : 'border-[#E6E4DF] text-[#6B665E] group-hover:border-[#128790] group-hover:text-[#128790]'
                   }`}>
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       {openFaq === i
@@ -554,9 +469,9 @@ export default function StaysPage() {
                   </span>
                 </button>
                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  openFaq === i ? 'max-h-48 pb-6' : 'max-h-0'
+                  openFaq === i ? 'max-h-48 pb-5' : 'max-h-0'
                 }`}>
-                  <p className="pl-10 text-[14px] text-charcoal/60 leading-relaxed">{f.a}</p>
+                  <p className="pl-9 text-[13px] text-[#6B665E] font-light leading-relaxed">{f.a}</p>
                 </div>
               </div>
             ))}
@@ -566,16 +481,16 @@ export default function StaysPage() {
       </section>
 
       {/* ─── FINAL CTA ─── */}
-      <section className="bg-white py-16 md:py-20 border-t border-neutral-100">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
-          <p className="text-charcoal-muted text-sm uppercase tracking-widest font-semibold mb-4">Still deciding?</p>
-          <h2 className="text-[clamp(1.75rem,3.5vw,2.5rem)] font-bold text-charcoal mb-6">We&apos;re happy to help you choose.</h2>
-          <p className="text-charcoal-muted text-lg mb-10 max-w-md mx-auto">Every room type has its vibe. Message us and we&apos;ll match you to the perfect space.</p>
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link href="/contact" className="px-8 py-3.5 bg-charcoal hover:bg-charcoal/85 text-white font-semibold rounded-full transition-colors">
+      <section className="bg-white py-12 border-t border-[#E6E4DF]">
+        <div className="max-w-[800px] mx-auto px-6 lg:px-10 text-center">
+          <p className="text-[#128790] text-[10px] uppercase tracking-widest font-bold mb-3">Still deciding?</p>
+          <h2 className="text-[24px] md:text-[32px] font-bold text-[#1E1F1C] mb-4 leading-[1]">We're happy to help you choose.</h2>
+          <p className="text-[#6B665E] text-[13px] font-light mb-8 max-w-sm mx-auto">Every room type has its vibe. Message us and we'll match you to the perfect space.</p>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <Link href="/contact" className="px-6 py-2.5 bg-[#1E1F1C] hover:bg-[#128790] text-white text-[11px] font-bold uppercase tracking-widest rounded-full transition-colors">
               Message us
             </Link>
-            <Link href="/" className="px-8 py-3.5 bg-neutral-100 hover:bg-neutral-200 text-charcoal font-semibold rounded-full transition-colors">
+            <Link href="/" className="px-6 py-2.5 bg-[#FBFBF9] border border-[#E6E4DF] hover:bg-white text-[#6B665E] text-[11px] font-bold uppercase tracking-widest rounded-full transition-colors">
               Back to home
             </Link>
           </div>

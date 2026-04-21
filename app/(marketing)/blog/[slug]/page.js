@@ -1,17 +1,12 @@
 /**
  * Blog Detail Page
  * 
- * Design: Reading a travel diary, sitting quietly in a hostel corner
- * 
- * Structure:
- * - Small "← Back to stories" nav
- * - Title (large but soft), one-line intro, optional tag
- * - Feature image (medium height, rounded, centered)
- * - Content area (fixed readable width, comfortable line height)
- * - Soft closing block
- * - 2 related stories at end
- * 
- * NO: Author block, date, read time, social share, sticky sidebars, floating CTAs
+ * Premium editorial reading experience with:
+ * - Reading progress bar
+ * - Clean header with metadata
+ * - Beautiful typography
+ * - Share/save actions
+ * - Related stories footer
  */
 
 import { notFound } from 'next/navigation'
@@ -27,6 +22,9 @@ import {
   BlogGrid,
 } from '@/components/features/blog'
 import Container from '@/components/ui/Container'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
+import ReadingProgress from '@/components/features/blog/ReadingProgress'
 
 /**
  * Generate static paths for all blog posts
@@ -45,9 +43,7 @@ export async function generateMetadata({ params }) {
   const post = await getPostBySlug(params.slug)
 
   if (!post) {
-    return {
-      title: 'Story Not Found | Hidden Monkey Hostel',
-    }
+    return { title: 'Story Not Found | Hidden Monkey Hostel' }
   }
 
   const url = `https://hiddenmonkey.com/blog/${post.slug}`
@@ -64,13 +60,7 @@ export async function generateMetadata({ params }) {
       description: post.excerpt,
       type: 'article',
       url,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-        },
-      ],
+      images: [{ url: imageUrl, width: 1400, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -82,66 +72,21 @@ export async function generateMetadata({ params }) {
 }
 
 /**
- * Soft Closing Block
- * Feels optional, not promotional, with breathing space
- */
-function ClosingBlock() {
-  return (
-    <div className="
-      mt-16 md:mt-20 
-      pt-10 md:pt-12
-      border-t border-charcoal/10
-    ">
-      <p className="text-charcoal/50 text-base">
-        <Link 
-          href="/blog" 
-          className="
-            inline-flex items-center gap-2
-            text-charcoal/60 hover:text-charcoal
-            transition-colors duration-200
-            group
-          "
-        >
-          <span className="
-            bg-[linear-gradient(#EEA727,#EEA727)] bg-no-repeat
-            bg-[length:0%_1.5px] bg-[position:0_100%]
-            transition-[background-size] duration-300 ease-out
-            group-hover:bg-[length:100%_1.5px]
-          ">
-            Read another story
-          </span>
-          <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-        </Link>
-      </p>
-    </div>
-  )
-}
-
-/**
  * Related Posts Section
- * Small cards, same design language, placed at end only
- * Visual breathing space with section marker
  */
 function RelatedPosts({ posts }) {
   if (!posts || posts.length === 0) return null
   
   return (
-    <div className="
-      mt-18 md:mt-24 
-      pt-12 md:pt-14
-      border-t border-charcoal/10
-    ">
-      <div className="mb-8 md:mb-10">
-        <h2 className="
-          text-lg font-medium text-charcoal 
-          flex items-center gap-2
-        ">
-          <span className="text-[#EEA727] opacity-70">•</span>
-          More stories
-        </h2>
-      </div>
-      <BlogGrid posts={posts.slice(0, 2)} layout="related" />
-    </div>
+    <section className="py-14 bg-[#FBFBF9] border-t border-[#E6E4DF]">
+      <Container className="max-w-[1000px]">
+        <div className="flex items-center gap-2 mb-6">
+          <span className="w-4 h-[2px] bg-[#FBB11A]" />
+          <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#FBB11A]">More Stories</span>
+        </div>
+        <BlogGrid posts={posts.slice(0, 2)} layout="related" />
+      </Container>
+    </section>
   )
 }
 
@@ -156,16 +101,65 @@ async function BlogPostDetail({ post }) {
       {/* Post Header */}
       <BlogHeader post={post} />
 
-      {/* Post Content - Reading experience */}
-      <div className="mt-12 md:mt-14">
+      {/* Post Content */}
+      <div className="mt-10 md:mt-12">
         <BlogContent content={post.content} />
       </div>
 
-      {/* Soft Closing Block */}
-      <ClosingBlock />
+      {/* Tags — at end of article */}
+      {post.tags && post.tags.length > 0 && (
+        <div className="max-w-[42rem] mx-auto mt-10 pt-8 border-t border-[#E6E4DF]">
+          <div className="flex flex-wrap gap-2">
+            {post.tags.map((tag, i) => (
+              <span key={i} className="px-3 py-1 bg-[#FBFBF9] border border-[#E6E4DF] text-[10px] font-medium text-[#6B665E] rounded-full">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
-      {/* Related Posts */}
-      <RelatedPosts posts={relatedPosts} />
+      {/* Closing CTA */}
+      <div className="max-w-[42rem] mx-auto mt-10 pt-8 border-t border-[#E6E4DF]">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-[#6B665E] hover:text-[#128790] text-[12px] font-bold uppercase tracking-widest transition-colors group"
+          >
+            <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+            </svg>
+            All stories
+          </Link>
+
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] text-[#9A948C] uppercase tracking-widest font-bold">Share</span>
+            <div className="flex gap-2">
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://hiddenmonkey.com/blog/${post.slug}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FBFBF9] border border-[#E6E4DF] text-[#6B665E] hover:bg-[#128790] hover:text-white hover:border-[#128790] transition-all"
+              >
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(post.title + ' - https://hiddenmonkey.com/blog/' + post.slug)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FBFBF9] border border-[#E6E4DF] text-[#6B665E] hover:bg-[#128790] hover:text-white hover:border-[#128790] transition-all"
+              >
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Related Posts — outside article container */}
+      <div className="mt-16">
+        <RelatedPosts posts={relatedPosts} />
+      </div>
     </>
   )
 }
@@ -181,28 +175,28 @@ export default async function BlogDetailPage({ params }) {
   }
 
   return (
-    <main className="min-h-screen bg-sand-light">
-      <article className="py-10 md:py-14">
-        <Container className="max-w-4xl">
-          {/* Back to Stories - Small, calm, accessible */}
-          <Link
-            href="/blog"
-            className="
-              inline-flex items-center gap-2 
-              text-charcoal/50 hover:text-charcoal/70
-              text-sm font-medium
-              mb-10 md:mb-12
-              transition-colors duration-200
-              group
-            "
-          >
-            <span className="transition-transform duration-200 group-hover:-translate-x-1">←</span>
-            <span>Back to stories</span>
-          </Link>
+    <>
+      <Header />
+      <ReadingProgress />
+      <main className="min-h-screen bg-white">
+        <article className="py-10 md:py-14">
+          <Container className="max-w-[900px]">
+            {/* Back to Stories */}
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-[#9A948C] hover:text-[#128790] text-[11px] font-bold uppercase tracking-widest mb-8 md:mb-10 transition-colors group"
+            >
+              <svg className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+              </svg>
+              Back to stories
+            </Link>
 
-          <BlogPostDetail post={post} />
-        </Container>
-      </article>
-    </main>
+            <BlogPostDetail post={post} />
+          </Container>
+        </article>
+      </main>
+      <Footer />
+    </>
   )
 }
