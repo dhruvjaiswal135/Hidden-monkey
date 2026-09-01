@@ -1,479 +1,223 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import RoomDetailModal from '@/components/modals/RoomDetailModal'
-import { ROOM_IMAGES, STAYS_COMMUNITY_IMAGE } from '@/content/images'
+import { FAQList } from '@/components/sections/MiniFAQ'
+import { useBooking, nightsBetween } from '@/context/BookingContext'
+import { STAYS_COMMUNITY_IMAGE } from '@/content/images'
+import { HOMESTAYS } from '@/content/homestays'
+import { ALL_ROOMS } from '@/content/rooms'
 
-/* ─── Reveal hook ────────────────────────────────────────────── */
-function useReveal(threshold = 0.1) {
-  const [v, setV] = useState(false)
-  const ref = useRef(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setV(true) }, { threshold })
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [threshold])
-  return [ref, v]
-}
 
-/* ─── Room data ──────────────────────────────────────────────── */
-const ALL_ROOMS = [
-  {
-    id: 'mixed-dorm-6',
-    name: 'Mixed Dorm · 6 Bed',
-    category: 'dorm',
-    tagline: 'Social, affordable, and full of good people.',
-    description: 'Pod-style beds with privacy curtains, personal locker, and reading light. Our most-booked option for solo travelers.',
-    price: 499,
-    originalPrice: 799,
-    images: ROOM_IMAGES['mixed-dorm-6'],
-    capacity: '1 per bed',
-    bedType: 'Single pod',
-    size: '40 sqft / pod',
-    amenities: ['locker', 'curtain', 'light', 'charging', 'bathroom', 'wifi'],
-    highlights: ['Pod-style beds', 'Privacy curtains', 'Daily housekeeping'],
-    available: true,
-    rating: 4.8,
-    reviews: 234,
-    locations: ['Varanasi', 'Darjeeling'],
-    detailedDescription: [
-      'Our Mixed Dorm is the heart of the Monkey House community. Share a space with travelers from around the world and make lasting friendships.',
-      'Each bed has a personal locker, privacy curtain, and reading light. Shared bathrooms are cleaned throughout the day.',
-    ],
-    communityTags: ['Mostly solo travelers', 'Easy conversations', 'Social & vibrant'],
-    houseRules: ['Quiet hours 11 PM – 7 AM', 'No food in dorms', 'Respect others privacy'],
-    checkIn: '2:00 PM', checkOut: '11:00 AM',
-  },
-  {
-    id: 'female-dorm-6',
-    name: 'Female Only Dorm · 6 Bed',
-    category: 'dorm',
-    tagline: 'A safe, welcoming space designed for women.',
-    description: 'Comfortable pod-style beds with extra privacy and security features. A supportive community of women travelers.',
-    price: 549,
-    originalPrice: 849,
-    images: ROOM_IMAGES['female-dorm-6'],
-    capacity: '1 per bed',
-    bedType: 'Single pod',
-    size: '40 sqft / pod',
-    amenities: ['locker', 'curtain', 'light', 'charging', 'bathroom', 'female', 'wifi'],
-    highlights: ['Women only', 'Keycard access', 'Vanity area'],
-    available: true,
-    rating: 4.9,
-    reviews: 156,
-    locations: ['Varanasi', 'Darjeeling'],
-    detailedDescription: [
-      'A dedicated space designed with women travelers in mind — safe, respected, and part of a supportive community.',
-      'All pods feature personal lockers, blackout privacy curtains, and individual reading lights.',
-    ],
-    communityTags: ['Women-focused community', 'Safe & supportive', 'Friendly connections'],
-    houseRules: ['Female guests only', 'Quiet hours 11 PM – 7 AM', 'No outside guests'],
-    checkIn: '2:00 PM', checkOut: '11:00 AM',
-  },
-  {
-    id: 'mixed-dorm-4',
-    name: 'Mixed Dorm · 4 Bed',
-    category: 'dorm',
-    tagline: 'Intimate dorm vibes with more space per person.',
-    description: 'Only 4 beds — more space, larger lockers, and an en-suite bathroom just for your dorm.',
-    price: 649,
-    originalPrice: 899,
-    images: ROOM_IMAGES['mixed-dorm-4'],
-    capacity: '1 per bed',
-    bedType: 'Single pod',
-    size: '50 sqft / pod',
-    amenities: ['curtain', 'locker', 'light', 'charging', 'bathroom', 'wifi'],
-    highlights: ['Only 4 beds', 'En-suite bathroom', 'Large lockers'],
-    available: true,
-    rating: 4.9,
-    reviews: 112,
-    locations: ['Varanasi', 'Darjeeling'],
-    detailedDescription: [
-      'The cozier dorm option — just 4 beds means more space, less noise, and a more intimate atmosphere.',
-      'Includes an en-suite bathroom shared only between the 4 pod guests.',
-    ],
-    communityTags: ['Close-knit group', 'More personal space', 'Quieter vibe'],
-    houseRules: ['Quiet hours 11 PM – 7 AM', 'Keep bathroom clean'],
-    checkIn: '2:00 PM', checkOut: '11:00 AM',
-  },
-  {
-    id: 'private-double',
-    name: 'Private Double Room',
-    category: 'private',
-    tagline: 'Your own space, still part of the community.',
-    description: 'Cozy private room with a comfortable double bed, private bathroom, and access to all community spaces.',
-    price: 1499,
-    originalPrice: 2199,
-    images: ROOM_IMAGES['private-double'],
-    capacity: '2 people',
-    bedType: 'Queen bed',
-    size: '180 sqft',
-    amenities: ['bathroom', 'wifi', 'ac', 'charging', 'light'],
-    highlights: ['Private bathroom', 'Queen bed', 'Work desk'],
-    available: true,
-    rating: 4.9,
-    reviews: 89,
-    locations: ['Varanasi', 'Darjeeling'],
-    detailedDescription: [
-      'Your own cozy room with a comfortable queen bed. Privacy without losing the hostel vibe.',
-      'Includes a private attached bathroom, AC, fast WiFi, and access to all community spaces.',
-    ],
-    communityTags: ['Best for couples', 'Privacy + community', 'Work-friendly'],
-    houseRules: ['Max 2 guests', 'No parties in rooms', 'Respect quiet hours'],
-    checkIn: '2:00 PM', checkOut: '11:00 AM',
-  },
-  {
-    id: 'deluxe-suite',
-    name: 'Deluxe Private Suite',
-    category: 'private',
-    tagline: 'Premium comfort with the Monkey House spirit.',
-    description: 'King bed, private balcony, mini bar, and stunning views. Our best room for those who want it all.',
-    price: 2499,
-    originalPrice: 3499,
-    images: ROOM_IMAGES['deluxe-suite'],
-    capacity: '2 people',
-    bedType: 'King bed',
-    size: '280 sqft',
-    amenities: ['bathroom', 'wifi', 'ac', 'charging', 'towel', 'kitchen'],
-    highlights: ['King bed', 'Private balcony', 'Mini bar & coffee'],
-    available: true,
-    rating: 5.0,
-    reviews: 45,
-    locations: ['Darjeeling'],
-    detailedDescription: [
-      'Our most spacious room with premium amenities — king bed, private balcony with stunning views, mini bar, coffee maker.',
-      'Perfect for couples seeking luxury comfort while still experiencing the Monkey House community.',
-    ],
-    communityTags: ['Luxury comfort', 'Balcony views', 'Premium amenities'],
-    houseRules: ['Max 2 guests', 'Early check-in available', 'Room service available'],
-    checkIn: '1:00 PM', checkOut: '12:00 PM',
-  },
+const FILTERS = [['all', 'All rooms'], ['dorm', 'Dorms'], ['private', 'Private']]
+
+const COMPARE = [
+  ['Price per night', '₹499–549', '₹649', '₹1,499', '₹2,499'], ['Bathroom', 'Shared, cleaned 3×/day', 'En-suite, shared by 4', 'Private', 'Private'], ['Locker & curtain', 'Yes', 'Large locker', 'Wardrobe', 'Wardrobe + safe'], ['Air conditioning', 'Fans (Darjeeling: heater)', 'Fans', 'Yes', 'Yes'], ['Towel', '₹50 rental', '₹50 rental', 'Included', 'Included'], ['Work desk', 'Work room', 'Work room', 'In-room + work room', 'In-room + work room'], ['Breakfast', '₹149 add-on', '₹149 add-on', '₹149 add-on', 'Included'], ['Cancellation', 'Free to 48 hrs', 'Free to 48 hrs', 'Free to 48 hrs', 'Free to 72 hrs'],
 ]
 
-const FILTERS = [
-  { id: 'all', label: 'All rooms' },
-  { id: 'dorm', label: 'Dorms' },
-  { id: 'private', label: 'Private rooms' },
-]
-
-const LOCATIONS = [
-  { id: 'all', label: 'All locations' },
-  { id: 'Darjeeling', label: 'Darjeeling' },
-  { id: 'Varanasi', label: 'Varanasi' },
+const PASSES = [
+  { label: 'Weekly', price: '3,149', per: '/ 7 nights', desc: 'Dorm bed, reserved desk, one load of laundry. 10% off the nightly rate.', featured: false },
+  { label: 'Monthly · most popular', price: '11,999', per: '/ 30 nights', desc: 'Dorm bed, reserved desk, weekly laundry, locker upgrade, priority on all experiences. 25% off.', featured: true },
+  { label: 'Monthly private', price: '29,999', per: '/ 30 nights', desc: 'Private double with desk and AC, weekly housekeeping, laundry, and the same community access.', featured: false },
 ]
 
 const FAQ = [
-  { q: 'What time is check-in and check-out?', a: 'Check-in from 2:00 PM, check-out by 11:00 AM. Early/late arrangements possible based on availability.' },
-  { q: 'Are towels and linens provided?', a: 'Fresh linens are included for all guests. Towels come with private rooms and are available for rent in dorms (₹50).' },
-  { q: 'Can I store luggage before check-in?', a: 'Yes — secure luggage storage is available at no charge for all guests.' },
-  { q: 'Is there a kitchen available?', a: 'Our community kitchen is open 24/7 with fridge, stove, microwave, and utensils. Please clean up after use.' },
-  { q: "What's your cancellation policy?", a: 'Free cancellation up to 48 hours before check-in. Within 48 hours the first night is non-refundable.' },
+  { q: 'What time is check-in and check-out?', a: 'Check-in from 2 pm, check-out by 11 am. Arriving early? Drop your bag in secure storage and hit the kitchen — free for all guests.' },
+  { q: 'Are towels and linen provided?', a: 'Fresh linen for everyone. Towels are included in private rooms and rent for ₹50 in dorms.' },
+  { q: 'Can I book a whole dorm for my group?', a: 'Yes — the 4-bed is perfect for that. Groups of five or more get up to 20% off; message us for a quote.' },
+  { q: 'Is there a kitchen?', a: 'Open 24/7 with fridge, stove, microwave and utensils. Please clean up after yourself; the house runs on trust.' },
+  { q: "What's your cancellation policy?", a: 'Free cancellation up to 48 hours before check-in (72 for the suite). Inside that window the first night is non-refundable.' },
 ]
 
-function StaysRoomCard({ room, index, onOpen }) {
-  const discount = Math.round((1 - room.price / room.originalPrice) * 100)
+const inr = (n) => n.toLocaleString('en-IN')
+
+/* ─── Room row ─── */
+function RoomRow({ room, nights, guests, onOpen, onReserve }) {
+  const save = Math.round((1 - room.price / room.originalPrice) * 100)
+  const perNight = room.category === 'dorm' ? room.price * guests : room.price * Math.ceil(guests / 2)
   return (
-    <article
-      onClick={() => onOpen(room)}
-      className="group cursor-pointer bg-white rounded-[20px] overflow-hidden border border-[#E6E4DF] hover:border-[#128790]/30 transition-all duration-500 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-1 flex flex-col"
-    >
-      <div className="p-1.5 pb-0">
-        <div className="relative h-[160px] md:h-[180px] overflow-hidden rounded-[14px]">
-          <Image
-            src={room.images[0]}
-            alt={room.name}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            unoptimized
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-
-          {/* Top badges */}
-          <div className="absolute top-2 left-2 flex items-center gap-1.5">
-            <span className={`text-[9px] font-bold px-2 py-1 rounded-md uppercase tracking-widest ${
-              room.category === 'dorm' ? 'bg-[#128790] text-white' : 'bg-[#FBB11A] text-[#1E1F1C]'
-            }`}>
-              {room.category === 'dorm' ? 'Dorm' : 'Private'}
-            </span>
-            {discount >= 20 && (
-              <span className="text-[9px] font-bold px-2 py-1 rounded-md bg-emerald-500 text-white shadow-sm">
-                -{discount}%
-              </span>
-            )}
+    <article className="card rounded-[22px] flex flex-wrap hover:shadow-lift transition-shadow">
+      <button onClick={() => onOpen(room)} className="relative flex-[1_1_320px] min-h-[260px] grid grid-cols-[2fr_1fr] grid-rows-2 gap-1 p-1 text-left">
+        <Image src={room.images[0]} alt={room.name} fill unoptimized sizes="50vw" className="!static row-span-2 w-full h-full object-cover rounded-[18px_4px_4px_18px]" />
+        <Image src={room.images[1]} alt="" fill unoptimized sizes="25vw" className="!static w-full h-full object-cover rounded-[4px_18px_4px_4px]" />
+        <Image src={room.images[2]} alt="" fill unoptimized sizes="25vw" className="!static w-full h-full object-cover rounded-[4px_4px_18px_4px]" />
+        <span className={`absolute top-4 left-4 px-2.5 py-1.5 rounded-lg text-[11px] font-bold tracking-[0.1em] uppercase ${room.badge}`}>{room.kind}</span>
+        {room.popular && <span className="absolute top-4 right-4 px-2.5 py-1.5 rounded-lg bg-ink text-gold text-[11px] font-bold tracking-[0.1em] uppercase">Most booked</span>}
+      </button>
+      <div className="flex-[1_1_320px] p-5 md:p-8 grid grid-cols-[1fr_auto] gap-5 content-between">
+        <div className="col-span-2">
+          <div className="flex flex-col gap-1.5 mb-2.5">
+            <h2 className="display text-d-h3">{room.name}</h2>
+            <span className="text-[13px] text-ink-3 flex flex-wrap gap-x-2 gap-y-1"><span><span className="text-gold">★</span> <strong>{room.rating}</strong> · {room.reviews} reviews</span><span>· {room.locations.join(' & ')}</span></span>
           </div>
-
-          {/* Rating */}
-          <div className="absolute top-2 right-2 flex items-center gap-1 bg-white/95 backdrop-blur-sm rounded-md px-2 py-1 shadow-sm">
-            <svg className="w-2.5 h-2.5 text-[#FBB11A]" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-            </svg>
-            <span className="text-[10px] font-bold text-[#1E1F1C]">{room.rating}</span>
-          </div>
-
-          {/* Photo count */}
-          <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/40 backdrop-blur-sm border border-white/15 rounded-md px-2 py-1">
-            <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span className="text-white text-[9px] font-medium">{room.images.length}</span>
-          </div>
+          <p className="text-[16px] leading-relaxed text-ink-2 max-w-[600px] mb-3.5 [text-wrap:pretty]">{room.description}</p>
+          <div className="flex flex-wrap gap-1.5">{room.facts.map((f) => <span key={f} className="chip text-[13px]">{f}</span>)}</div>
         </div>
-      </div>
-
-      <div className="p-4 flex-1 flex flex-col">
-        <h3 className="text-[16px] font-bold text-[#1E1F1C] mb-1 group-hover:text-[#128790] transition-colors leading-[1.2]">
-          {room.name}
-        </h3>
-        <p className="text-[12px] text-[#6B665E] font-light mb-3 line-clamp-2 leading-relaxed flex-1">
-          {room.tagline}
-        </p>
-
-        {/* Meta row */}
-        <div className="flex items-center justify-between border-t border-[#E6E4DF] pt-3">
-          <div className="flex items-center gap-2 text-[10px] text-[#9A948C]">
-            <span>{room.capacity}</span>
-            <span className="w-1 h-1 rounded-full bg-[#E6E4DF]"></span>
-            <span>{room.size}</span>
-          </div>
-          
-          <div className="text-right">
-             <div className="flex flex-col">
-               {room.originalPrice && (
-                 <span className="text-[9px] text-[#9A948C] line-through leading-none">&#8377;{room.originalPrice}</span>
-               )}
-               <span className="text-[#1E1F1C] font-bold text-[14px] leading-tight">&#8377;{room.price}<span className="text-[10px] font-normal text-[#6B665E]">/nt</span></span>
-             </div>
-          </div>
+        <div className="flex flex-col gap-0.5 self-end">
+          <span className="text-[12px] text-ink-4">Was <s>₹{inr(room.originalPrice)}</s> · save {save}%</span>
+          <span className="font-display font-extrabold text-[44px] leading-none whitespace-nowrap">₹{inr(room.price)}<span className="font-sans text-[14px] font-medium text-ink-3">&nbsp;/night</span></span>
+          <span className="text-[13px] text-teal font-semibold">{nights > 0 ? `₹${inr(perNight * nights)} for ${nights} night${nights > 1 ? 's' : ''}, ${guests} guest${guests > 1 ? 's' : ''}` : 'Pick dates to see your total'}</span>
+        </div>
+        <div className="flex flex-col gap-2 self-end justify-self-end">
+          <button onClick={() => onReserve(room)} className="btn-gold text-[19px] whitespace-nowrap">Reserve · pay ₹{inr(Math.round(room.price * 0.2))}&nbsp;now</button>
+          <span className="text-[12px] text-ink-4 text-center">Free cancellation to 48 hrs</span>
         </div>
       </div>
     </article>
   )
 }
 
-/* ─── Main page ──────────────────────────────────────────────── */
+/* ─── Homestay card ─── */
+function HomestayCard({ h, onReserve }) {
+  return (
+    <article className="card-hover bg-surface flex flex-col">
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <Image src={h.images[0]} alt={h.name} fill unoptimized sizes="(max-width:768px) 100vw, 25vw" className="object-cover" />
+        <span className="absolute top-3 left-3 px-2.5 py-[5px] rounded-lg bg-gold text-ink text-[11px] font-bold tracking-[0.1em] uppercase">{h.town} · {h.destination}</span>
+        <div className="absolute left-3 bottom-3 flex items-center gap-2 py-1.5 pl-1.5 pr-2.5 rounded-full bg-white/95"><Image src={h.avatar} alt={h.host} width={26} height={26} unoptimized className="w-[26px] h-[26px] rounded-full object-cover" /><span className="text-[12px] font-bold">Hosted by {h.host}</span></div>
+      </div>
+      <div className="p-[18px] flex flex-col gap-2.5 flex-1">
+        <div className="flex justify-between gap-2 items-baseline"><h3 className="display font-bold text-[26px] leading-none">{h.name}</h3><span className="text-[13px] text-ink-3 whitespace-nowrap"><span className="text-gold">★</span> <strong>{h.rating}</strong></span></div>
+        <p className="text-[14px] leading-relaxed text-ink-3 flex-1">{h.description}</p>
+        <div className="flex flex-wrap gap-1.5">{h.facts.map((f) => <span key={f} className="chip bg-white">{f}</span>)}</div>
+        <div className="flex items-end justify-between gap-2.5 pt-3 border-t border-line">
+          <div><span className="block text-[12px] text-ink-4">Room for 2 · 2 meals · taxes in</span><span className="font-display font-extrabold text-[30px] leading-none whitespace-nowrap">₹{inr(h.price)}<span className="font-sans text-[13px] font-medium text-ink-3">/night</span></span></div>
+          <button onClick={() => onReserve(h)} className="btn-ink min-h-[40px] px-4 text-[16px]">Reserve</button>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+/* ─── Page ─── */
 export default function StaysPage() {
+  const { booking, updateBooking, openBooking } = useBooking()
+  const { destination, checkIn, checkOut, guests } = booking
   const [filter, setFilter] = useState('all')
-  const [location, setLocation] = useState('all')
-  const [selectedRoom, setSelectedRoom] = useState(null)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [checkIn, setCheckIn] = useState('')
-  const [checkOut, setCheckOut] = useState('')
-  const [guests, setGuests] = useState(1)
-  const [openFaq, setOpenFaq] = useState(null)
-  const [heroRef, heroVisible] = useReveal(0.05)
+  const [selected, setSelected] = useState(null)
   const today = new Date().toISOString().split('T')[0]
+  const nights = nightsBetween(checkIn, checkOut)
 
-  const filtered = ALL_ROOMS.filter(r => {
-    const catOk = filter === 'all' || r.category === filter
-    const locOk = location === 'all' || r.locations.includes(location)
-    return catOk && locOk
-  })
+  const rooms = ALL_ROOMS.filter((r) => (filter === 'all' || r.category === filter) && (!destination || r.locations.includes(destination)))
+  const homestays = HOMESTAYS.filter((h) => !destination || h.destination === destination)
 
-  const openModal = (room) => { setSelectedRoom(room); setModalOpen(true) }
-  const closeModal = () => { setModalOpen(false); setSelectedRoom(null) }
+  const reserve = (item, stayType = 'hostel') => openBooking({ stayType, roomType: item.name, roomId: item.id, price: item.price, destination: destination || item.locations?.[0] || item.destination })
 
   return (
     <>
-      {/* ─── CUTE COMPACT HERO ─── */}
-      <section ref={heroRef} className="pt-12 pb-8 bg-[#FBFBF9] border-b border-[#E6E4DF]">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className={`max-w-2xl transition-all duration-700 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-4 h-[2px] bg-[#128790]"></span>
-                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">
-                  Book your stay
-                </span>
-              </div>
-              <h1 className="text-[32px] md:text-[48px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.02em] mb-4">
-                Find your perfect <span className="text-[#FBB11A]">space.</span>
-              </h1>
-              <p className="text-[#6B665E] text-[14px] md:text-[15px] font-light leading-relaxed max-w-xl">
-                From social dorms to private retreats — every room is designed for comfort, connection, and the best sleep of your trip.
-              </p>
+      {/* Hero */}
+      <section className="bg-white border-b border-line">
+        <div className="container-site pt-9 md:pt-16 pb-7">
+          <p className="kicker">Stays &amp; prices</p>
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <h1 className="display text-d-page">Hostel beds.<br /><span className="text-teal">Family homestays.</span></h1>
+            <div className="flex flex-col gap-3 max-w-[440px]">
+              <p className="text-[16px] leading-relaxed text-ink-3">Prices per night, taxes included. Hostel beds come with fresh linen, a locker, WiFi and hot water; homestays include breakfast and dinner. Weekly stays get 10% off, monthly 25%.</p>
+              <div className="flex flex-wrap gap-2"><a href="#book" className="btn-ink min-h-[44px] px-[18px] text-[16px]">Hostel rooms ↓</a><a href="#homestays" className="btn-ghost min-h-[44px] px-[18px] text-[16px]">Homestays ↓</a></div>
             </div>
-
-            {/* ─── CUTE BOOKING WIDGET ─── */}
-            {/*  */}
           </div>
         </div>
       </section>
 
-      {/* ─── CUTE FILTER BAR ─── */}
-      <section className="py-4 bg-white border-b border-[#E6E4DF] sticky top-[60px] z-40 shadow-sm">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10 flex flex-col md:flex-row gap-3 md:items-center justify-between">
-          <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 md:pb-0">
-            {FILTERS.map(f => (
-              <button
-                key={f.id}
-                onClick={() => setFilter(f.id)}
-                className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
-                  filter === f.id
-                    ? 'bg-[#128790] text-white border-[#128790]'
-                    : 'bg-white text-[#6B665E] border-[#E6E4DF] hover:border-[#128790]/50'
-                }`}
-              >
-                {f.label}
-              </button>
+      {/* Sticky booking bar */}
+      <section id="book" className="sticky top-[68px] z-40 bg-surface/95 backdrop-blur-lg border-b border-line">
+        <div className="container-site py-3 flex flex-wrap gap-2.5 items-center">
+          <div className="flex flex-wrap gap-1.5 flex-[1_1_420px] bg-white border border-line rounded-[14px] p-1.5">
+            <label className="flex-[1_1_130px] flex flex-col gap-0.5 px-3 py-2"><span className="field-label tracking-[0.14em]">Where</span><select value={destination} onChange={(e) => updateBooking({ destination: e.target.value })} className="field-input text-[15px]"><option value="">Both houses</option><option value="Darjeeling">Darjeeling</option><option value="Varanasi">Varanasi</option></select></label>
+            <label className="flex-[1_1_130px] flex flex-col gap-0.5 px-3 py-2 border-l border-line-light"><span className="field-label tracking-[0.14em]">Check-in</span><input type="date" min={today} value={checkIn} onChange={(e) => updateBooking({ checkIn: e.target.value })} className="field-input text-[15px]" /></label>
+            <label className="flex-[1_1_130px] flex flex-col gap-0.5 px-3 py-2 border-l border-line-light"><span className="field-label tracking-[0.14em]">Check-out</span><input type="date" min={checkIn || today} value={checkOut} onChange={(e) => updateBooking({ checkOut: e.target.value })} className="field-input text-[15px]" /></label>
+            <label className="flex-[1_1_110px] flex flex-col gap-0.5 px-3 py-2 border-l border-line-light"><span className="field-label tracking-[0.14em]">Guests</span><select value={guests} onChange={(e) => updateBooking({ guests: Number(e.target.value) })} className="field-input text-[15px]">{[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n === 5 ? '5+' : n}</option>)}</select></label>
+          </div>
+          <div className="flex gap-1.5 flex-wrap">{FILTERS.map(([id, label]) => <button key={id} onClick={() => setFilter(id)} className={filter === id ? 'pill-on' : 'pill-off'}>{label}</button>)}</div>
+          <span className="ml-auto text-[13px] text-ink-3 font-semibold">{rooms.length} room type{rooms.length !== 1 ? 's' : ''} available</span>
+        </div>
+      </section>
+
+      {/* Rooms */}
+      <section className="py-8 md:py-14">
+        <div className="container-site flex flex-col gap-4">
+          {rooms.map((r) => <RoomRow key={r.id} room={r} nights={nights} guests={guests} onOpen={setSelected} onReserve={(room) => reserve(room, 'hostel')} />)}
+          {rooms.length === 0 && <div className="card p-10 text-center"><p className="display font-bold text-[26px] mb-1">No rooms match</p><p className="text-[14px] text-ink-3 mb-4">Try a different location or room type.</p><button onClick={() => { setFilter('all'); updateBooking({ destination: '' }) }} className="btn-ghost">Reset filters</button></div>}
+        </div>
+      </section>
+
+      {/* Homestays */}
+      <section id="homestays" className="section bg-white border-t border-line">
+        <div className="container-site">
+          <div className="flex flex-wrap items-end justify-between gap-5 mb-8">
+            <div><p className="kicker text-gold">Homestays · new</p><h2 className="h2">Or stay with a family<br /><span className="text-teal">we'd stay with ourselves.</span></h2></div>
+            <p className="max-w-[440px] text-[16px] leading-relaxed text-ink-3">Private rooms in local homes we have visited, eaten in and slept in. Breakfast and dinner are cooked by your host. You're still on the guest list for every hostel event — the house is a short walk away.</p>
+          </div>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
+            {homestays.map((h) => <HomestayCard key={h.id} h={h} onReserve={(x) => reserve(x, 'homestay')} />)}
+          </div>
+          <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-3">
+            {[['How we vet hosts', "We've slept in every room, eaten every dinner, checked locks, water and WiFi, and we re-visit each quarter."], ['Mix & match', 'Three nights in the dorm, three with a family. One booking, one WhatsApp thread, we move your bag.'], ['Same rules', '20% advance, free cancellation to 48 hours, taxes in the price. Hosts are paid the full room rate.']].map(([t, d]) => (
+              <div key={t} className="p-[18px] rounded-2xl bg-surface border border-line"><p className="display font-bold text-[20px] mb-1">{t}</p><p className="text-[14px] leading-relaxed text-ink-3">{d}</p></div>
             ))}
           </div>
-          <div className="shrink-0 text-[11px] font-bold uppercase tracking-widest text-[#9A948C]">
-            {filtered.length} room{filtered.length !== 1 ? 's' : ''} available
+        </div>
+      </section>
+
+      {/* Compare */}
+      <section className="py-10 md:py-[72px] bg-white border-t border-b border-line">
+        <div className="container-site">
+          <h2 className="display text-[clamp(34px,4.5vw,56px)] leading-[.92] mb-5">What's included, honestly</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] border-collapse text-[14px]">
+              <thead><tr className="text-left">{['Included', 'Dorms', '4-bed dorm', 'Private', 'Suite'].map((h, i) => <th key={h} className={`px-2.5 py-3 border-b-2 border-ink ${i ? 'font-display text-[18px] uppercase' : 'text-[11px] tracking-[0.14em] uppercase text-ink-4 font-bold'}`}>{h}</th>)}</tr></thead>
+              <tbody>{COMPARE.map((row) => <tr key={row[0]}>{row.map((c, i) => <td key={i} className={`px-2.5 py-3 border-b border-line ${i ? 'text-ink-3' : 'font-semibold'}`}>{c}</td>)}</tr>)}</tbody>
+            </table>
           </div>
         </div>
       </section>
 
-      {/* ─── ROOMS GRID ─── */}
-      <section className="bg-[#FBFBF9] py-10 min-h-[50vh]">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
-              {filtered.map((room, i) => (
-                <StaysRoomCard key={room.id} room={room} index={i} onOpen={openModal} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16 bg-white rounded-2xl border border-[#E6E4DF]">
-              <div className="text-3xl mb-3">🛌</div>
-              <h3 className="text-[18px] font-bold text-[#1E1F1C] mb-1">No rooms match</h3>
-              <p className="text-[#6B665E] text-[13px] mb-4">Try a different location or room type.</p>
-              <button
-                onClick={() => { setFilter('all'); setLocation('all') }}
-                className="px-4 py-2 bg-[#FBFBF9] border border-[#E6E4DF] text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-white transition-colors"
-              >
-                Reset filters
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ─── GROUP BOOKING ─── */}
-      <section className="bg-white py-12 border-t border-[#E6E4DF]">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-10">
-          <div className="bg-[#128790] rounded-[24px] overflow-hidden grid md:grid-cols-2 gap-0 group">
-            <div className="px-8 py-10 lg:px-12 lg:py-12 flex flex-col justify-center relative z-10">
-              <div className="absolute -top-12 -left-12 w-32 h-32 bg-white/10 rounded-full blur-[20px] transition-transform duration-700 group-hover:scale-150" />
-              <span className="inline-block px-3 py-1 bg-white/10 border border-white/20 text-white text-[9px] font-bold uppercase tracking-widest rounded-md w-fit mb-4">
-                Group rates
-              </span>
-              <h2 className="text-[28px] md:text-[36px] font-bold text-[#FBB11A] leading-[1] mb-3">
-                Traveling with<br />a group?
-              </h2>
-              <p className="text-white/90 text-[13px] font-light leading-relaxed mb-6">
-                Special rates for 5+ people. Mix dorms and private rooms. We'll help you find the perfect combination.
-              </p>
-              <ul className="space-y-2 mb-8">
-                {['Group discounts up to 20%', 'Private event space available', 'Customizable experience packages'].map((item, i) => (
-                  <li key={i} className="flex items-center gap-2 text-white/90 text-[12px] font-medium">
-                    <span className="w-4 h-4 rounded-full bg-[#FBB11A]/20 flex items-center justify-center shrink-0">
-                      <svg className="w-2.5 h-2.5 text-[#FBB11A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 w-fit px-5 py-2.5 bg-white text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-[#FBFBF9] transition-colors"
-              >
-                Inquire now
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-              </Link>
-            </div>
-            <div className="relative min-h-[240px] md:min-h-0">
-              <Image
-                src={STAYS_COMMUNITY_IMAGE}
-                alt="Group travelers"
-                fill
-                className="object-cover"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#128790] to-transparent opacity-80 md:hidden" />
-            </div>
+      {/* Nomad passes */}
+      <section id="nomad" className="section bg-teal text-white">
+        <div className="container-site">
+          <div className="flex flex-wrap items-end justify-between gap-5 mb-8">
+            <div><p className="kicker text-gold">Work &amp; stay passes</p><h2 className="h2">Stay longer.<br />Pay less. Work better.</h2></div>
+            <p className="max-w-[400px] text-[16px] leading-relaxed text-white/85">Bed + reserved desk in the work room + 100 Mbps fibre with 4G backup + laundry once a week. Quiet hours 10 am–12 pm for calls.</p>
           </div>
-        </div>
-      </section>
-
-      {/* ─── FAQ ─── */}
-      <section className="bg-[#FBFBF9] py-16 md:py-20">
-        <div className="max-w-[800px] mx-auto px-6 lg:px-10">
-
-          <div className="flex items-end justify-between mb-10 gap-6">
-            <h2 className="text-[28px] md:text-[36px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.02em]">
-              Frequently asked<br />questions
-            </h2>
-          </div>
-
-          <div className="divide-y divide-[#E6E4DF]">
-            {FAQ.map((f, i) => (
-              <div key={i}>
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="group w-full py-5 flex items-start justify-between gap-6 text-left"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="text-[11px] font-bold text-[#128790] tabular-nums mt-1 w-5 shrink-0">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span className={`text-[14px] font-bold leading-snug transition-colors duration-200 ${
-                      openFaq === i ? 'text-[#FBB11A]' : 'text-[#1E1F1C] group-hover:text-[#FBB11A]'
-                    }`}>
-                      {f.q}
-                    </span>
-                  </div>
-                  <span className={`shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-all duration-200 ${
-                    openFaq === i
-                      ? 'bg-[#128790] border-[#128790] text-white'
-                      : 'border-[#E6E4DF] text-[#6B665E] group-hover:border-[#128790] group-hover:text-[#128790]'
-                  }`}>
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      {openFaq === i
-                        ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 12H4"/>
-                        : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16M4 12h16"/>}
-                    </svg>
-                  </span>
-                </button>
-                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  openFaq === i ? 'max-h-48 pb-5' : 'max-h-0'
-                }`}>
-                  <p className="pl-9 text-[13px] text-[#6B665E] font-light leading-relaxed">{f.a}</p>
-                </div>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-3.5">
+            {PASSES.map((p) => (
+              <div key={p.label} className={`p-6 rounded-card border border-white/20 flex flex-col gap-3 ${p.featured ? 'bg-gold text-ink' : 'bg-white/10 text-white'}`}>
+                <span className="text-[12px] tracking-[0.16em] uppercase font-bold opacity-80">{p.label}</span>
+                <span className="font-display font-extrabold text-[52px] leading-none">₹{p.price}<span className="font-sans text-[14px] font-medium opacity-80"> {p.per}</span></span>
+                <p className="text-[15px] leading-relaxed opacity-90 flex-1">{p.desc}</p>
+                <a href="https://wa.me/919876543210" className={`btn min-h-[44px] text-[17px] ${p.featured ? 'bg-ink text-white' : 'bg-white text-teal'}`}>Ask about dates</a>
               </div>
             ))}
           </div>
-
         </div>
       </section>
 
-      {/* ─── FINAL CTA ─── */}
-      <section className="bg-white py-12 border-t border-[#E6E4DF]">
-        <div className="max-w-[800px] mx-auto px-6 lg:px-10 text-center">
-          <p className="text-[#128790] text-[10px] uppercase tracking-widest font-bold mb-3">Still deciding?</p>
-          <h2 className="text-[24px] md:text-[32px] font-bold text-[#1E1F1C] mb-4 leading-[1]">We're happy to help you choose.</h2>
-          <p className="text-[#6B665E] text-[13px] font-light mb-8 max-w-sm mx-auto">Every room type has its vibe. Message us and we'll match you to the perfect space.</p>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <Link href="/contact" className="px-6 py-2.5 bg-[#1E1F1C] hover:bg-[#128790] text-white text-[11px] font-bold uppercase tracking-widest rounded-full transition-colors">
-              Message us
-            </Link>
-            <Link href="/" className="px-6 py-2.5 bg-[#FBFBF9] border border-[#E6E4DF] hover:bg-white text-[#6B665E] text-[11px] font-bold uppercase tracking-widest rounded-full transition-colors">
-              Back to home
-            </Link>
+      {/* Group */}
+      <section className="section bg-surface">
+        <div className="container-site">
+          <div className="grid md:grid-cols-2 rounded-hero overflow-hidden bg-ink text-white">
+            <div className="p-7 md:p-14 flex flex-col gap-4 justify-center">
+              <p className="text-[12px] tracking-[0.2em] uppercase font-bold text-gold">Groups of 5+</p>
+              <h2 className="display text-[clamp(40px,5vw,72px)] leading-[.92]">Bring the whole crew.<br />Take the whole floor.</h2>
+              <p className="text-[16px] leading-relaxed text-white/80 max-w-[480px]">Up to 20% off for five or more. Mix dorms and privates, book out a 4-bed for your own gang, and we'll set up a private bonfire night on request.</p>
+              <div className="flex flex-wrap gap-3 items-center"><Link href="/contact" className="btn-gold hover:bg-white hover:text-ink">Get a group quote</Link><span className="text-[14px] text-white/70">Reply within 2–4 hrs</span></div>
+            </div>
+            <div className="relative min-h-[320px]"><Image src={STAYS_COMMUNITY_IMAGE} alt="Group at the hostel" fill unoptimized sizes="50vw" className="object-cover" /></div>
           </div>
         </div>
       </section>
 
-      {/* ─── MODAL ─── */}
-      <RoomDetailModal room={selectedRoom} isOpen={modalOpen} onClose={closeModal} />
+      {/* FAQ */}
+      <section className="pb-14 md:pb-24 bg-surface">
+        <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-10">
+          <h2 className="display text-[clamp(34px,4.5vw,56px)] leading-[.92] mb-5">Room questions</h2>
+          <FAQList items={FAQ} size="text-[22px]" />
+        </div>
+      </section>
+
+      <RoomDetailModal room={selected} isOpen={!!selected} onClose={() => setSelected(null)} />
     </>
   )
 }

@@ -1,7 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { useBooking } from '@/context/BookingContext'
+import { ALL_ROOMS } from '@/content/rooms'
+import { HOMESTAYS } from '@/content/homestays'
 
 /* ─── SVG Icons ─────────────────────────────────────────── */
 const Icons = {
@@ -10,6 +13,7 @@ const Icons = {
   calendar: <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>,
   users: <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>,
   bed: <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 0h.008v.008h-.008V7.5z" /></svg>,
+  home: <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" /></svg>,
   check: <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>,
   chevLeft: <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>,
   close: <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>,
@@ -26,18 +30,24 @@ const DESTINATIONS = [
   { id: 'Varanasi', label: 'Varanasi', sub: 'Ghats · Culture · Spirituality', icon: Icons.temple },
 ]
 
-const STEP_LABELS = ['Destination', 'Dates & Guests', 'Summary']
+const STAY_TYPES = [
+  { id: 'hostel', label: 'Hostel', sub: 'Dorms & private rooms', icon: Icons.bed },
+  { id: 'homestay', label: 'Homestay', sub: 'Family homes · meals included', icon: Icons.home },
+]
 
 export default function BookingModal() {
-  const { booking, isOpen, closeBooking, updateBooking } = useBooking()
+  const { booking, isOpen, closeBooking, updateBooking, setStayType } = useBooking()
   const [step, setStep] = useState(0)
-  const [animDir, setAnimDir] = useState('forward')
+  const [preselected, setPreselected] = useState(false)
+
+  const isHomestay = booking.stayType === 'homestay'
 
   // Determine correct starting step — ONLY on open
   useEffect(() => {
     if (!isOpen) return
-    // If room is pre-selected (from RoomDetailModal), skip to dates step
-    if (booking.roomType && booking.price) {
+    const hasRoomAtOpen = !!(booking.roomType && booking.price)
+    setPreselected(hasRoomAtOpen)
+    if (hasRoomAtOpen) {
       setStep(booking.destination ? 1 : 0)
     } else if (booking.destination) {
       setStep(1)
@@ -51,38 +61,47 @@ export default function BookingModal() {
   const today = new Date().toISOString().split('T')[0]
   const hasRoom = !!(booking.roomType && booking.price)
 
+  // Steps: room/home choice is skipped when a room was pre-selected (from a Reserve button)
+  const stepLabels = preselected
+    ? ['Destination', 'Dates & Guests', 'Summary']
+    : ['Destination', 'Dates & Guests', isHomestay ? 'Choose your home' : 'Choose your room', 'Summary']
+  const totalSteps = stepLabels.length
+  const chooseStep = preselected ? -1 : 2
+  const summaryStep = totalSteps - 1
+
   // Calculate nights
   const nights = booking.checkIn && booking.checkOut
     ? Math.max(1, Math.ceil((new Date(booking.checkOut) - new Date(booking.checkIn)) / 86400000))
     : 0
 
-  // Determine total steps (skip room step if pre-selected)
-  const totalSteps = hasRoom ? 3 : 3
-  const stepLabels = hasRoom
-    ? ['Destination', 'Dates & Guests', 'Summary']
-    : ['Destination', 'Dates & Guests', 'Summary']
+  // Stay options for the choose step, filtered by destination
+  const stayOptions = isHomestay
+    ? HOMESTAYS.filter((h) => !booking.destination || h.destination === booking.destination)
+    : ALL_ROOMS.filter((r) => !booking.destination || r.locations.includes(booking.destination))
 
-  // For dorms price is per bed, for private rooms price is per room
-  const isDorm = (booking.roomId || '').includes('dorm')
+  // Pricing: dorms are per bed; hostel privates per room; homestays per room for 2 (meals included)
+  const guests = booking.guests || 1
+  const isDorm = !isHomestay && (booking.roomId || '').includes('dorm')
   const unitPrice = booking.price || 0
+  const roomsNeeded = isHomestay ? Math.ceil(guests / 2) : 1
   const totalPrice = isDorm
-    ? unitPrice * nights * (booking.guests || 1)
-    : unitPrice * nights
+    ? unitPrice * nights * guests
+    : unitPrice * nights * roomsNeeded
 
-  const goNext = () => {
-    setAnimDir('forward')
-    setStep(s => Math.min(s + 1, totalSteps - 1))
-  }
+  const priceUnitLabel = isHomestay ? '· per room for 2 · meals included' : isDorm ? '· per bed' : '· per room'
 
-  const goBack = () => {
-    setAnimDir('back')
-    setStep(s => Math.max(s - 1, 0))
-  }
+  const goNext = () => setStep((s) => Math.min(s + 1, totalSteps - 1))
+  const goBack = () => setStep((s) => Math.max(s - 1, 0))
 
   const canProceed = () => {
     if (step === 0) return !!booking.destination
-    if (step === 1) return !!(booking.checkIn && booking.checkOut && (booking.guests || 1) >= 1)
+    if (step === 1) return !!(booking.checkIn && booking.checkOut && guests >= 1)
+    if (step === chooseStep) return !!booking.roomId
     return true
+  }
+
+  const selectStay = (item) => {
+    updateBooking({ roomType: item.name, roomId: item.id, price: item.price, destination: booking.destination || item.destination || item.locations?.[0] })
   }
 
   const handleConfirm = () => {
@@ -90,7 +109,8 @@ export default function BookingModal() {
       destination: booking.destination,
       checkin: booking.checkIn,
       checkout: booking.checkOut,
-      guests: String(booking.guests || 1),
+      guests: String(guests),
+      type: booking.stayType || 'hostel',
     })
     if (booking.roomId) params.set('room', booking.roomId)
     window.open(`https://bookings.hiddenmonkey.in?${params.toString()}`, '_blank')
@@ -135,13 +155,13 @@ export default function BookingModal() {
           <div className="h-full bg-[#128790] rounded-full transition-all duration-400 ease-out" style={{ width: `${((step + 1) / totalSteps) * 100}%` }} />
         </div>
 
-        {/* ── Pre-selected room banner ── */}
+        {/* ── Selected room banner ── */}
         {hasRoom && (
           <div className="mx-5 mt-3 px-3 py-2 bg-[#128790]/5 border border-[#128790]/10 rounded-xl flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#128790]/10 flex items-center justify-center text-[#128790]">{Icons.bed}</div>
+            <div className="w-7 h-7 rounded-lg bg-[#128790]/10 flex items-center justify-center text-[#128790]">{isHomestay ? Icons.home : Icons.bed}</div>
             <div className="flex-1 min-w-0">
               <p className="text-[11px] font-bold text-[#1E1F1C] truncate">{booking.roomType}</p>
-              <p className="text-[10px] text-[#128790] font-semibold">₹{booking.price}/night {isDorm ? '· per bed' : '· per room'}</p>
+              <p className="text-[10px] text-[#128790] font-semibold">₹{unitPrice.toLocaleString('en-IN')}/night {priceUnitLabel}</p>
             </div>
             <div className="w-5 h-5 rounded-full bg-[#128790] flex items-center justify-center text-white">{Icons.check}</div>
           </div>
@@ -150,10 +170,27 @@ export default function BookingModal() {
         {/* ── Content ── */}
         <div className="p-5 pt-4 min-h-[220px]">
 
-          {/* ─── Step 0: Destination ─── */}
+          {/* ─── Step 0: Stay type + Destination ─── */}
           {step === 0 && (
             <div className="space-y-2.5">
-              <p className="text-[11px] text-[#9A948C] mb-3">Where would you like to stay?</p>
+              <div className="grid grid-cols-2 gap-2 p-1 bg-[#FBFBF9] border border-[#E6E4DF] rounded-[14px]">
+                {STAY_TYPES.map(t => (
+                  <button
+                    key={t.id}
+                    onClick={() => setStayType(t.id)}
+                    className={`flex flex-col items-center gap-0.5 py-2.5 px-2 rounded-[10px] transition-all ${
+                      booking.stayType === t.id
+                        ? 'bg-white shadow-[0_1px_4px_rgba(0,0,0,0.08)] text-[#128790]'
+                        : 'text-[#9A948C] hover:text-[#6B665E]'
+                    }`}
+                  >
+                    <span className="flex items-center gap-1.5 text-[13px] font-bold">{t.icon}{t.label}</span>
+                    <span className="text-[9px]">{t.sub}</span>
+                  </button>
+                ))}
+              </div>
+
+              <p className="text-[11px] text-[#9A948C] pt-1.5">Where would you like to stay?</p>
               {DESTINATIONS.map(d => (
                 <button
                   key={d.id}
@@ -225,19 +262,19 @@ export default function BookingModal() {
                 </label>
                 <div className="flex items-center gap-4 px-4 py-2.5 bg-[#FBFBF9] border border-[#E6E4DF] rounded-xl">
                   <button
-                    onClick={() => updateBooking({ guests: Math.max(1, (booking.guests || 1) - 1) })}
-                    disabled={(booking.guests || 1) <= 1}
+                    onClick={() => updateBooking({ guests: Math.max(1, guests - 1) })}
+                    disabled={guests <= 1}
                     className="w-8 h-8 rounded-full border border-[#E6E4DF] bg-white flex items-center justify-center text-[#6B665E] hover:border-[#128790] hover:text-[#128790] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     {Icons.minus}
                   </button>
                   <div className="flex-1 text-center">
-                    <span className="text-[20px] font-bold text-[#1E1F1C]">{booking.guests || 1}</span>
-                    <span className="text-[10px] text-[#9A948C] ml-1.5">guest{(booking.guests || 1) > 1 ? 's' : ''}</span>
+                    <span className="text-[20px] font-bold text-[#1E1F1C]">{guests}</span>
+                    <span className="text-[10px] text-[#9A948C] ml-1.5">guest{guests > 1 ? 's' : ''}</span>
                   </div>
                   <button
-                    onClick={() => updateBooking({ guests: Math.min(12, (booking.guests || 1) + 1) })}
-                    disabled={(booking.guests || 1) >= 12}
+                    onClick={() => updateBooking({ guests: Math.min(12, guests + 1) })}
+                    disabled={guests >= 12}
                     className="w-8 h-8 rounded-full border border-[#E6E4DF] bg-white flex items-center justify-center text-[#6B665E] hover:border-[#128790] hover:text-[#128790] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     {Icons.plus}
@@ -250,36 +287,80 @@ export default function BookingModal() {
                 <div className="flex items-center gap-2 px-3 py-2 bg-[#128790]/5 border border-[#128790]/10 rounded-xl">
                   <span className="text-[#128790]">{Icons.moon}</span>
                   <span className="text-[11px] font-semibold text-[#128790]">
-                    {nights} night{nights > 1 ? 's' : ''} · {booking.guests || 1} guest{(booking.guests || 1) > 1 ? 's' : ''}
+                    {nights} night{nights > 1 ? 's' : ''} · {guests} guest{guests > 1 ? 's' : ''}
                   </span>
                 </div>
               )}
             </div>
           )}
 
-          {/* ─── Step 2: Summary ─── */}
-          {step === 2 && (
+          {/* ─── Choose room / homestay (only when nothing pre-selected) ─── */}
+          {step === chooseStep && (
+            <div className="space-y-2.5 max-h-[320px] overflow-y-auto -mr-2 pr-2">
+              <p className="text-[11px] text-[#9A948C] mb-1.5">
+                {isHomestay ? 'Family homes near the hostel — breakfast and dinner included.' : 'Pick the space that fits your travel style.'}
+              </p>
+              {stayOptions.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => selectStay(item)}
+                  className={`w-full flex items-center gap-3 p-2.5 rounded-[14px] border-[1.5px] transition-all text-left ${
+                    booking.roomId === item.id
+                      ? 'border-[#128790] bg-[#128790]/[0.03] shadow-[0_0_0_3px_rgba(18,135,144,0.06)]'
+                      : 'border-[#E6E4DF] bg-white hover:border-[#128790]/40'
+                  }`}
+                >
+                  <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-[#FBFBF9]">
+                    <Image src={item.images[0]} alt="" fill unoptimized sizes="56px" className="object-cover" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-bold text-[#1E1F1C] truncate">{item.name}</p>
+                    <p className="text-[10px] text-[#9A948C] mt-0.5 truncate">
+                      {isHomestay ? `${item.town} · hosted by ${item.host}` : item.tagline}
+                    </p>
+                    <p className="text-[11px] font-semibold text-[#128790] mt-0.5">
+                      ₹{item.price.toLocaleString('en-IN')}/night {isHomestay ? '· room for 2 · meals included' : item.category === 'dorm' ? '· per bed' : '· per room'}
+                    </p>
+                  </div>
+                  {booking.roomId === item.id && (
+                    <div className="w-5 h-5 rounded-full bg-[#128790] flex items-center justify-center text-white shrink-0">
+                      {Icons.check}
+                    </div>
+                  )}
+                </button>
+              ))}
+              {stayOptions.length === 0 && (
+                <p className="text-[11px] text-[#9A948C] text-center py-6">Nothing available in {booking.destination} — try the other house.</p>
+              )}
+            </div>
+          )}
+
+          {/* ─── Summary ─── */}
+          {step === summaryStep && (
             <div>
               <div className="bg-[#FBFBF9] rounded-[16px] border border-[#E6E4DF] overflow-hidden">
                 {/* Summary rows */}
                 <div className="p-4 space-y-3">
                   <SummaryRow icon={Icons.location} label="Destination" value={booking.destination} />
+                  <SummaryRow icon={isHomestay ? Icons.home : Icons.bed} label="Stay" value={isHomestay ? 'Homestay' : 'Hostel'} />
                   <SummaryRow icon={Icons.calendar} label="Check-in" value={formatDate(booking.checkIn)} />
                   <SummaryRow icon={Icons.calendar} label="Check-out" value={formatDate(booking.checkOut)} />
-                  <SummaryRow icon={Icons.users} label="Guests" value={`${booking.guests || 1} guest${(booking.guests || 1) > 1 ? 's' : ''}`} />
-                  {hasRoom && <SummaryRow icon={Icons.bed} label="Room" value={booking.roomType} />}
+                  <SummaryRow icon={Icons.users} label="Guests" value={`${guests} guest${guests > 1 ? 's' : ''}`} />
+                  {hasRoom && <SummaryRow icon={isHomestay ? Icons.home : Icons.bed} label={isHomestay ? 'Home' : 'Room'} value={booking.roomType} />}
                   {nights > 0 && <SummaryRow icon={Icons.moon} label="Duration" value={`${nights} night${nights > 1 ? 's' : ''}`} />}
                 </div>
 
-                {/* Price breakdown — only if room is pre-selected */}
+                {/* Price breakdown — only if a room/home is selected */}
                 {hasRoom && nights > 0 && (
                   <div className="border-t border-[#E6E4DF] px-4 py-3">
                     <div className="flex items-end justify-between">
                       <div>
                         <p className="text-[10px] text-[#9A948C]">
-                          ₹{unitPrice} × {nights} night{nights > 1 ? 's' : ''}
-                          {isDorm ? ` × ${booking.guests || 1} bed${(booking.guests || 1) > 1 ? 's' : ''}` : ''}
+                          ₹{unitPrice.toLocaleString('en-IN')} × {nights} night{nights > 1 ? 's' : ''}
+                          {isDorm ? ` × ${guests} bed${guests > 1 ? 's' : ''}` : ''}
+                          {isHomestay && roomsNeeded > 1 ? ` × ${roomsNeeded} rooms` : ''}
                         </p>
+                        {isHomestay && <p className="text-[10px] font-semibold text-[#128790] mt-0.5">Breakfast &amp; dinner included</p>}
                         <p className="text-[22px] font-bold text-[#1E1F1C] leading-tight mt-0.5">
                           ₹{totalPrice.toLocaleString('en-IN')}
                         </p>
