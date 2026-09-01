@@ -3,217 +3,89 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useBooking } from '@/context/BookingContext'
+import { usePathname } from 'next/navigation'
 import { LOGO } from '@/content/images'
 
-const navItems = [
-  { href: '/#life', label: 'Life' },
-  { href: '/experiences', label: 'Experiences' },
-  { href: '/#work', label: 'Work' },
-  { href: '/destinations', label: 'Destinations' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/blog', label: 'Stories' },
-  { href: '/stays', label: 'Stays' },
+const NAV = [
+  { href: '/stays#book', label: 'Hostels', key: '/stays' },
+  { href: '/stays#homestays', label: 'Homestays', key: '/stays#homestays' },
+  { href: '/destinations', label: 'Destinations', key: '/destinations' },
+  { href: '/experiences', label: 'Experiences', key: '/experiences' },
+  { href: '/stays#nomad', label: 'Work & stay', key: '/stays#nomad' },
+  { href: '/blog', label: 'Stories', key: '/blog' },
 ]
 
-function BookButton({ className, onClick }) {
-  const { openBooking } = useBooking()
-  return (
-    <button
-      onClick={() => {
-        openBooking()
-        if (onClick) onClick()
-      }}
-      className={className}
-    >
-      Book Your Stay
-    </button>
-  )
-}
-
 export default function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    document.body.style.overflow = isMobileOpen ? 'hidden' : ''
+    document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
-  }, [isMobileOpen])
+  }, [open])
 
-  const onLinkClick = () => setIsMobileOpen(false)
+  const isActive = (item) => item.key.split('#')[0] === pathname && !item.key.includes('#')
 
   return (
     <>
-      <header
-        className="fixed top-0 left-0 right-0 z-50"
-        style={{
-          backgroundColor: isScrolled ? 'rgba(255,255,255,0.98)' : 'transparent',
-          borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.07)' : '1px solid transparent',
-          backdropFilter: isScrolled ? 'blur(12px)' : 'none',
-          WebkitBackdropFilter: isScrolled ? 'blur(12px)' : 'none',
-          transition: 'background-color 0.4s ease, border-color 0.4s ease',
-        }}
-      >
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-          <div
-            className="flex items-center justify-between"
-            style={{
-              height: isScrolled ? '64px' : '76px',
-              transition: 'height 0.4s ease',
-            }}
-          >
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-              <div className="relative w-8 h-8 rounded-lg overflow-hidden">
-                <Image
-                  src={LOGO}
-                  alt="Hidden Monkey"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <div>
-                <span
-                  className="font-semibold text-[15px] tracking-tight leading-none block"
-                  style={{
-                    color: '#171717',
-                    transition: 'color 0.4s ease',
-                  }}
-                >
-                  Hidden<span className="text-sunset-gold">Monkey</span>
-                </span>
-                <span
-                  className="text-[9px] tracking-[0.12em] uppercase leading-none mt-0.5 block"
-                  style={{
-                    color: '#a3a3a3',
-                    transition: 'color 0.4s ease',
-                  }}
-                >
-                  Community Hostels
-                </span>
-              </div>
-            </Link>
+      <div className="h-[68px]" aria-hidden="true" />
+      <header className="fixed inset-x-0 top-0 z-[60] bg-white/[0.92] backdrop-blur-xl border-b border-line">
+        <div className="container-site h-[68px] flex items-center justify-between gap-4">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <Image src={LOGO} alt="Hidden Monkey" width={34} height={34} className="rounded-lg object-contain" priority />
+            <span className="flex flex-col leading-none">
+              <span className="font-display font-extrabold text-[22px] uppercase tracking-[0.01em] text-ink">Hidden<span className="text-teal">Monkey</span></span>
+              <span className="text-[9px] tracking-[0.18em] uppercase text-ink-4 font-semibold mt-[3px]">Community hostels · India</span>
+            </span>
+          </Link>
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-7" aria-label="Main navigation">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm font-medium hover:text-sunset-gold"
-                  style={{
-                    color: '#404040',
-                    transition: 'color 0.2s ease',
-                  }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+          <nav className="hidden lg:flex items-center gap-1.5" aria-label="Main">
+            {NAV.map((n) => (
+              <Link key={n.href} href={n.href} className={`text-[14px] font-semibold px-3 py-2 rounded-full hover:text-teal ${isActive(n) ? 'text-teal bg-teal/[0.08]' : 'text-ink'}`}>{n.label}</Link>
+            ))}
+          </nav>
 
-            {/* Actions */}
-            <div className="flex items-center gap-4">
-              <BookButton className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-full bg-[#171717] text-white hover:bg-[#128790] transition-colors" />
-
-              {/* Hamburger */}
-              <button
-                onClick={() => setIsMobileOpen(!isMobileOpen)}
-                className="lg:hidden flex flex-col justify-center gap-[5px] p-2 -mr-2 w-10 h-10"
-                aria-label="Toggle menu"
-              >
-                <span
-                  className="block h-[1.5px] rounded-full origin-center"
-                  style={{
-                    width: '22px',
-                    backgroundColor: '#171717',
-                    transform: isMobileOpen ? 'rotate(45deg) translateY(6.5px)' : 'none',
-                    transition: 'transform 0.25s ease, background-color 0.4s ease',
-                  }}
-                />
-                <span
-                  className="block h-[1.5px] rounded-full"
-                  style={{
-                    width: '22px',
-                    backgroundColor: '#171717',
-                    opacity: isMobileOpen ? 0 : 1,
-                    transition: 'opacity 0.2s ease, background-color 0.4s ease',
-                  }}
-                />
-                <span
-                  className="block h-[1.5px] rounded-full origin-center"
-                  style={{
-                    width: '22px',
-                    backgroundColor: '#171717',
-                    transform: isMobileOpen ? 'rotate(-45deg) translateY(-6.5px)' : 'none',
-                    transition: 'transform 0.25s ease, background-color 0.4s ease',
-                  }}
-                />
-              </button>
-            </div>
+          <div className="hidden lg:flex items-center gap-2.5">
+            <Link href="/gallery" className="text-[13px] font-semibold text-ink-3 hover:text-ink px-3 py-2">Gallery</Link>
+            <Link href="/stays#book" className="btn-gold min-h-[44px] px-5 text-[16px]">Book a bed <span className="text-[14px]">→</span></Link>
           </div>
+
+          <button onClick={() => setOpen(!open)} aria-label="Menu" className="lg:hidden w-11 h-11 flex flex-col items-center justify-center gap-[5px]">
+            <span className="block w-[22px] h-[2px] bg-ink rounded" />
+            <span className="block w-[22px] h-[2px] bg-ink rounded" />
+            <span className="block w-[14px] h-[2px] bg-teal rounded self-start ml-[11px]" />
+          </button>
         </div>
       </header>
 
-      {/* Layout spacer — pushes non-hero page content below the fixed header */}
-      <div className="h-20" aria-hidden="true" />
-
-      {/* Mobile Drawer */}
-      <div
-        className="fixed inset-0 z-40 lg:hidden"
-        style={{ pointerEvents: isMobileOpen ? 'auto' : 'none' }}
-      >
-        <div
-          className="absolute inset-0 bg-black/20 backdrop-blur-sm"
-          style={{
-            opacity: isMobileOpen ? 1 : 0,
-            transition: 'opacity 0.3s ease',
-          }}
-          onClick={() => setIsMobileOpen(false)}
-        />
-        <div
-          className="absolute top-0 right-0 h-full w-72 bg-white shadow-2xl flex flex-col"
-          style={{
-            transform: isMobileOpen ? 'translateX(0)' : 'translateX(100%)',
-            transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
-        >
-          <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-100">
-            <span className="font-semibold text-neutral-900 text-sm">Navigation</span>
-            <button
-              onClick={() => setIsMobileOpen(false)}
-              className="w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-neutral-900 transition-colors rounded-lg hover:bg-neutral-100"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+      {/* Drawer */}
+      <div className={`fixed inset-0 z-[70] lg:hidden ${open ? '' : 'pointer-events-none'}`}>
+        <div onClick={() => setOpen(false)} className={`absolute inset-0 bg-ink/35 backdrop-blur-sm transition-opacity ${open ? 'opacity-100' : 'opacity-0'}`} />
+        <div className={`absolute top-0 right-0 h-full w-[min(320px,88vw)] bg-white flex flex-col shadow-2xl transition-transform duration-300 ease-out-expo ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="flex items-center justify-between px-5 py-4 border-b border-line">
+            <span className="font-display font-extrabold text-[20px] uppercase">Menu</span>
+            <button onClick={() => setOpen(false)} aria-label="Close" className="w-11 h-11 rounded-full bg-surface text-[18px]">✕</button>
           </div>
-          <nav className="flex-1 px-6 py-4" aria-label="Mobile navigation">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onLinkClick}
-                className="flex items-center justify-between py-3.5 text-neutral-700 font-medium border-b border-neutral-50 last:border-0 hover:text-sunset-gold transition-colors text-sm"
-              >
-                {item.label}
-                <svg className="w-4 h-4 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
+          <nav className="flex-1 px-5 py-2 flex flex-col">
+            {NAV.map((n) => (
+              <Link key={n.href} href={n.href} onClick={() => setOpen(false)} className="flex items-center justify-between py-4 border-b border-line-light font-display font-bold text-[24px] uppercase tracking-[0.02em] text-ink">{n.label}<span className="text-ink-4 text-[18px]">→</span></Link>
             ))}
+            <Link href="/gallery" onClick={() => setOpen(false)} className="py-4 text-[15px] font-semibold text-ink-3">Gallery</Link>
+            <Link href="/contact" onClick={() => setOpen(false)} className="py-4 text-[15px] font-semibold text-ink-3">Talk to us</Link>
           </nav>
-          <div className="px-6 py-6 border-t border-neutral-100">
-            <BookButton onClick={onLinkClick} className="block w-full py-3.5 bg-neutral-900 text-white font-semibold text-center rounded-full hover:bg-neutral-800 transition-colors text-sm" />
+          <div className="p-5 border-t border-line">
+            <Link href="/stays#book" onClick={() => setOpen(false)} className="btn-gold w-full min-h-[52px]">Book a bed →</Link>
           </div>
         </div>
+      </div>
+
+      {/* Mobile sticky booking bar */}
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-[55] bg-white/95 backdrop-blur-xl border-t border-line px-4 pt-2.5 pb-[calc(10px+env(safe-area-inset-bottom))] flex items-center justify-between gap-3">
+        <div>
+          <span className="block text-[10px] tracking-[0.14em] uppercase text-ink-4 font-semibold">Beds from</span>
+          <span className="font-display font-extrabold text-[22px] leading-none">₹499<span className="text-[13px] text-ink-3 font-semibold">/night</span></span>
+        </div>
+        <Link href="/stays#book" className="btn-teal min-h-[44px] px-5 text-[17px]">Check availability</Link>
       </div>
     </>
   )

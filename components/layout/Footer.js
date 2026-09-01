@@ -1,222 +1,74 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import Container from '@/components/ui/Container'
 import { LOGO } from '@/content/images'
 
-/**
- * Footer — Modern, compact editorial footer
- * Matches the site's Teal/Gold design language
- */
-
-const LINKS = {
-  explore: [
-    { href: '/destinations', label: 'Destinations' },
-    { href: '/stays', label: 'Stays' },
-    { href: '/experiences', label: 'Experiences' },
-    { href: '/gallery', label: 'Gallery' },
-  ],
-  company: [
-    { href: '/about', label: 'About Us' },
-    { href: '/blog', label: 'Stories' },
-    { href: '/contact', label: 'Contact' },
-  ],
-  support: [
-    { href: '/faq', label: 'FAQ' },
-    { href: '/cancellation', label: 'Cancellation Policy' },
-    { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/terms', label: 'Terms of Service' },
-  ],
-}
-
-const SOCIALS = [
-  {
-    label: 'Instagram',
-    href: 'https://instagram.com/hiddenmonkey.in',
-    icon: (
-      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'YouTube',
-    href: 'https://youtube.com/@hiddenmonkey',
-    icon: (
-      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'Facebook',
-    href: 'https://facebook.com/hiddenmonkey.in',
-    icon: (
-      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'Twitter',
-    href: 'https://twitter.com/hiddenmonkeyin',
-    icon: (
-      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-      </svg>
-    ),
-  },
+const COLS = [
+  { title: 'Explore', links: [['/stays', 'Stays & prices'], ['/destinations', 'Destinations'], ['/experiences', 'Experiences'], ['/gallery', 'Gallery']] },
+  { title: 'Company', links: [['/about', 'About us'], ['/blog', 'Stories'], ['/contact', 'Contact'], ['/contact', 'Group bookings']] },
+  { title: 'Support', links: [['/faq', 'FAQ'], ['/cancellation', 'Cancellation policy'], ['/privacy', 'Privacy'], ['/terms', 'Terms']] },
 ]
 
-const DESTINATIONS = [
-  { name: 'Darjeeling', href: '/destinations#darjeeling' },
-  { name: 'Varanasi', href: '/destinations#varanasi' },
+const SOCIAL = [
+  ['Instagram', 'https://instagram.com/hiddenmonkey.in', 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z'],
+  ['YouTube', 'https://youtube.com/@hiddenmonkey', 'M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'],
+  ['Facebook', 'https://facebook.com/hiddenmonkey.in', 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'],
+  ['X', 'https://twitter.com/hiddenmonkeyin', 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'],
 ]
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
-
   return (
-    <footer className="relative bg-[#1E1F1C] overflow-hidden">
-      {/* Subtle grain texture overlay */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E')" }} />
-
-      {/* ─── MAIN CONTENT ─── */}
-      <div className="relative pt-12 pb-8 md:pt-14 md:pb-10">
-        <Container className="max-w-[1400px]">
-
-          {/* Top Row: Brand + Newsletter */}
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 pb-8 border-b border-white/8">
-            {/* Brand */}
-            <div className="max-w-[300px]">
-              <Link href="/" className="inline-flex items-center gap-2.5 mb-3">
-                <div className="relative w-7 h-7 rounded-lg overflow-hidden">
-                  <Image src={LOGO} alt="Hidden Monkey" fill className="object-contain" />
-                </div>
-                <span className="font-semibold text-[15px] text-white tracking-tight">
-                  Hidden<span className="text-[#FBB11A]">Monkey</span>
-                </span>
-              </Link>
-              <p className="text-white/40 text-[12px] font-light leading-relaxed">
-                Community hostels in India&apos;s most soulful destinations. Where strangers become travel family.
-              </p>
-            </div>
-
-            {/* Newsletter Mini */}
-            <div className="flex-shrink-0">
-              <p className="text-[9px] font-bold text-[#128790] uppercase tracking-[0.2em] mb-2">Stay in the loop</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="w-[180px] md:w-[200px] px-3.5 py-2 bg-white/5 border border-white/10 rounded-full text-[11px] text-white placeholder:text-white/25 focus:outline-none focus:border-[#128790]/40 transition-colors"
-                />
-                <button className="px-4 py-2 bg-[#128790] hover:bg-[#0e6e75] text-white text-[10px] font-bold uppercase tracking-widest rounded-full transition-colors">
-                  Join
-                </button>
-              </div>
+    <footer className="bg-jungle text-white pb-[72px] lg:pb-0">
+      <div className="container-site pt-12 md:pt-20">
+        <div className="grid md:grid-cols-2 gap-10 items-end pb-12 border-b border-white/10">
+          <div>
+            <p className="text-[11px] tracking-[0.2em] uppercase text-gold font-bold mb-2">Still scrolling?</p>
+            <h2 className="display text-[clamp(40px,6vw,84px)] leading-[.92]">Come find<br />your <span className="text-gold">people.</span></h2>
+          </div>
+          <div className="flex flex-col gap-3.5 max-w-[420px]">
+            <p className="text-white/70 text-[16px] leading-relaxed">Beds from ₹499, homestays from ₹1,299. Free cancellation up to 48 hours before check-in. Chai on arrival, always.</p>
+            <div className="flex flex-wrap gap-2.5">
+              <Link href="/stays#book" className="btn-gold hover:bg-white hover:text-ink">Check availability</Link>
+              <a href="https://wa.me/919876543210" className="btn border border-white/25 text-white font-sans font-semibold normal-case tracking-normal text-[15px] hover:border-white">WhatsApp us</a>
             </div>
           </div>
+        </div>
 
-          {/* Link Columns */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8 mb-10">
-            {/* Explore */}
-            <div>
-              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Explore</p>
-              <ul className="space-y-2">
-                {LINKS.explore.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors">
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-12">
+          <div className="col-span-2 md:col-span-1 min-w-[220px]">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-3.5">
+              <Image src={LOGO} alt="" width={30} height={30} className="rounded-lg object-contain" />
+              <span className="font-display font-extrabold text-[22px] uppercase text-white">Hidden<span className="text-gold">Monkey</span></span>
+            </Link>
+            <p className="text-white/55 text-[14px] leading-relaxed max-w-[260px]">Community hostels and family homestays in Darjeeling and Varanasi. Where strangers become travel family.</p>
+          </div>
+          {COLS.map((c) => (
+            <div key={c.title}>
+              <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40 mb-3.5">{c.title}</p>
+              <ul className="flex flex-col gap-2.5">
+                {c.links.map(([href, label]) => <li key={label}><Link href={href} className="text-white/80 text-[15px] hover:text-gold">{label}</Link></li>)}
               </ul>
             </div>
-
-            {/* Company */}
-            <div>
-              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Company</p>
-              <ul className="space-y-2">
-                {LINKS.company.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors">
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Support</p>
-              <ul className="space-y-2">
-                {LINKS.support.map((l) => (
-                  <li key={l.href}>
-                    <Link href={l.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors">
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Destinations */}
-            <div>
-              <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-3">Destinations</p>
-              <ul className="space-y-2">
-                {DESTINATIONS.map((d) => (
-                  <li key={d.href}>
-                    <Link href={d.href} className="text-white/50 text-[12px] hover:text-[#FBB11A] transition-colors flex items-center gap-1.5">
-                      <span className="w-1 h-1 rounded-full bg-[#128790]" />
-                      {d.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Contact shortcut */}
-              <div className="mt-5 pt-4 border-t border-white/5">
-                <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.2em] mb-2">Get in touch</p>
-                <a href="mailto:hello@hiddenmonkey.in" className="text-white/50 text-[11px] hover:text-[#128790] transition-colors">
-                  hello@hiddenmonkey.in
-                </a>
-                <br />
-                <a href="tel:+919876543210" className="text-white/50 text-[11px] hover:text-[#128790] transition-colors">
-                  +91 98765 43210
-                </a>
-              </div>
+          ))}
+          <div>
+            <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-white/40 mb-3.5">Get in touch</p>
+            <div className="flex flex-col gap-2.5">
+              <a href="mailto:hello@hiddenmonkey.in" className="text-white/80 text-[15px] hover:text-gold">hello@hiddenmonkey.in</a>
+              <a href="tel:+919876543210" className="text-white/80 text-[15px] hover:text-gold">+91 98765 43210</a>
+              <span className="text-white/50 text-[13px]">Replies within 2–4 hrs, 9am–9pm IST</span>
             </div>
           </div>
+        </div>
 
-        </Container>
-      </div>
-
-      {/* ─── BOTTOM BAR ─── */}
-      <div className="border-t border-white/8 relative">
-        <Container className="max-w-[1200px] py-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-white/25 text-[11px]">
-              © {currentYear} Hidden Monkey Hostels Pvt. Ltd. All rights reserved.
-            </p>
-
-            {/* Socials */}
-            <div className="flex items-center gap-3">
-              {SOCIALS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/30 hover:bg-[#128790]/20 hover:text-[#128790] transition-all"
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
+        <div className="flex flex-wrap items-center justify-between gap-4 py-5 pb-8 border-t border-white/10">
+          <p className="text-white/40 text-[13px]">© {new Date().getFullYear()} Hidden Monkey Hostels Pvt. Ltd.</p>
+          <div className="flex gap-2">
+            {SOCIAL.map(([label, href, d]) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="w-10 h-10 rounded-full bg-white/[0.08] flex items-center justify-center text-white/70 hover:bg-gold hover:text-ink transition-colors">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d={d} /></svg>
+              </a>
+            ))}
           </div>
-        </Container>
+        </div>
       </div>
     </footer>
   )
