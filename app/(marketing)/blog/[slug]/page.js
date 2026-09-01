@@ -25,6 +25,10 @@ import Container from '@/components/ui/Container'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ReadingProgress from '@/components/features/blog/ReadingProgress'
+import { JsonLd, generateArticleSchema } from '@/lib/seo'
+import { BLOG_IMAGES } from '@/content/images'
+
+const SITE_URL = 'https://hiddenmonkey.in'
 
 /**
  * Generate static paths for all blog posts
@@ -43,18 +47,17 @@ export async function generateMetadata({ params }) {
   const post = await getPostBySlug(params.slug)
 
   if (!post) {
-    return { title: 'Story Not Found | Hidden Monkey Hostel' }
+    return { title: 'Story Not Found', robots: { index: false, follow: false } }
   }
 
-  const url = `https://hiddenmonkey.com/blog/${post.slug}`
-  const imageUrl = post.image
-    ? `https://hiddenmonkey.com/images/blog/${post.slug}/${post.image}`
-    : 'https://hiddenmonkey.com/og-image.jpg'
+  const url = `${SITE_URL}/blog/${post.slug}`
+  const imageUrl = BLOG_IMAGES[post.slug] || `${SITE_URL}/images/og-image.jpg`
 
   return {
-    title: `${post.title} | Hidden Monkey Hostel`,
+    title: post.title,
     description: post.seoDescription || post.excerpt,
     keywords: post.tags || [],
+    alternates: { canonical: url },
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -136,7 +139,7 @@ async function BlogPostDetail({ post }) {
             <span className="text-[10px] text-[#9A948C] uppercase tracking-widest font-bold">Share</span>
             <div className="flex gap-2">
               <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`https://hiddenmonkey.com/blog/${post.slug}`)}`}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(`${SITE_URL}/blog/${post.slug}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FBFBF9] border border-[#E6E4DF] text-[#6B665E] hover:bg-[#128790] hover:text-white hover:border-[#128790] transition-all"
@@ -144,7 +147,7 @@ async function BlogPostDetail({ post }) {
                 <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </a>
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(post.title + ' - https://hiddenmonkey.com/blog/' + post.slug)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(post.title + ' - ' + SITE_URL + '/blog/' + post.slug)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FBFBF9] border border-[#E6E4DF] text-[#6B665E] hover:bg-[#128790] hover:text-white hover:border-[#128790] transition-all"
@@ -176,6 +179,13 @@ export default async function BlogDetailPage({ params }) {
 
   return (
     <>
+      <JsonLd schema={generateArticleSchema({
+        title: post.title,
+        description: post.seoDescription || post.excerpt,
+        image: BLOG_IMAGES[post.slug],
+        publishedDate: post.publishedAt,
+        url: `${SITE_URL}/blog/${post.slug}`,
+      })} />
       <Header />
       <ReadingProgress />
       <main className="min-h-screen bg-white">

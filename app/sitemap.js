@@ -1,65 +1,34 @@
-/**
- * Sitemap Route
- * Dynamic sitemap generation for SEO
- * 
- * GET /sitemap.xml
- */
+import { getAllPosts } from '@/content/blog'
 
-const SITE_URL = 'https://hiddenmonkeyhotel.com'
+const SITE_URL = 'https://hiddenmonkey.in'
 
-/**
- * Blog posts for sitemap
- * In production, fetch from database or CMS
- */
-const BLOG_POSTS = [
-  {
-    slug: '10-hidden-gems-in-downtown',
-    lastModified: '2024-12-15',
-  },
-]
-
-export default function sitemap() {
-  // Static pages
+export default async function sitemap() {
   const staticPages = [
-    {
-      url: SITE_URL,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1.0,
-    },
-    {
-      url: `${SITE_URL}/rooms`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${SITE_URL}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.8,
-    },
-  ]
-  
-  // Blog post pages
-  const blogPages = BLOG_POSTS.map((post) => ({
+    { path: '', changeFrequency: 'weekly', priority: 1.0 },
+    { path: '/stays', changeFrequency: 'weekly', priority: 0.9 },
+    { path: '/destinations', changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/experiences', changeFrequency: 'monthly', priority: 0.8 },
+    { path: '/gallery', changeFrequency: 'monthly', priority: 0.6 },
+    { path: '/blog', changeFrequency: 'weekly', priority: 0.7 },
+    { path: '/about', changeFrequency: 'monthly', priority: 0.6 },
+    { path: '/contact', changeFrequency: 'monthly', priority: 0.6 },
+    { path: '/faq', changeFrequency: 'monthly', priority: 0.5 },
+    { path: '/cancellation', changeFrequency: 'yearly', priority: 0.3 },
+    { path: '/privacy', changeFrequency: 'yearly', priority: 0.3 },
+    { path: '/terms', changeFrequency: 'yearly', priority: 0.3 },
+  ].map(({ path, ...rest }) => ({
+    url: `${SITE_URL}${path}`,
+    lastModified: new Date(),
+    ...rest,
+  }))
+
+  const posts = await getAllPosts()
+  const blogPages = posts.map((post) => ({
     url: `${SITE_URL}/blog/${post.slug}`,
-    lastModified: new Date(post.lastModified),
+    lastModified: new Date(post.updatedAt || post.publishedAt || Date.now()),
     changeFrequency: 'monthly',
     priority: 0.6,
   }))
-  
+
   return [...staticPages, ...blogPages]
 }

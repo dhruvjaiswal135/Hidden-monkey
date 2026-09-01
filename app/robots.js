@@ -17,6 +17,6 @@ export default function robots() {
         ],
       },
     ],
-    sitemap: 'https://hiddenmonkeyhotel.com/sitemap.xml',
+    sitemap: 'https://hiddenmonkey.in/sitemap.xml',
   }
 }
