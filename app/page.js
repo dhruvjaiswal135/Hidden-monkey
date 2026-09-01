@@ -1,83 +1,42 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import Hero from '@/components/sections/Hero'
+import TrustStrip from '@/components/sections/TrustStrip'
+import Marquee from '@/components/sections/Marquee'
+import TwoWaysToStay from '@/components/sections/TwoWaysToStay'
+import Destinations from '@/components/sections/Destinations'
 import WhyHiddenMonkey from '@/components/sections/WhyHiddenMonkey'
+import RoomTypes from '@/components/sections/RoomTypes'
 import LifeAtMonkey from '@/components/sections/LifeAtMonkey'
-import DayLookLike from '@/components/sections/DayLookLike'
 import CommunityEvents from '@/components/sections/CommunityEvents'
 import WorkFromParadise from '@/components/sections/WorkFromParadise'
-import Destinations from '@/components/sections/Destinations'
-import Gallery from '@/components/sections/Gallery'
-import RoomTypes from '@/components/sections/RoomTypes'
 import MeetTheTribe from '@/components/sections/MeetTheTribe'
-import CTA from '@/components/sections/CTA'
-import { JsonLd, generateHotelSchema } from '@/lib/seo'
+import MiniFAQ, { HOME_FAQ } from '@/components/sections/MiniFAQ'
+import { JsonLd, generateHotelSchema, generateFAQSchema } from '@/lib/seo'
 
 /**
- * Homepage - Hidden Monkey
- * "Where Strangers Become Travel Family"
- * 
- * A community-first, emotion-driven landing page for backpackers,
- * digital nomads, and adventure seekers.
+ * Homepage — "Beds from ₹499. Friends for life."
+ * Order mirrors the approved design: Hero → trust → marquee → two ways to stay → destinations → why → stays → life → events → work → reviews → FAQ.
  */
-
 export default function Home() {
-  const hotelSchema = generateHotelSchema()
-  
   return (
     <>
-      <JsonLd schema={hotelSchema} />
-     
+      <JsonLd schema={generateHotelSchema()} />
+      {typeof generateFAQSchema === 'function' && <JsonLd schema={generateFAQSchema(HOME_FAQ.map((f) => ({ question: f.q, answer: f.a })))} />}
       <Header />
-      <main className="pb-20 lg:pb-0">
-        {/* Hero - First impression with tribe messaging */}
+      <main>
         <Hero />
-        
-        {/* Why Hidden Monkey - Storytelling cards */}
+        <TrustStrip />
+        <Marquee />
+        <TwoWaysToStay />
+        <Destinations />
         <WhyHiddenMonkey />
-        
-        {/* Life at Monkey - Instagram-style moments */}
-        <section id="life">
-          <LifeAtMonkey />
-        </section>
-        
-        {/* What a day looks like - Timeline experience */}
-        {/* <section id="experience">
-          <DayLookLike />
-        </section> */}
-        
-        {/* Community Events - Activities & gatherings */}
-        <section id="events">
-          <CommunityEvents />
-        </section>
-        
-        {/* Work from Paradise - Digital nomad section */}
-        <section id="work">
-          <WorkFromParadise />
-        </section>
-        
-        {/* Destinations - Where we are */}
-        <section id="destinations">
-          <Destinations />
-        </section>
-        
-        {/* Gallery - Visual tour */}
-        {/* <section id="gallery">
-          <Gallery />
-        </section>
-         */}
-        {/* Stay Options - Room types */}
-        <section id="stays">
-          <RoomTypes />
-        </section>
-        
-        {/* Meet the Tribe - Testimonials with world map */}
-        <section id="community">
-          <MeetTheTribe />
-        </section>
-        
-        {/* Final CTA */}
-        {/* <CTA /> */}
+        <RoomTypes />
+        <LifeAtMonkey />
+        <CommunityEvents />
+        <WorkFromParadise />
+        <MeetTheTribe />
+        <MiniFAQ />
       </main>
       <Footer />
     </>

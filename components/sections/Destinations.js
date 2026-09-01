@@ -1,140 +1,39 @@
-'use client'
-
-import { useState, useRef, useEffect } from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
-import Container from '@/components/ui/Container'
+import Link from 'next/link'
+import SectionHead from '@/components/ui/SectionHead'
 import { DESTINATIONS } from '@/content/images'
 
-const destinations = [
-  {
-    id: 'darjeeling',
-    name: 'Darjeeling',
-    tagline: 'Where Mountains Touch Clouds',
-    image: DESTINATIONS.darjeeling.hero,
-    vibe: 'Scenic · Cozy',
-    price: '₹999',
-  },
-  {
-    id: 'varanasi',
-    name: 'Varanasi',
-    tagline: 'Where Souls Find Peace',
-    image: DESTINATIONS.varanasi.hero,
-    vibe: 'Spiritual · Mystical',
-    price: '₹899',
-  },
+const LIST = [
+  { id: 'darjeeling', name: 'Darjeeling', tagline: 'Where clouds become friends', description: 'Tea gardens, the toy train, and Kanchenjunga turning pink at 5 am. Two hostels above the Batasia Loop and family homestays in Lebong.', image: DESTINATIONS.darjeeling.hero, temp: '10–20°C', best: 'Mar–May, Sep–Nov', hostels: 2, homestays: 2, exps: 12, price: 499 },
+  { id: 'varanasi', name: 'Varanasi', tagline: 'Where time stands still', description: 'Sunrise boat rides, the evening aarti, and a riverside house at Assi Ghat. Homestays in old-city havelis a lane away.', image: DESTINATIONS.varanasi.hero, temp: '25–35°C', best: 'Oct–Mar', hostels: 1, homestays: 2, exps: 9, price: 499 },
 ]
 
-function useReveal(threshold = 0.1) {
-  const [visible, setVisible] = useState(false)
-  const ref = useRef(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setVisible(true) }, { threshold })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [threshold])
-  return [ref, visible]
-}
-
-function DestinationCard({ destination, index }) {
-  const [ref, visible] = useReveal(0.1)
-
-  return (
-    <Link href={`/destinations?location=${destination.id}`} className="group block">
-      <div
-        ref={ref}
-        className={`bg-white rounded-[24px] overflow-hidden border border-[#E6E4DF] shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 ${
-          visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}
-        style={{ transitionDelay: `${index * 50}ms` }}
-      >
-        <div className="p-1.5 pb-0">
-          <div className="relative h-[200px] rounded-[20px] overflow-hidden">
-            <Image
-              src={destination.image}
-              alt={destination.name}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
-              unoptimized
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            
-            <div className="absolute bottom-3 left-3 right-3">
-               <h3 className="text-white font-bold text-[20px] leading-tight mb-0.5">{destination.name}</h3>
-               <p className="text-white/80 text-[11px] font-medium uppercase tracking-wider">{destination.vibe}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-4 flex items-center justify-between">
-           <div>
-              <span className="text-[10px] text-[#9A948C] font-bold uppercase tracking-widest block mb-0.5">Starting From</span>
-              <span className="text-[#1E1F1C] font-bold text-[15px]">{destination.price}/night</span>
-           </div>
-           <div className="w-8 h-8 rounded-full bg-[#128790]/5 flex items-center justify-center text-[#128790] group-hover:bg-[#128790] group-hover:text-white transition-all">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-           </div>
-        </div>
-      </div>
-    </Link>
-  )
-}
-
 export default function Destinations() {
-  const [headerRef, headerVisible] = useReveal(0.1)
-
   return (
-    <section className="py-16 md:py-20 bg-[#FBFBF9] border-t border-[#E6E4DF]" id="destinations">
-      <Container className="max-w-[1400px]">
-        {/* Section Header */}
-        <div
-          ref={headerRef}
-          className={`flex flex-col md:flex-row md:items-end justify-between mb-10 transition-all duration-700 ${
-            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-4 h-[2px] bg-[#128790]"></span>
-              <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">
-                Explore Our Map
-              </span>
-            </div>
-            <h2 className="text-[#1E1F1C] font-bold text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.02em]">
-              Where will your <span className="text-[#FBB11A]">story begin?</span>
-            </h2>
-          </div>
-          
-          <Link href="/destinations" className="group hidden md:flex items-center gap-2 text-[#128790] text-[12px] font-bold uppercase tracking-widest hover:gap-3 transition-all">
-            See all locations
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        </div>
-
-        {/* Destination Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-          {destinations.map((destination, index) => (
-            <DestinationCard
-              key={destination.id}
-              destination={destination}
-              index={index}
-            />
+    <section id="destinations" className="section bg-white border-t border-line">
+      <div className="container-site">
+        <SectionHead kicker="Two towns, two moods" title={<>Mountains or <span className="text-teal">the river?</span></>}
+          aside={<Link href="/destinations" className="font-semibold text-[15px] inline-flex items-center gap-2 min-h-[44px]">Compare both destinations <span>→</span></Link>} />
+        <div className="flex flex-wrap gap-5">
+          {LIST.map((d) => (
+            <Link key={d.id} href={`/destinations#${d.id}`} className="group flex-[1_1_420px] min-w-0 relative block rounded-hero overflow-hidden min-h-[520px] bg-jungle text-white hover:text-white isolate">
+              <Image src={d.image} alt={d.name} fill unoptimized sizes="(max-width:900px) 100vw, 50vw" className="object-cover transition-transform duration-[800ms] ease-out-expo group-hover:scale-[1.04]" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,47,42,0)_30%,rgba(15,47,42,.92)_100%)]" />
+              <div className="absolute top-5 left-5 flex flex-wrap gap-2">
+                {[d.temp, `Best: ${d.best}`].map((t) => <span key={t} className="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur border border-white/25 text-[12px] font-semibold">{t}</span>)}
+              </div>
+              <div className="absolute inset-x-0 bottom-0 p-7 flex flex-col gap-3.5">
+                <div><p className="text-[13px] tracking-[0.14em] uppercase font-bold text-gold mb-1">{d.tagline}</p><h3 className="display text-[clamp(48px,6vw,88px)] leading-[.9]">{d.name}</h3></div>
+                <p className="text-[16px] leading-relaxed text-white/85 max-w-[460px] [text-wrap:pretty]">{d.description}</p>
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-white/20">
+                  <div className="flex gap-[18px] text-[13px] text-white/80"><span><strong className="text-white">{d.hostels}</strong> hostels</span><span><strong className="text-white">{d.homestays}</strong> homestays</span><span><strong className="text-white">{d.exps}</strong> experiences</span></div>
+                  <span className="font-display font-bold text-[22px] uppercase tracking-[0.02em]">From ₹{d.price}<span className="font-sans text-[14px] text-white/70 font-medium normal-case tracking-normal">/night</span></span>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
-
-        {/* Mobile CTA */}
-        <div className="mt-8 text-center md:hidden">
-          <Link href="/destinations" className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-[#E6E4DF] text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full shadow-sm">
-            View all destinations
-          </Link>
-        </div>
-      </Container>
+      </div>
     </section>
   )
 }

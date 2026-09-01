@@ -1,75 +1,46 @@
-'use client'
-
-import { useRef, useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import Container from '@/components/ui/Container'
-import RoomCard from './RoomCard'
-import { getAllRooms } from '@/content/rooms'
+import SectionHead from '@/components/ui/SectionHead'
+import { ROOM_IMAGES } from '@/content/images'
+import { HOMESTAYS } from '@/content/homestays'
 
-function useReveal(threshold = 0.1) {
-  const [visible, setVisible] = useState(false)
-  const ref = useRef(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setVisible(true) }, { threshold })
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [threshold])
-  return [ref, visible]
-}
+const hs = HOMESTAYS[0]
+const CARDS = [
+  { name: 'Mixed dorm · 6 bed', kind: 'Dorm', badge: 'bg-teal text-white', popular: true, tagline: 'Pod beds with curtains. The social heart of the house.', facts: ['Locker', 'Curtain', 'Shared bath'], was: 799, price: 499, href: '/stays#book', image: ROOM_IMAGES['mixed-dorm-6'][0] },
+  { name: 'Female dorm · 6 bed', kind: 'Women only', badge: 'bg-gold text-ink', tagline: 'Keycard access, vanity corner, and a quieter floor.', facts: ['Keycard', 'Vanity', 'Blackout curtain'], was: 849, price: 549, href: '/stays#book', image: ROOM_IMAGES['female-dorm-6'][0] },
+  { name: 'Mixed dorm · 4 bed', kind: 'Dorm', badge: 'bg-teal text-white', tagline: 'Just four beds, bigger lockers, your own bathroom.', facts: ['En-suite', 'Large locker', 'Quieter'], was: 899, price: 649, href: '/stays#book', image: ROOM_IMAGES['mixed-dorm-4'][0] },
+  { name: 'Private double', kind: 'Private', badge: 'bg-ink text-white', tagline: 'Queen bed and a door that locks. Still part of the house.', facts: ['Private bath', 'AC', 'Work desk'], was: 2199, price: 1499, href: '/stays#book', image: ROOM_IMAGES['private-double'][0] },
+  { name: 'Family homestay room', kind: 'Homestay', badge: 'bg-gold text-ink', tagline: 'Your own room in a vetted local home. Breakfast and dinner at the family table.', facts: ['2 meals', 'Private room', 'Local host'], was: hs.originalPrice, price: hs.price, href: '/stays#homestays', image: hs.images[0] },
+  { name: 'Deluxe suite', kind: 'Private', badge: 'bg-ink text-white', tagline: 'King bed, balcony, Kanchenjunga. Darjeeling only.', facts: ['Balcony', 'King bed', 'Mini bar'], was: 3499, price: 2499, href: '/stays#book', image: ROOM_IMAGES['deluxe-suite'][0] },
+]
 
-export default function StayOptions() {
-  const stayOptions = getAllRooms()
-  const [headerRef, headerVisible] = useReveal(0.1)
-
+export default function RoomTypes() {
   return (
-    <section className="py-16 md:py-20 bg-[#FBFBF9] border-t border-[#E6E4DF]" id="stays">
-      <Container className="max-w-[1400px]">
-        {/* Header */}
-        <div
-          ref={headerRef}
-          className={`flex flex-col md:flex-row md:items-end justify-between mb-10 transition-all duration-700 ${
-            headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-4 h-[2px] bg-[#128790]"></span>
-              <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">
-                Where You Rest
-              </span>
-            </div>
-            <h2 className="text-[#1E1F1C] font-bold text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.02em]">
-              Choose your <span className="text-[#FBB11A]">stay.</span>
-            </h2>
-            <p className="text-[#6B665E] text-[14px] md:text-[15px] font-light mt-2">
-              Different spaces. Same wild community.
-            </p>
-          </div>
-          
-          <Link href="/stays" className="group hidden md:flex items-center gap-2 text-[#128790] text-[12px] font-bold uppercase tracking-widest hover:gap-3 transition-all">
-            See all room types
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        </div>
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stayOptions.map((room, index) => (
-            <RoomCard key={room.id} room={room} index={index} />
+    <section id="stays" className="section bg-white border-t border-line">
+      <div className="container-site">
+        <SectionHead kicker="Pick your bed" title={<>Sleep well. <span className="text-teal">Spend less.</span></>}
+          aside={<p className="text-[15px] text-ink-3 max-w-[380px]">Every hostel bed gets fresh linen, a locker, a reading light, a charging point and a curtain. Homestays include breakfast and dinner. Taxes in the price.</p>} />
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
+          {CARDS.map((r) => (
+            <article key={r.name} className="card-hover bg-surface flex flex-col">
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <Image src={r.image} alt={r.name} fill unoptimized sizes="(max-width:768px) 100vw, 33vw" className="object-cover" />
+                <span className={`absolute top-3 left-3 px-2.5 py-[5px] rounded-lg text-[11px] font-bold tracking-[0.1em] uppercase ${r.badge}`}>{r.kind}</span>
+                {r.popular && <span className="absolute top-3 right-3 px-2.5 py-[5px] rounded-lg bg-ink text-gold text-[11px] font-bold tracking-[0.1em] uppercase">Most booked</span>}
+              </div>
+              <div className="p-[18px] flex flex-col gap-2.5 flex-1">
+                <h3 className="display font-bold text-[26px] leading-none">{r.name}</h3>
+                <p className="text-[14px] leading-relaxed text-ink-3 flex-1">{r.tagline}</p>
+                <div className="flex flex-wrap gap-1.5">{r.facts.map((f) => <span key={f} className="chip bg-white">{f}</span>)}</div>
+                <div className="flex items-end justify-between gap-2.5 pt-3 border-t border-line">
+                  <div><s className="block text-[12px] text-ink-4">₹{r.was}</s><span className="font-display font-extrabold text-[30px] leading-none whitespace-nowrap">₹{r.price}<span className="font-sans text-[13px] font-medium text-ink-3">/night</span></span></div>
+                  <Link href={r.href} className="btn-ink min-h-[40px] px-4 text-[16px]">Book</Link>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
-
-        {/* Mobile CTA */}
-        <div className="mt-8 text-center md:hidden">
-          <Link href="/stays" className="inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-[#E6E4DF] text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full shadow-sm">
-            View all rooms
-          </Link>
-        </div>
-      </Container>
+      </div>
     </section>
   )
 }
