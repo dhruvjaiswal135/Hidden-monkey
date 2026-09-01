@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
 import Container from '@/components/ui/Container'
+import { WHY_HIDDEN_MONKEY } from '@/content/images'
 import {
   Users, Wifi, Map, Compass, ShieldCheck, Coffee,
   ChevronRight, ChevronLeft, Zap, Heart, Globe, Star,
@@ -55,8 +56,7 @@ const features = [
     icon: Users,
     accent: '#128790',
     light: 'rgba(18,135,144,0.08)',
-    image:
-      'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=800&auto=format&fit=crop&q=80',
+    image: WHY_HIDDEN_MONKEY.realPeople,
     stat: '12k+',
     statLabel: 'Travelers connected',
   },
@@ -69,8 +69,7 @@ const features = [
     icon: Wifi,
     accent: '#FBB11A',
     light: 'rgba(251,177,26,0.08)',
-    image:
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&auto=format&fit=crop&q=80',
+    image: WHY_HIDDEN_MONKEY.designedForYou,
     stat: '₹499',
     statLabel: 'Per night, starting from',
   },
@@ -83,8 +82,7 @@ const features = [
     icon: Compass,
     accent: '#128790',
     light: 'rgba(18,135,144,0.08)',
-    image:
-      'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=800&auto=format&fit=crop&q=80',
+    image: WHY_HIDDEN_MONKEY.localExperiences,
     stat: '80+',
     statLabel: 'Local experiences',
   },
@@ -97,8 +95,7 @@ const features = [
     icon: Map,
     accent: '#FBB11A',
     light: 'rgba(251,177,26,0.08)',
-    image:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&auto=format&fit=crop&q=80',
+    image: WHY_HIDDEN_MONKEY.stunningLocations,
     stat: '4',
     statLabel: 'Cities across India',
   },
@@ -111,8 +108,7 @@ const features = [
     icon: ShieldCheck,
     accent: '#128790',
     light: 'rgba(18,135,144,0.08)',
-    image:
-      'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&auto=format&fit=crop&q=80',
+    image: WHY_HIDDEN_MONKEY.workFriendly,
     stat: '4.9★',
     statLabel: 'Safety rating avg.',
   },
@@ -125,8 +121,7 @@ const features = [
     icon: Coffee,
     accent: '#FBB11A',
     light: 'rgba(251,177,26,0.08)',
-    image:
-      'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&auto=format&fit=crop&q=80',
+    image: WHY_HIDDEN_MONKEY.sustainableTravel,
     stat: '∞',
     statLabel: 'Cups of chai served',
   },

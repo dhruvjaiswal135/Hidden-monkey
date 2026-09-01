@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBooking } from '@/context/BookingContext'
+import { FALLBACK } from '@/content/images'
 
 /**
  * Building Detail Modal — Compact, centered
@@ -40,7 +41,7 @@ export default function BuildingModal({ building, isOpen, onClose }) {
 
   if (!building) return null
 
-  const images = building.images?.length ? building.images : (building.image ? [building.image] : ['https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800'])
+  const images = building.images?.length ? building.images : (building.image ? [building.image] : [FALLBACK.room])
   const features = building.features || DEFAULT_FEATURES
   const amenities = building.amenities || DEFAULT_AMENITIES
   const rating = building.rating || 4.8

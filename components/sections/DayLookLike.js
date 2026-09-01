@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
+import { DAY_MOMENTS } from '@/content/images'
 
 function useReveal(threshold = 0.1) {
   const [visible, setVisible] = useState(false)
@@ -26,28 +27,28 @@ export default function DayLookLike() {
       period: 'Morning',
       time: '08:00',
       description: 'Slow starts, chai in hand, quiet conversations.',
-      image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&auto=format&fit=crop&q=80',
+      image: DAY_MOMENTS[0],
     },
     {
       id: 2,
       period: 'Afternoon',
       time: '14:00',
       description: 'Work, wander, or just watch the world go by.',
-      image: 'https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=400&auto=format&fit=crop&q=80',
+      image: DAY_MOMENTS[1],
     },
     {
       id: 3,
       period: 'Evening',
       time: '19:00',
       description: 'Shared meals, music, and stories from everywhere.',
-      image: 'https://images.unsplash.com/photo-1517457373614-b7152f800fd1?w=400&auto=format&fit=crop&q=80',
+      image: DAY_MOMENTS[2],
     },
     {
       id: 4,
       period: 'Night',
       time: '23:00',
       description: 'Quiet corners, laughter, or early sleep — your call.',
-      image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&auto=format&fit=crop&q=80',
+      image: DAY_MOMENTS[3],
     }
   ]
 

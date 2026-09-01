@@ -3,21 +3,9 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useBooking } from '@/context/BookingContext'
+import { HERO_SLIDES } from '@/content/images'
 
-const heroSlides = [
-  {
-    url: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&q=90',
-    alt: 'View from a camping tent at golden hour',
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=1200&q=90',
-    alt: 'Hiker with open arms on mountain overlook',
-  },
-  {
-    url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=90',
-    alt: 'Mountain peaks in warm golden light',
-  },
-]
+const heroSlides = HERO_SLIDES
 
 const destinations = ['Darjeeling', 'Varanasi']
 

@@ -2,6 +2,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import Container from '@/components/ui/Container'
 import Image from 'next/image'
+import { STAYS_COMMUNITY_IMAGE } from '@/content/images'
 
 export const metadata = {
   title: 'About Us | Hidden Monkey Hostels',
@@ -49,7 +50,7 @@ export default function AboutPage() {
           <Container className="max-w-[1000px]">
             <div className="relative h-[280px] md:h-[400px] rounded-[28px] overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop&q=85"
+                src={STAYS_COMMUNITY_IMAGE}
                 alt="Hidden Monkey community"
                 fill
                 className="object-cover"

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
 import Container from '@/components/ui/Container'
 import ExperienceModal from '@/components/modals/ExperienceModal'
+import { EXPERIENCES } from '@/content/images'
 
 /**
  * Experiences Page
@@ -18,7 +19,7 @@ const allExperiences = [
     id: 'hidden-trails-trek',
     title: 'Hidden Trails Trek',
     description: 'Discover secret viewpoints with our local nature guides.',
-    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.mountainTreks,
     category: 'Adventure',
     date: 'Wednesday',
     time: '7:00 AM',
@@ -40,7 +41,7 @@ const allExperiences = [
     id: 'rafting-adventure',
     title: 'White Water Rafting',
     description: 'Conquer the rapids! Grade III-IV rapids for the brave-hearted.',
-    image: 'https://images.unsplash.com/photo-1530866495561-507c9faab2ed?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.raftingAdventure,
     category: 'Adventure',
     date: 'Daily',
     time: '9:00 AM',
@@ -63,7 +64,7 @@ const allExperiences = [
     id: 'sunrise-yoga',
     title: 'Sunrise Yoga Session',
     description: 'Start your day right with guided breathing overlooking the valley.',
-    image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.yogaRetreat,
     category: 'Wellness',
     date: 'Daily',
     time: '6:30 AM',
@@ -85,7 +86,7 @@ const allExperiences = [
     id: 'meditation-circle',
     title: 'Evening Meditation',
     description: 'Unwind with a guided river meditation session. Find your inner peace.',
-    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.meditation,
     category: 'Wellness',
     date: 'Evening',
     time: '6:00 PM',
@@ -108,7 +109,7 @@ const allExperiences = [
     id: 'bonfire-stories',
     title: 'Bonfire & Stories Night',
     description: 'Share travel tales and roast marshmallows under the stars.',
-    image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.culturalNights,
     category: 'Social',
     date: 'Saturday',
     time: '8:00 PM',
@@ -130,7 +131,7 @@ const allExperiences = [
     id: 'open-mic',
     title: 'Open Mic Night',
     description: 'Got a talent? Share it! Or just enjoy the jam session.',
-    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.liveMusic,
     category: 'Nightlife',
     date: 'Friday',
     time: '9:00 PM',
@@ -153,7 +154,7 @@ const allExperiences = [
     id: 'cooking-class',
     title: 'Local Cooking Class',
     description: 'Learn to make authentic Indian dishes with our local chef. Eat what you cook!',
-    image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.cookingClass,
     category: 'Food',
     date: 'Tues & Thurs',
     time: '4:00 PM',

@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
+import { WORK_FROM_PARADISE } from '@/content/images'
 
 function useReveal(threshold = 0.15) {
   const [visible, setVisible] = useState(false)
@@ -78,7 +79,7 @@ export default function WorkFromParadise() {
               {/* Atmosphere Image Card */}
               <div className="h-[120px] md:h-[160px] relative rounded-[24px] overflow-hidden group shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-[#E6E4DF]">
                  <Image
-                    src="https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=800&auto=format&fit=crop&q=80"
+                    src={WORK_FROM_PARADISE}
                     alt="Working at Hidden Monkey"
                     fill
                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"

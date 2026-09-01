@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import RoomDetailModal from '@/components/modals/RoomDetailModal'
+import { ROOM_IMAGES, STAYS_COMMUNITY_IMAGE } from '@/content/images'
 
 /* ─── Reveal hook ────────────────────────────────────────────── */
 function useReveal(threshold = 0.1) {
@@ -29,13 +30,7 @@ const ALL_ROOMS = [
     description: 'Pod-style beds with privacy curtains, personal locker, and reading light. Our most-booked option for solo travelers.',
     price: 499,
     originalPrice: 799,
-    images: [
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1585399171635-76e0f6c7ad4a?w=900&auto=format&fit=crop&q=80',
-    ],
+    images: ROOM_IMAGES['mixed-dorm-6'],
     capacity: '1 per bed',
     bedType: 'Single pod',
     size: '40 sqft / pod',
@@ -61,12 +56,7 @@ const ALL_ROOMS = [
     description: 'Comfortable pod-style beds with extra privacy and security features. A supportive community of women travelers.',
     price: 549,
     originalPrice: 849,
-    images: [
-      'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1612277795784-0d822ed70d8f?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=900&auto=format&fit=crop&q=80',
-    ],
+    images: ROOM_IMAGES['female-dorm-6'],
     capacity: '1 per bed',
     bedType: 'Single pod',
     size: '40 sqft / pod',
@@ -92,11 +82,7 @@ const ALL_ROOMS = [
     description: 'Only 4 beds — more space, larger lockers, and an en-suite bathroom just for your dorm.',
     price: 649,
     originalPrice: 899,
-    images: [
-      'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=900&auto=format&fit=crop&q=80',
-    ],
+    images: ROOM_IMAGES['mixed-dorm-4'],
     capacity: '1 per bed',
     bedType: 'Single pod',
     size: '50 sqft / pod',
@@ -122,12 +108,7 @@ const ALL_ROOMS = [
     description: 'Cozy private room with a comfortable double bed, private bathroom, and access to all community spaces.',
     price: 1499,
     originalPrice: 2199,
-    images: [
-      'https://images.unsplash.com/photo-1598928636135-d146006ff4be?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1560185127-6a8a6dfd7b7b?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=900&auto=format&fit=crop&q=80',
-    ],
+    images: ROOM_IMAGES['private-double'],
     capacity: '2 people',
     bedType: 'Queen bed',
     size: '180 sqft',
@@ -153,13 +134,7 @@ const ALL_ROOMS = [
     description: 'King bed, private balcony, mini bar, and stunning views. Our best room for those who want it all.',
     price: 2499,
     originalPrice: 3499,
-    images: [
-      'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1679922603955-8d9b650ef796?w=900&auto=format&fit=crop&q=80',
-      'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&auto=format&fit=crop&q=80',
-    ],
+    images: ROOM_IMAGES['deluxe-suite'],
     capacity: '2 people',
     bedType: 'King bed',
     size: '280 sqft',
@@ -417,7 +392,7 @@ export default function StaysPage() {
             </div>
             <div className="relative min-h-[240px] md:min-h-0">
               <Image
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&auto=format&fit=crop&q=80"
+                src={STAYS_COMMUNITY_IMAGE}
                 alt="Group travelers"
                 fill
                 className="object-cover"

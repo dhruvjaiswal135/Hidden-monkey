@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Container from '@/components/ui/Container'
+import { LIFE_AT_MONKEY } from '@/content/images'
 
 function useReveal(threshold = 0.1) {
   const [visible, setVisible] = useState(false)
@@ -21,7 +22,7 @@ function useReveal(threshold = 0.1) {
 const moments = [
   {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&auto=format&fit=crop&q=80',
+    image: LIFE_AT_MONKEY[0].image,
     caption: 'Bonfire nights hit different here 🔥',
     tags: ['bonfire', 'community'],
     likes: 234,
@@ -29,21 +30,21 @@ const moments = [
   },
   {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=600&auto=format&fit=crop&q=80',
+    image: LIFE_AT_MONKEY[1].image,
     caption: 'When strangers become travel family',
     tags: ['friends', 'vibes'],
     likes: 189,
   },
   {
     id: 3,
-    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&auto=format&fit=crop&q=80',
+    image: LIFE_AT_MONKEY[2].image,
     caption: 'Morning chai with mountain views',
     tags: ['morning', 'views'],
     likes: 312,
   },
   {
     id: 4,
-    image: 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&auto=format&fit=crop&q=80',
+    image: LIFE_AT_MONKEY[3].image,
     caption: 'Trek days are the best days',
     tags: ['trek', 'adventure'],
     likes: 267,
@@ -51,14 +52,14 @@ const moments = [
   },
   {
     id: 5,
-    image: 'https://images.unsplash.com/photo-1493857671505-72967e2e2760?w=600&auto=format&fit=crop&q=80',
+    image: LIFE_AT_MONKEY[4].image,
     caption: 'Finding the perfect work spot',
     tags: ['nomad', 'work'],
     likes: 156,
   },
   {
     id: 6,
-    image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&auto=format&fit=crop&q=80',
+    image: LIFE_AT_MONKEY[5].image,
     caption: 'Kitchen sessions = best conversations',
     tags: ['cooking', 'family'],
     likes: 198,

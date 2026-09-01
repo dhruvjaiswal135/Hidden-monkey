@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useBooking } from '@/context/BookingContext'
+import { LOGO } from '@/content/images'
 
 const navItems = [
   { href: '/#life', label: 'Life' },
@@ -71,7 +72,7 @@ export default function Header() {
             <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
               <div className="relative w-8 h-8 rounded-lg overflow-hidden">
                 <Image
-                  src="/images/logo.png"
+                  src={LOGO}
                   alt="Hidden Monkey"
                   fill
                   className="object-contain"

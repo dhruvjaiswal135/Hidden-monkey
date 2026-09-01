@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
+import { CTA_AVATARS } from '@/content/images'
 
 function useReveal(threshold = 0.1) {
   const [visible, setVisible] = useState(false)
@@ -69,10 +70,10 @@ export default function CTA() {
             {/* Social Proof */}
             <div className="mt-12 flex flex-col items-center gap-3">
                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4, 5].map((i) => (
+                  {CTA_AVATARS.map((avatar, i) => (
                     <div key={i} className="w-8 h-8 rounded-full border-2 border-[#128790] overflow-hidden bg-[#FBFBF9]">
                        <Image 
-                         src={`https://i.pravatar.cc/100?img=${i + 10}`} 
+                         src={avatar} 
                          alt="Traveler" 
                          width={40} 
                          height={40} 

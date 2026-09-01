@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react'
 import Container from '@/components/ui/Container'
 import Image from 'next/image'
 import { useBooking } from '@/context/BookingContext'
+import { TRIBE_AVATARS } from '@/content/images'
 
 function useReveal(threshold = 0.1) {
   const [visible, setVisible] = useState(false)
@@ -25,7 +26,7 @@ const travelers = [
     country: 'Australia',
     stayDates: 'Nov 2025',
     quote: "I came for a week and stayed for three. Made best friends, went on the most amazing treks, and learned more about myself than in years at home.",
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
+    avatar: TRIBE_AVATARS.sarah,
     highlight: 'Found my travel family',
   },
   {
@@ -34,7 +35,7 @@ const travelers = [
     country: 'Italy',
     stayDates: 'Oct 2025',
     quote: "Finally found a place where remote work meets real community. The WiFi actually works, and the people here become your friends.",
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+    avatar: TRIBE_AVATARS.marco,
     highlight: 'Digital nomad paradise',
   },
   {
@@ -43,7 +44,7 @@ const travelers = [
     country: 'India',
     stayDates: 'Dec 2025',
     quote: "As a solo female traveler, I felt safer here than anywhere else I've stayed. The whole vibe just says 'we've got you.'",
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+    avatar: TRIBE_AVATARS.aisha,
     highlight: 'Safe & welcoming',
   }
 ]

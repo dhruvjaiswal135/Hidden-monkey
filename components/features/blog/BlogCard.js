@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { BLOG_IMAGES, FALLBACK } from '@/content/images'
 
 export default function BlogCard({ post }) {
   return (
@@ -12,7 +13,7 @@ export default function BlogCard({ post }) {
           <div className="relative h-[200px] rounded-[18px] overflow-hidden bg-[#FBFBF9]">
             {post.image ? (
               <Image
-                src={`/images/blog/${post.slug}/${post.image}`}
+                src={BLOG_IMAGES[post.slug] || FALLBACK.room}
                 alt={post.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"

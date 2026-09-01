@@ -3,27 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 
-/* ─── Gallery data ────────────────────────────────────────── */
-const IMAGES = [
-  { id: 1,  url: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=900&auto=format&fit=crop&q=80', alt: 'Dorm room with pod beds',        category: 'rooms',  aspect: 'wide'   },
-  { id: 2,  url: 'https://images.unsplash.com/photo-1560472355-536de3962603?w=900&auto=format&fit=crop&q=80', alt: 'Modern lounge area',             category: 'spaces', aspect: 'tall'   },
-  { id: 3,  url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&auto=format&fit=crop&q=80', alt: 'Hostel exterior and pool',     category: 'nature', aspect: 'wide'   },
-  { id: 4,  url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&auto=format&fit=crop&q=80', alt: 'Rooftop infinity pool',        category: 'nature', aspect: 'square' },
-  { id: 5,  url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=900&auto=format&fit=crop&q=80', alt: 'Bedroom with ocean views',     category: 'rooms',  aspect: 'tall'   },
-  { id: 6,  url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop&q=80', alt: 'Resort terrace at dusk',       category: 'nature', aspect: 'wide'   },
-  { id: 7,  url: 'https://images.unsplash.com/photo-1522158637959-30385a09e0da?w=900&auto=format&fit=crop&q=80', alt: 'Community night event',        category: 'events', aspect: 'square' },
-  { id: 8,  url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&auto=format&fit=crop&q=80', alt: 'Group gathering at hostel',    category: 'events', aspect: 'wide'   },
-  { id: 9,  url: 'https://images.unsplash.com/photo-1598928636135-d146006ff4be?w=900&auto=format&fit=crop&q=80', alt: 'Private double room',          category: 'rooms',  aspect: 'square' },
-  { id: 10, url: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=900&auto=format&fit=crop&q=80', alt: 'Dining and social space',         category: 'spaces', aspect: 'tall'   },
-  { id: 11, url: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=900&auto=format&fit=crop&q=80', alt: 'Clean bunk bed area',          category: 'rooms',  aspect: 'square' },
-  { id: 12, url: 'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=900&auto=format&fit=crop&q=80', alt: 'Tropical beach and palms',     category: 'nature', aspect: 'wide'   },
-  { id: 13, url: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=900&auto=format&fit=crop&q=80', alt: 'Live music night',             category: 'events', aspect: 'tall'   },
-  { id: 14, url: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=900&auto=format&fit=crop&q=80', alt: 'Deluxe private suite',         category: 'rooms',  aspect: 'wide'   },
-  { id: 15, url: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=900&auto=format&fit=crop&q=80', alt: 'Hostel common lounge area',    category: 'spaces', aspect: 'square' },
-  { id: 16, url: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=900&auto=format&fit=crop&q=80', alt: 'Mountain sunrise vista',       category: 'nature', aspect: 'tall'   },
-  { id: 17, url: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=900&auto=format&fit=crop&q=80', alt: 'Bonfire gathering',               category: 'events', aspect: 'square' },
-  { id: 18, url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&auto=format&fit=crop&q=80', alt: 'Premium room interior',       category: 'rooms',  aspect: 'wide'   },
-]
+import { GALLERY as IMAGES } from '@/content/images'
 
 const FILTERS = [
   { id: 'all',    label: 'All' },

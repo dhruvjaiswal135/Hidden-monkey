@@ -5,6 +5,7 @@
  * Category pill, title, excerpt, metadata row, and full-width hero image
  */
 import Image from 'next/image'
+import { BLOG_IMAGES, FALLBACK } from '@/content/images'
 
 export default function BlogHeader({ post }) {
   return (
@@ -59,7 +60,7 @@ export default function BlogHeader({ post }) {
       {post.image && (
         <div className="relative w-full h-[240px] md:h-[340px] lg:h-[420px] rounded-[20px] overflow-hidden bg-[#FBFBF9] border border-[#E6E4DF]">
           <Image
-            src={`/images/blog/${post.slug}/${post.image}`}
+            src={BLOG_IMAGES[post.slug] || FALLBACK.room}
             alt={post.title}
             fill
             className="object-cover"

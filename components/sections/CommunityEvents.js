@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
+import { EXPERIENCES } from '@/content/images'
 import ExperienceModal from '@/components/modals/ExperienceModal'
 
 function useReveal(threshold = 0.15) {
@@ -29,7 +30,7 @@ const upcomingEvents = [
     date: 'Saturday',
     time: '8:00 PM',
     duration: '3 hours',
-    image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.culturalNights,
     category: 'Vibes & Social',
     spotsLeft: 20,
     price: 'Free',
@@ -41,7 +42,7 @@ const upcomingEvents = [
     date: 'Daily',
     time: '6:30 AM',
     duration: '1 hour',
-    image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.yogaRetreat,
     category: 'Wellness',
     spotsLeft: 5,
     price: 'Free',
@@ -53,7 +54,7 @@ const upcomingEvents = [
     date: 'Wednesday',
     time: '7:00 AM',
     duration: '5 hours',
-    image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.mountainTreks,
     category: 'Adventure',
     spotsLeft: 3,
     price: '299',
@@ -65,7 +66,7 @@ const upcomingEvents = [
     date: 'Friday',
     time: '9:00 PM',
     duration: '2-3 hours',
-    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.liveMusic,
     category: 'Nightlife',
     spotsLeft: 30,
     price: 'Free',
@@ -77,7 +78,7 @@ const upcomingEvents = [
     date: 'Tuesday',
     time: '4:00 PM',
     duration: '2 hours',
-    image: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?w=800&auto=format&fit=crop&q=80',
+    image: EXPERIENCES.cookingClass,
     category: 'Culinary',
     spotsLeft: 8,
     price: '199',

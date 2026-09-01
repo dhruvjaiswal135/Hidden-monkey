@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
+import { LOGO } from '@/content/images'
 
 /**
  * Footer — Modern, compact editorial footer
@@ -89,7 +90,7 @@ export default function Footer() {
             <div className="max-w-[300px]">
               <Link href="/" className="inline-flex items-center gap-2.5 mb-3">
                 <div className="relative w-7 h-7 rounded-lg overflow-hidden">
-                  <Image src="/images/logo.png" alt="Hidden Monkey" fill className="object-contain" />
+                  <Image src={LOGO} alt="Hidden Monkey" fill className="object-contain" />
                 </div>
                 <span className="font-semibold text-[15px] text-white tracking-tight">
                   Hidden<span className="text-[#FBB11A]">Monkey</span>

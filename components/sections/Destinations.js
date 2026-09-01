@@ -4,13 +4,14 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Container from '@/components/ui/Container'
+import { DESTINATIONS } from '@/content/images'
 
 const destinations = [
   {
     id: 'darjeeling',
     name: 'Darjeeling',
     tagline: 'Where Mountains Touch Clouds',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80',
+    image: DESTINATIONS.darjeeling.hero,
     vibe: 'Scenic · Cozy',
     price: '₹999',
   },
@@ -18,7 +19,7 @@ const destinations = [
     id: 'varanasi',
     name: 'Varanasi',
     tagline: 'Where Souls Find Peace',
-    image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=600&q=80',
+    image: DESTINATIONS.varanasi.hero,
     vibe: 'Spiritual · Mystical',
     price: '₹899',
   },

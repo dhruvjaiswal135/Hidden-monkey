@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
 import Container from '@/components/ui/Container'
 import DestinationModal from '@/components/modals/DestinationModal'
+import { DESTINATIONS } from '@/content/images'
 
 /**
  * Destinations Page Component
@@ -24,12 +25,8 @@ const destinations = [
     vibe: 'Mist, mountains, quiet conversations.',
     description: 'Tea gardens, toy trains, and the majestic Kanchenjunga. Perfect for those who want to slow down and breathe.',
     tags: ['Mountains', 'Calm', 'Nature', 'Tea Gardens'],
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&auto=format&fit=crop&q=85',
-    coverImages: [
-      'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1200&auto=format&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&auto=format&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200&auto=format&fit=crop&q=85',
-    ],
+    image: DESTINATIONS.darjeeling.hero,
+    coverImages: DESTINATIONS.darjeeling.gallery,
     highlights: [
       { icon: '🏔️', text: 'Kanchenjunga views' },
       { icon: '🍵', text: 'Tea garden walks' },
@@ -44,7 +41,7 @@ const destinations = [
         name: 'Batasia Loop Lodge',
         vibe: 'Mountain views. Tea, books, and endless conversations.',
         address: '789 Batasia Loop Road, Darjeeling, West Bengal 734101, India',
-        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop&q=85',
+        image: DESTINATIONS.darjeeling.properties.monkeyHouse,
         priceFrom: 699,
         rating: 4.9,
         reviews: 287,
@@ -54,7 +51,7 @@ const destinations = [
         name: 'Ching Monastery House',
         vibe: 'Peaceful retreat. Morning meditation and mountain silence.',
         address: '321 Ching Monastery Road, Darjeeling, West Bengal 734101, India',
-        image: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=600&auto=format&fit=crop&q=85',
+        image: DESTINATIONS.darjeeling.properties.treehouse,
         priceFrom: 749,
         rating: 4.7,
         reviews: 156,
@@ -74,12 +71,8 @@ const destinations = [
     vibe: 'Slow mornings. Old souls. Spiritual awakening.',
     description: 'The oldest living city in the world. Experience the ghats, the Ganga aarti, and conversations that change your perspective on life.',
     tags: ['Spiritual', 'Cultural', 'Riverside', 'Heritage'],
-    image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=1200&auto=format&fit=crop&q=85',
-    coverImages: [
-      'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=1200&auto=format&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1537457984863-1fc67de99f5e?w=1200&auto=format&fit=crop&q=85',
-      'https://images.unsplash.com/photo-1549887534-f2c03c1b5eec?w=1200&auto=format&fit=crop&q=85',
-    ],
+    image: DESTINATIONS.varanasi.hero,
+    coverImages: DESTINATIONS.varanasi.gallery,
     highlights: [
       { icon: '🛕', text: 'Walk the ancient ghats' },
       { icon: '🕯️', text: 'Evening Ganga Aarti' },
@@ -94,7 +87,7 @@ const destinations = [
         name: 'Assi Ghat House',
         vibe: 'Riverside house for slow mornings and sunrise rituals.',
         address: '123 Assi Ghat Road, Varanasi, Uttar Pradesh 221001, India',
-        image: 'https://images.unsplash.com/photo-1537457984863-1fc67de99f5e?w=600&auto=format&fit=crop&q=85',
+        image: DESTINATIONS.varanasi.properties.ghatView,
         priceFrom: 599,
         rating: 4.9,
         reviews: 342,
