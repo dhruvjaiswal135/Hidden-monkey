@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ExperiencesPage from '@/components/features/experiences/ExperiencesPage'
+import { OG_IMAGES } from '@/content/images'
 
 export const metadata = {
   title: 'Experiences',
@@ -9,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: 'Experiences | Hidden Monkey',
     description: 'Treks, yoga sessions, cooking classes, and spontaneous adventures. Do them with fellow travelers.',
-    images: ['/images/og-experiences.jpg'],
+    images: [OG_IMAGES.experiences],
   },
 }
 

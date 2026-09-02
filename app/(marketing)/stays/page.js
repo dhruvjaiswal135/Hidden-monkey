@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import StaysPage from '@/components/features/stays/StaysPage'
+import { OG_IMAGES } from '@/content/images'
 
 export const metadata = {
   title: 'Stays & prices — hostel beds and homestays',
@@ -9,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: 'Stays & prices — hostel beds and homestays',
     description: 'Dorms, private rooms, and vetted family homestays in Darjeeling and Varanasi.',
-    images: ['/images/og-stays.jpg'],
+    images: [OG_IMAGES.stays],
   },
 }
 

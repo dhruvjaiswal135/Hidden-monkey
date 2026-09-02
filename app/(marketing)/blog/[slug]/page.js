@@ -26,7 +26,7 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import ReadingProgress from '@/components/features/blog/ReadingProgress'
 import { JsonLd, generateArticleSchema } from '@/lib/seo'
-import { BLOG_IMAGES } from '@/content/images'
+import { BLOG_IMAGES, OG_IMAGES } from '@/content/images'
 
 const SITE_URL = 'https://hiddenmonkey.in'
 
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }) {
   }
 
   const url = `${SITE_URL}/blog/${post.slug}`
-  const imageUrl = BLOG_IMAGES[post.slug] || `${SITE_URL}/images/og-image.jpg`
+  const imageUrl = BLOG_IMAGES[post.slug] || OG_IMAGES.default
 
   return {
     title: post.title,
