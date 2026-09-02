@@ -95,7 +95,7 @@ export const TRIBE_AVATARS = {
 }
 
 // — "Work from Paradise" section: main image (workFriendly above is the second)
-export const WORK_FROM_PARADISE = u('photo-1488751045188-3c55bbf9a3fa', 800) // working on a laptop by the window
+export const WORK_FROM_PARADISE = u('photo-1652608243111-98fa0e50d2e7', 1000) // working on a laptop with a mountain view
 
 /* ─────────────────────────────────────────────────────────────
    DESTINATIONS — homepage cards + /destinations page + modals
