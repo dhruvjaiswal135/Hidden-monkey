@@ -1,9 +1,10 @@
 'use client'
 
 /**
- * BlogContent — Premium editorial prose styling
+ * BlogContent — editorial prose styling
  * Uses `style jsx global` scoped to `.blog-content` so dangerouslySetInnerHTML children receive styles
- * Brand palette: Teal #128790, Gold #FBB11A, Charcoal #1E1F1C
+ * Design tokens: teal #128790, gold #FBB11A, ink #1E1F1C, ink-2 #3D3834, ink-3 #6B665E,
+ * ink-4 #9A948C, surface #FBFBF9, line #E6E4DF
  */
 export default function BlogContent({ content }) {
   return (
@@ -17,14 +18,14 @@ export default function BlogContent({ content }) {
           margin: 0 auto;
           font-size: 1.0625rem;
           line-height: 1.9;
-          color: #3a3833;
+          color: #3d3834;
         }
 
         /* ─────────────────── PARAGRAPHS ─────────────────── */
         .blog-content p {
           margin-bottom: 1.75rem;
-          color: #4a4640;
-          font-weight: 350;
+          color: #3d3834;
+          font-weight: 400;
           letter-spacing: 0.005em;
         }
 
@@ -32,7 +33,7 @@ export default function BlogContent({ content }) {
         .blog-content > div > p:first-of-type {
           font-size: 1.15rem;
           line-height: 1.85;
-          color: #3a3833;
+          color: #1e1f1c;
           font-weight: 400;
         }
 
@@ -43,19 +44,22 @@ export default function BlogContent({ content }) {
           line-height: 0.8;
           margin-right: 0.1em;
           margin-top: 0.05em;
-          font-weight: 700;
+          font-weight: 800;
+          font-family: var(--font-display), 'Barlow Condensed', sans-serif;
           color: #128790;
         }
 
         /* ─────────────────── HEADINGS ─────────────────── */
         .blog-content h2 {
-          font-size: 1.55rem;
+          font-family: var(--font-display), 'Barlow Condensed', sans-serif;
+          font-size: 2rem;
           font-weight: 800;
+          text-transform: uppercase;
           margin-top: 3.5rem;
           margin-bottom: 1rem;
-          color: #1E1F1C;
-          letter-spacing: -0.02em;
-          line-height: 1.25;
+          color: #1e1f1c;
+          letter-spacing: -0.01em;
+          line-height: 1.05;
           position: relative;
           padding-left: 1rem;
         }
@@ -65,29 +69,33 @@ export default function BlogContent({ content }) {
           content: '';
           position: absolute;
           left: 0;
-          top: 0.15em;
+          top: 0.1em;
           width: 3px;
-          height: 1.1em;
+          height: 0.9em;
           background-color: #128790;
           border-radius: 2px;
         }
 
         .blog-content h3 {
-          font-size: 1.2rem;
+          font-family: var(--font-display), 'Barlow Condensed', sans-serif;
+          font-size: 1.5rem;
           font-weight: 700;
+          text-transform: uppercase;
           margin-top: 2.5rem;
           margin-bottom: 0.75rem;
-          color: #1E1F1C;
-          letter-spacing: -0.01em;
-          line-height: 1.3;
+          color: #1e1f1c;
+          letter-spacing: 0;
+          line-height: 1.1;
         }
 
         .blog-content h4 {
-          font-size: 1.05rem;
+          font-family: var(--font-display), 'Barlow Condensed', sans-serif;
+          font-size: 1.25rem;
           font-weight: 700;
+          text-transform: uppercase;
           margin-top: 2rem;
           margin-bottom: 0.5rem;
-          color: #1E1F1C;
+          color: #1e1f1c;
         }
 
         /* ─────────────────── LISTS ─────────────────── */
@@ -104,8 +112,8 @@ export default function BlogContent({ content }) {
           padding-left: 1.5rem;
           margin-bottom: 0.875rem;
           line-height: 1.75;
-          color: #4a4640;
-          font-weight: 350;
+          color: #3d3834;
+          font-weight: 400;
         }
 
         /* Custom bullet — teal dot */
@@ -150,12 +158,12 @@ export default function BlogContent({ content }) {
         /* ─────────────────── EMPHASIS ─────────────────── */
         .blog-content strong {
           font-weight: 700;
-          color: #1E1F1C;
+          color: #1e1f1c;
         }
 
         .blog-content em {
           font-style: italic;
-          color: #5a5650;
+          color: #6b665e;
         }
 
         /* ─────────────────── BLOCKQUOTE ─────────────────── */
@@ -182,7 +190,7 @@ export default function BlogContent({ content }) {
 
         .blog-content blockquote p {
           margin-bottom: 0.5rem;
-          color: #3a3833;
+          color: #3d3834;
           font-style: italic;
           font-size: 1.05rem;
           line-height: 1.8;
@@ -205,8 +213,8 @@ export default function BlogContent({ content }) {
         }
 
         .blog-content pre {
-          background-color: #1E1F1C;
-          color: #FBFBF9;
+          background-color: #1e1f1c;
+          color: #fbfbf9;
           padding: 1.5rem 1.75rem;
           border-radius: 16px;
           overflow-x: auto;
@@ -218,7 +226,7 @@ export default function BlogContent({ content }) {
 
         .blog-content pre code {
           background: none;
-          color: #FBFBF9;
+          color: #fbfbf9;
           padding: 0;
           border: none;
           font-size: 0.9em;
@@ -246,7 +254,7 @@ export default function BlogContent({ content }) {
           border-radius: 16px;
           margin: 2.5rem 0;
           display: block;
-          border: 1px solid #E6E4DF;
+          border: 1px solid #e6e4df;
           box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
 
@@ -256,7 +264,7 @@ export default function BlogContent({ content }) {
           margin: 3rem auto;
           width: 4rem;
           height: 0;
-          border-top: 3px dotted #E6E4DF;
+          border-top: 3px dotted #e6e4df;
         }
 
         /* ─────────────────── TABLES ─────────────────── */
@@ -266,12 +274,12 @@ export default function BlogContent({ content }) {
           margin: 2rem 0;
           border-radius: 12px;
           overflow: hidden;
-          border: 1px solid #E6E4DF;
+          border: 1px solid #e6e4df;
           font-size: 0.95rem;
         }
 
         .blog-content table th {
-          background-color: #FBFBF9;
+          background-color: #fbfbf9;
           padding: 0.75rem 1rem;
           text-align: left;
           font-weight: 700;
@@ -279,13 +287,13 @@ export default function BlogContent({ content }) {
           text-transform: uppercase;
           letter-spacing: 0.1em;
           color: #128790;
-          border-bottom: 2px solid #E6E4DF;
+          border-bottom: 2px solid #e6e4df;
         }
 
         .blog-content table td {
           padding: 0.75rem 1rem;
-          border-bottom: 1px solid #E6E4DF;
-          color: #4a4640;
+          border-bottom: 1px solid #e6e4df;
+          color: #3d3834;
         }
 
         .blog-content table tr:last-child td {
@@ -309,7 +317,7 @@ export default function BlogContent({ content }) {
         .blog-content figcaption {
           text-align: center;
           font-size: 0.8rem;
-          color: #9A948C;
+          color: #9a948c;
           margin-top: 0.75rem;
           font-style: italic;
         }
@@ -326,13 +334,13 @@ export default function BlogContent({ content }) {
           }
 
           .blog-content h2 {
-            font-size: 1.35rem;
+            font-size: 1.7rem;
             margin-top: 2.75rem;
             padding-left: 0.875rem;
           }
 
           .blog-content h3 {
-            font-size: 1.1rem;
+            font-size: 1.35rem;
             margin-top: 2rem;
           }
 

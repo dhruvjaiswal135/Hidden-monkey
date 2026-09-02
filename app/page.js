@@ -14,6 +14,10 @@ import MeetTheTribe from '@/components/sections/MeetTheTribe'
 import MiniFAQ, { HOME_FAQ } from '@/components/sections/MiniFAQ'
 import { JsonLd, generateHotelSchema, generateFAQSchema } from '@/lib/seo'
 
+export const metadata = {
+  alternates: { canonical: 'https://hiddenmonkey.in' },
+}
+
 /**
  * Homepage — "Beds from ₹499. Friends for life."
  * Order mirrors the approved design: Hero → trust → marquee → two ways to stay → destinations → why → stays → life → events → work → reviews → FAQ.

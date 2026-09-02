@@ -3,8 +3,9 @@ import Footer from '@/components/layout/Footer'
 import DestinationsPage from '@/components/features/destination/DestinationsPage'
 
 export const metadata = {
-  title: 'Destinations | Hidden Monkey - Find Your Vibe',
-  description: 'Explore Hidden Monkey hostels across India. From the spiritual ghats of Varanasi to the misty mountains of Darjeeling, find your perfect escape.',
+  title: 'Destinations',
+  description: 'Two houses, two vibes: the spiritual ghats of Varanasi and the misty tea mountains of Darjeeling. Explore Hidden Monkey hostels and find your perfect escape.',
+  alternates: { canonical: 'https://hiddenmonkey.in/destinations' },
 }
 
 export default function Destinations() {

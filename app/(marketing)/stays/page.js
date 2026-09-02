@@ -3,11 +3,12 @@ import Footer from '@/components/layout/Footer'
 import StaysPage from '@/components/features/stays/StaysPage'
 
 export const metadata = {
-  title: 'Book Your Stay | Hidden Monkey Hostel',
-  description: 'Book your perfect room at Hidden Monkey. From social dorms to private suites, find the space that fits your travel style.',
+  title: 'Stays & prices — hostel beds and homestays',
+  description: 'Hostel beds from ₹499 and family homestays from ₹1,299 in Darjeeling and Varanasi. Pod dorms, private rooms and suites — taxes included, free cancellation to 48 hrs.',
+  alternates: { canonical: 'https://hiddenmonkey.in/stays' },
   openGraph: {
-    title: 'Book Your Stay | Hidden Monkey Hostel',
-    description: 'Dorms, private rooms, and suites designed for comfort and connection.',
+    title: 'Stays & prices — hostel beds and homestays',
+    description: 'Dorms, private rooms, and vetted family homestays in Darjeeling and Varanasi.',
     images: ['/images/og-stays.jpg'],
   },
 }

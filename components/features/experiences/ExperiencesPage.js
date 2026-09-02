@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
-import Container from '@/components/ui/Container'
+import SectionHead from '@/components/ui/SectionHead'
 import ExperienceModal from '@/components/modals/ExperienceModal'
 import { EXPERIENCES } from '@/content/images'
 
@@ -198,72 +198,68 @@ function CompactExperienceCard({ experience, index, onClick }) {
       viewport={{ once: true, margin: "-20px" }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
       onClick={() => onClick(experience)}
-      className="group bg-white rounded-[20px] overflow-hidden border border-[#E6E4DF] hover:border-[#128790]/30 transition-all duration-500 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-1 cursor-pointer flex flex-col"
+      className="group card-hover cursor-pointer flex flex-col"
     >
-      <div className="p-1.5 pb-0">
-         <div className="relative h-[150px] overflow-hidden rounded-[14px]">
-           <Image
-             src={experience.image}
-             alt={experience.title}
-             fill
-             className="object-cover group-hover:scale-105 transition-transform duration-500"
-             unoptimized
-           />
-           
-           {/* Date Badge */}
-           <div className="absolute top-2 right-2 bg-white/95 backdrop-blur-sm text-[#1E1F1C] px-2 py-1 rounded-lg text-center shadow-sm">
-             <div className="text-[8px] font-bold uppercase tracking-widest text-[#128790]">
-                {String(experience.date).split(' ')[0]}
-             </div>
-             <div className="text-[14px] font-black leading-none mt-[2px]">
-                {String(experience.time).split(':')[0]}
-             </div>
-           </div>
-           
-           {/* Price Badge */}
-           {experience.price !== 'Free' ? (
-             <div className="absolute bottom-2 left-2 px-2 py-1 bg-white/90 backdrop-blur-md rounded-md text-[#1E1F1C] text-[10px] font-bold">
-               ₹{experience.price}
-             </div>
-           ) : (
-             <div className="absolute bottom-2 left-2 px-2 py-1 bg-[#128790] text-white text-[10px] font-bold rounded-md uppercase tracking-wider">
-               Free
-             </div>
-           )}
-         </div>
-      </div>
-      
-      <div className="p-4 flex-1 flex flex-col">
-        {/* Tiny Pill Badges */}
-        <div className="mb-2 flex items-center gap-2">
-           <span className="inline-block px-2 py-0.5 bg-[#FBFBF9] border border-[#E6E4DF] rounded-full text-[#128790] text-[9px] font-bold uppercase tracking-widest">
-             {experience.category}
-           </span>
-           <span className="inline-block px-2 py-0.5 bg-white text-[#9A948C] text-[9px] font-semibold tracking-wider">
-             📍 {experience.location}
-           </span>
+      <div className="relative h-[170px] overflow-hidden">
+        <Image
+          src={experience.image}
+          alt={experience.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 25vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          unoptimized
+        />
+
+        {/* Date Badge */}
+        <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-lg text-center shadow-sm">
+          <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-teal">
+            {String(experience.date).split(' ')[0]}
+          </div>
+          <div className="font-display font-extrabold text-[18px] leading-none mt-[2px] text-ink">
+            {String(experience.time).split(':')[0]}
+          </div>
         </div>
 
-        <h3 className="text-[16px] font-bold text-[#1E1F1C] mb-1.5 group-hover:text-[#128790] transition-colors leading-[1.2]">
+        {/* Price Badge */}
+        {experience.price !== 'Free' ? (
+          <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-white/95 backdrop-blur-md rounded-lg text-ink font-display font-extrabold text-[15px]">
+            ₹{experience.price}
+          </div>
+        ) : (
+          <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-teal text-white text-[11px] font-bold rounded-lg uppercase tracking-[0.1em]">
+            Free
+          </div>
+        )}
+      </div>
+
+      <div className="p-[18px] flex-1 flex flex-col gap-2">
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="chip text-teal font-bold uppercase tracking-[0.1em] text-[11px]">
+            {experience.category}
+          </span>
+          <span className="text-[12px] text-ink-4 font-semibold">
+            📍 {experience.location}
+          </span>
+        </div>
+
+        <h3 className="display font-bold text-[24px] leading-none group-hover:text-teal transition-colors">
           {experience.title}
         </h3>
-        <p className="text-[#6B665E] text-[12px] font-light leading-relaxed mb-4 line-clamp-2 flex-1">
+        <p className="text-[14px] leading-relaxed text-ink-3 line-clamp-2 flex-1">
           {experience.description}
         </p>
-        
-        <div className="flex items-center justify-between border-t border-[#E6E4DF] pt-3">
-          <div className="flex items-center gap-2 text-[10px] text-[#9A948C] font-semibold">
-            <span className="flex items-center gap-1">
-              <svg className="w-3 h-3 text-[#128790]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {experience.duration}
-            </span>
-          </div>
-          
-          <span className="text-[#1E1F1C] text-[11px] font-bold uppercase tracking-widest flex items-center gap-1 group-hover:text-[#FBB11A]">
+
+        <div className="flex items-center justify-between border-t border-line pt-3">
+          <span className="flex items-center gap-1 text-[13px] text-ink-4 font-semibold">
+            <svg className="w-3.5 h-3.5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {experience.duration}
+          </span>
+
+          <span className="text-[13px] font-bold uppercase tracking-[0.14em] text-ink flex items-center gap-1 group-hover:text-teal transition-colors">
             View
-            <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </span>
@@ -289,72 +285,62 @@ export default function ExperiencesPage() {
 
   return (
     <>
-      <section ref={heroRef} className="pt-12 pb-8 bg-[#FBFBF9] border-b border-[#E6E4DF]">
-        <Container className="max-w-[1200px]">
+      {/* Page hero */}
+      <section ref={heroRef} className="bg-white border-b border-line">
+        <div className="container-site pt-9 md:pt-16 pb-7">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="flex flex-col md:flex-row md:items-end justify-between gap-6"
           >
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-4 h-[2px] bg-[#128790]"></span>
-                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">
-                  Culture & Community
-                </span>
+            <p className="kicker">Culture &amp; community</p>
+            <div className="flex flex-wrap items-end justify-between gap-5">
+              <h1 className="display text-d-page">Adventures that<br /><span className="text-teal">become memories.</span></h1>
+              <div className="flex flex-col gap-3 max-w-[440px]">
+                <p className="text-[16px] leading-relaxed text-ink-3">Treks, yoga sessions, cooking classes, and spontaneous adventures. Do them with fellow travelers and turn strangers into lifelong friends.</p>
               </div>
-              <h1 className="text-[32px] md:text-[48px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.02em] mb-4">
-                Adventures that become <span className="text-[#FBB11A]">memories.</span>
-              </h1>
-              <p className="text-[#6B665E] text-[14px] md:text-[15px] font-light leading-relaxed max-w-xl">
-                Treks, yoga sessions, cooking classes, and spontaneous adventures. 
-                Do them with fellow travelers and turn strangers into lifelong friends.
-              </p>
             </div>
           </motion.div>
-        </Container>
+        </div>
       </section>
 
-      {/* Cute Filters Bar */}
-      <section className="py-4 bg-white border-b border-[#E6E4DF] sticky top-[60px] z-40 shadow-sm">
-        <Container className="max-w-[1200px]">
-          <div className="flex flex-col md:flex-row gap-3 md:items-center justify-between">
-            <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1 md:pb-0">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
-                    selectedCategory === cat.id
-                      ? 'bg-[#128790] text-white border-[#128790]'
-                      : 'bg-white text-[#6B665E] border-[#E6E4DF] hover:border-[#128790]/50'
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              ))}
-            </div>
-            
-            <div className="flex items-center gap-2 shrink-0">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#9A948C]">Where:</span>
-              <select
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
-                className="px-3 py-1.5 bg-[#FBFBF9] border border-[#E6E4DF] rounded-lg text-[12px] font-semibold text-[#1E1F1C] focus:outline-none focus:border-[#128790] cursor-pointer"
+      {/* Filters bar */}
+      <section className="sticky top-[60px] z-40 bg-surface/95 backdrop-blur-lg border-b border-line">
+        <div className="container-site py-3 flex flex-wrap gap-2.5 items-center">
+          <div className="flex gap-1.5 flex-wrap">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={selectedCategory === cat.id ? 'pill-on' : 'pill-off'}
               >
-                {locations.map((loc) => (
-                  <option key={loc.id} value={loc.id}>{loc.name}</option>
-                ))}
-              </select>
-            </div>
+                {cat.name}
+              </button>
+            ))}
           </div>
-        </Container>
+
+          <label className="flex items-center gap-2 shrink-0">
+            <span className="field-label tracking-[0.14em]">Where</span>
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="min-h-[44px] px-4 rounded-full border border-line bg-white text-[14px] font-semibold text-ink cursor-pointer outline-none focus:border-teal appearance-none"
+            >
+              {locations.map((loc) => (
+                <option key={loc.id} value={loc.id}>{loc.name}</option>
+              ))}
+            </select>
+          </label>
+
+          <span className="ml-auto text-[13px] text-ink-3 font-semibold">
+            {filteredExperiences.length} experience{filteredExperiences.length !== 1 ? 's' : ''}
+          </span>
+        </div>
       </section>
 
-      {/* Compact Grid */}
-      <section className="py-10 bg-[#FBFBF9] min-h-[50vh]">
-        <Container className="max-w-[1200px]">
+      {/* Experiences grid */}
+      <section className="py-10 md:py-14 bg-surface min-h-[50vh]">
+        <div className="container-site">
           {filteredExperiences.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
               {filteredExperiences.map((experience, index) => (
@@ -367,46 +353,41 @@ export default function ExperiencesPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 bg-white rounded-2xl border border-[#E6E4DF]">
-              <p className="text-3xl mb-3">🧳</p>
-              <h3 className="text-[18px] font-bold text-[#1E1F1C] mb-1">No adventures found here... yet.</h3>
-              <p className="text-[#6B665E] text-[13px] mb-4">Try adjusting your filters to discover something new.</p>
+            <div className="card p-10 text-center">
+              <p className="text-3xl mb-3" aria-hidden="true">🧳</p>
+              <p className="display font-bold text-[26px] mb-1">No adventures found here... yet.</p>
+              <p className="text-[14px] text-ink-3 mb-4">Try adjusting your filters to discover something new.</p>
               <button
                 onClick={() => { setSelectedCategory('all'); setSelectedLocation('all'); }}
-                className="px-4 py-2 bg-[#FBFBF9] border border-[#E6E4DF] text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-white transition-colors"
+                className="btn-ghost"
               >
-                Clear Filters
+                Clear filters
               </button>
             </div>
           )}
-        </Container>
+        </div>
       </section>
 
-      {/* Cute Propose Experience CTA */}
-      <section className="py-12 bg-white border-t border-[#E6E4DF]">
-        <Container className="max-w-[800px]">
-          <div className="bg-[#128790] rounded-[24px] p-8 md:p-10 text-center relative overflow-hidden group">
-            <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/10 rounded-full blur-[20px] transition-transform duration-700 group-hover:scale-150" />
-            <div className="relative z-10">
-               <span className="text-3xl mb-3 block">💡</span>
-               <h2 className="text-[24px] md:text-[32px] font-bold text-[#FBB11A] mb-3 leading-[1]">
-                 Host an experience?
-               </h2>
-               <p className="text-white/90 text-[13px] md:text-[14px] font-light mb-6">
-                 Travelers often lead their own sessions — yoga, cooking, or jam nights. If you have a skill to share, let's make it happen.
-               </p>
-               <Link
-                 href="/propose-experience"
-                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#128790] text-[11px] font-bold uppercase tracking-widest rounded-full hover:bg-[#FBFBF9] transition-colors"
-               >
-                 Let's Talk
-                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                 </svg>
-               </Link>
-            </div>
-          </div>
-        </Container>
+      {/* Propose experience CTA */}
+      <section className="section bg-jungle text-white">
+        <div className="container-site">
+          <SectionHead
+            light
+            kicker="Hosted by travelers"
+            title={<>Host an<br /><span className="text-gold">experience?</span></>}
+            aside={
+              <div className="flex flex-col gap-4 max-w-[440px]">
+                <p className="text-[16px] leading-relaxed text-white/85">
+                  Travelers often lead their own sessions — yoga, cooking, or jam nights. If you have a skill to share, let&apos;s make it happen.
+                </p>
+                <Link href="/propose-experience" className="btn-gold self-start hover:bg-white hover:text-ink">
+                  Let&apos;s talk
+                </Link>
+              </div>
+            }
+            className="mb-0"
+          />
+        </div>
       </section>
 
       {/* Experience Modal */}

@@ -1,12 +1,14 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import Container from '@/components/ui/Container'
 import Image from 'next/image'
+import Link from 'next/link'
+import SectionHead from '@/components/ui/SectionHead'
 import { STAYS_COMMUNITY_IMAGE } from '@/content/images'
 
 export const metadata = {
-  title: 'About Us | Hidden Monkey Hostels',
+  title: 'About us',
   description: 'We started Hidden Monkey to create a home for travelers — not tourists. Learn our story, our values, and why community comes first.',
+  alternates: { canonical: 'https://hiddenmonkey.in/about' },
 }
 
 const VALUES = [
@@ -29,86 +31,77 @@ export default function AboutPage() {
       <Header />
       <main className="pb-20 lg:pb-0">
         {/* Hero */}
-        <section className="pt-12 pb-16 bg-[#FBFBF9] border-b border-[#E6E4DF]">
-          <Container className="max-w-[1000px]">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-4 h-[2px] bg-[#128790]" />
-              <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790]">Our Story</span>
+        <section className="bg-white border-b border-line">
+          <div className="container-site pt-9 md:pt-16 pb-7">
+            <p className="kicker">Our story</p>
+            <div className="flex flex-wrap items-end justify-between gap-5">
+              <h1 className="display text-d-page">A home for travelers,<br /><span className="text-teal">not tourists.</span></h1>
+              <div className="flex flex-col gap-3 max-w-[440px]">
+                <p className="text-[16px] leading-relaxed text-ink-3">
+                  Hidden Monkey was born from a simple idea: the best travel memories aren&apos;t made in hotel rooms — they&apos;re made in common rooms, around bonfires, and over shared meals with strangers who become lifelong friends.
+                </p>
+              </div>
             </div>
-            <h1 className="text-[36px] md:text-[52px] font-bold text-[#1E1F1C] leading-[1] tracking-[-0.03em] mb-5">
-              A home for travelers,<br />
-              <span className="text-[#FBB11A]">not tourists.</span>
-            </h1>
-            <p className="text-[#6B665E] text-[15px] md:text-[17px] font-light leading-relaxed max-w-2xl">
-              Hidden Monkey was born from a simple idea: the best travel memories aren&apos;t made in hotel rooms — they&apos;re made in common rooms, around bonfires, and over shared meals with strangers who become lifelong friends.
-            </p>
-          </Container>
+          </div>
         </section>
 
-        {/* Image */}
-        <section className="py-12 bg-white">
-          <Container className="max-w-[1000px]">
-            <div className="relative h-[280px] md:h-[400px] rounded-[28px] overflow-hidden">
+        {/* Story */}
+        <section className="py-10 md:py-14">
+          <div className="container-site">
+            <div className="relative h-[280px] md:h-[440px] rounded-hero overflow-hidden">
               <Image
                 src={STAYS_COMMUNITY_IMAGE}
                 alt="Hidden Monkey community"
                 fill
+                sizes="(max-width: 768px) 100vw, 1400px"
                 className="object-cover"
                 unoptimized
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              <div className="absolute bottom-6 left-6">
-                <p className="text-white/70 text-[11px] font-bold uppercase tracking-widest">Est. 2023</p>
-                <p className="text-white text-[20px] font-bold">Where strangers become travel family</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              <div className="absolute bottom-6 left-6 md:bottom-9 md:left-9">
+                <p className="text-[12px] font-bold uppercase tracking-[0.2em] text-gold mb-1.5">Est. 2023</p>
+                <p className="display text-white text-[clamp(26px,3.5vw,44px)] leading-[.95]">Where strangers become travel family</p>
               </div>
             </div>
-          </Container>
+          </div>
         </section>
 
         {/* Values */}
-        <section className="py-16 bg-[#FBFBF9] border-t border-[#E6E4DF]">
-          <Container className="max-w-[1000px]">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-4 h-[2px] bg-[#FBB11A]" />
-              <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#FBB11A]">What We Believe</span>
+        <section className="section bg-white border-t border-b border-line">
+          <div className="container-site">
+            <SectionHead kicker="What we believe" title={<>Our <span className="text-teal">values.</span></>} />
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-4">
+              {VALUES.map((v) => (
+                <div key={v.title} className="card p-6 flex flex-col gap-2.5">
+                  <span className="text-3xl" aria-hidden="true">{v.icon}</span>
+                  <h3 className="display font-bold text-[24px] leading-none">{v.title}</h3>
+                  <p className="text-[15px] leading-relaxed text-ink-3">{v.desc}</p>
+                </div>
+              ))}
             </div>
-            <h2 className="text-[28px] md:text-[36px] font-bold text-[#1E1F1C] leading-[1.1] tracking-[-0.02em] mb-8">
-              Our <span className="text-[#128790]">values.</span>
+          </div>
+        </section>
+
+        {/* Mission + stats (dark accent) */}
+        <section className="section bg-jungle text-white">
+          <div className="container-site">
+            <p className="kicker text-gold">Our mission</p>
+            <h2 className="display text-[clamp(34px,4.5vw,64px)] leading-[.95] max-w-[980px]">
+              To build the most <span className="text-gold">welcoming community</span> of travelers in India — one hostel, one chai, one conversation at a time.
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {VALUES.map((v, i) => (
-                <div key={i} className="p-5 bg-white rounded-[20px] border border-[#E6E4DF]">
-                  <span className="text-2xl mb-3 block">{v.icon}</span>
-                  <h3 className="text-[16px] font-bold text-[#1E1F1C] mb-1">{v.title}</h3>
-                  <p className="text-[13px] text-[#6B665E] font-light leading-relaxed">{v.desc}</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-7 mt-12 pt-10 border-t border-white/15">
+              {STATS.map((s) => (
+                <div key={s.label}>
+                  <p className="font-display font-extrabold text-[clamp(40px,5vw,64px)] leading-none text-gold mb-1.5">{s.value}</p>
+                  <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white/60">{s.label}</p>
                 </div>
               ))}
             </div>
-          </Container>
-        </section>
-
-        {/* Stats */}
-        <section className="py-14 bg-[#1E1F1C]">
-          <Container className="max-w-[1000px]">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {STATS.map((s, i) => (
-                <div key={i}>
-                  <p className="text-[32px] md:text-[40px] font-bold text-[#FBB11A] leading-none mb-1">{s.value}</p>
-                  <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">{s.label}</p>
-                </div>
-              ))}
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Link href="/stays" className="btn-gold">Book your stay</Link>
+              <span className="text-[14px] text-white/70">Darjeeling &amp; Varanasi</span>
             </div>
-          </Container>
-        </section>
-
-        {/* Mission */}
-        <section className="py-16 bg-white">
-          <Container className="max-w-[700px] text-center">
-            <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#128790] mb-4">Our Mission</p>
-            <p className="text-[20px] md:text-[26px] font-bold text-[#1E1F1C] leading-[1.3] tracking-[-0.01em]">
-              To build the most <span className="text-[#128790]">welcoming community</span> of travelers in India — one hostel, one chai, one conversation at a time.
-            </p>
-          </Container>
+          </div>
         </section>
       </main>
       <Footer />

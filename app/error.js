@@ -8,26 +8,18 @@ export default function Error({ error, reset }) {
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50">
-      <div className="text-center px-4">
-        <h1 className="font-sans font-bold text-6xl md:text-8xl text-red-600 mb-4">Error</h1>
-        <h2 className="font-sans font-bold text-2xl md:text-3xl mb-4">Something went wrong</h2>
-        <p className="text-neutral-600 mb-8 max-w-md mx-auto">
-          We're sorry, but something unexpected happened. Please try again.
+    <div className="min-h-screen flex items-center justify-center bg-surface">
+      <div className="text-center px-6">
+        <p className="kicker justify-center">Something broke</p>
+        <h1 className="display text-[clamp(40px,6vw,72px)] leading-[.92] mb-4">
+          That wasn&apos;t<br /><span className="text-teal">supposed to happen.</span>
+        </h1>
+        <p className="text-ink-3 text-[15px] mb-8 max-w-md mx-auto leading-relaxed">
+          Something unexpected went wrong on our side. Try again — if it keeps happening, WhatsApp us and we&apos;ll sort it out.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            onClick={reset}
-            className="inline-flex items-center justify-center px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
-          >
-            Try Again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-neutral-200 text-neutral-900 rounded-lg font-medium hover:bg-neutral-300 transition-colors"
-          >
-            Return Home
-          </a>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button onClick={reset} className="btn-gold min-h-[44px] px-6 text-[16px]">Try again</button>
+          <a href="/" className="btn-ghost min-h-[44px] px-6 text-[16px]">Back to home</a>
         </div>
       </div>
     </div>
